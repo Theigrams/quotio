@@ -67,6 +67,10 @@ final class AgentSetupViewModel {
         }
         
         selectedAgent = agent
+
+        // Always use client endpoint - all traffic should go through Quotio's proxy
+        let endpoint = proxyManager.clientEndpoint
+
         currentConfiguration = AgentConfiguration(
             agent: agent,
             proxyURL: proxyManager.baseURL + "/v1",

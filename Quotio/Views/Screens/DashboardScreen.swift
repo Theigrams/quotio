@@ -513,7 +513,13 @@ struct DashboardScreen: View {
     }
     
     // MARK: - Endpoint Section
-    
+
+    /// The display endpoint for clients to connect to
+    private var displayEndpoint: String {
+        // Always use client endpoint - all traffic should go through Quotio's proxy
+        return viewModel.proxyManager.clientEndpoint + "/v1"
+    }
+
     private var endpointSection: some View {
         GroupBox {
             HStack {
