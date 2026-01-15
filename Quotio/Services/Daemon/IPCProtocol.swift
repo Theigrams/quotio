@@ -59,6 +59,10 @@ nonisolated enum IPCMethod: String, Sendable {
     // Quota
     case quotaFetch = "quota.fetch"
     case quotaList = "quota.list"
+    case quotaRefreshTokens = "quota.refreshTokens"
+    
+    // Copilot
+    case copilotAvailableModels = "copilot.availableModels"
     
     // Agent
     case agentDetect = "agent.detect"
@@ -119,6 +123,10 @@ nonisolated struct IPCEmptyParams: Codable, Sendable {}
 nonisolated struct IPCQuotaFetchParams: Codable, Sendable {
     var provider: String?
     var forceRefresh: Bool?
+}
+
+nonisolated struct IPCQuotaRefreshTokensParams: Codable, Sendable {
+    var provider: String?
 }
 
 nonisolated struct IPCAgentDetectParams: Codable, Sendable {
@@ -502,6 +510,18 @@ nonisolated struct IPCRemoteClearConfigResult: Codable, Sendable {
 nonisolated struct IPCRemoteTestConnectionResult: Codable, Sendable {
     let success: Bool
     let statusCode: Int?
+    let error: String?
+}
+
+nonisolated struct IPCQuotaRefreshTokensResult: Codable, Sendable {
+    let success: Bool
+    let refreshedCount: Int
+    let error: String?
+}
+
+nonisolated struct IPCCopilotAvailableModelsResult: Codable, Sendable {
+    let success: Bool
+    let modelIds: [String]
     let error: String?
 }
 

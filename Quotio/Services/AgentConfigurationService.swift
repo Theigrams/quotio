@@ -602,8 +602,13 @@ actor AgentConfigurationService {
         let decoded = try JSONDecoder().decode(ModelsResponse.self, from: data)
 
         // Fetch available Copilot models to filter out unavailable ones
-        let copilotFetcher = CopilotQuotaFetcher()
-        let availableCopilotModelIds = await copilotFetcher.fetchUserAvailableModelIds()
+        let availableCopilotModelIds: [String]
+        do {
+            let result = try await DaemonIPCClient.shared.fetchCopilotAvailableModels()
+            availableCopilotModelIds = result.modelIds
+        } catch {
+            availableCopilotModelIds = []
+        }
 
         return decoded.data.compactMap { item in
             let provider = item.owned_by ?? "openai"

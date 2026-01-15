@@ -850,6 +850,47 @@ const handlers: Record<string, MethodHandler> = {
 		return { success };
 	},
 
+	"quota.refreshTokens": async (params: unknown) => {
+		const opts = params as { provider?: string } | undefined;
+		const provider = opts?.provider;
+
+		try {
+			if (!provider || provider === "kiro") {
+				const { KiroQuotaFetcher } = await import(
+					"../quota-fetchers/kiro.ts"
+				);
+				const fetcher = new KiroQuotaFetcher();
+				const refreshedCount = await fetcher.refreshAllTokensIfNeeded();
+				return { success: true, refreshedCount };
+			}
+
+			return { success: true, refreshedCount: 0 };
+		} catch (err) {
+			return {
+				success: false,
+				refreshedCount: 0,
+				error: err instanceof Error ? err.message : String(err),
+			};
+		}
+	},
+
+	"copilot.availableModels": async () => {
+		try {
+			const { CopilotAvailableModelsFetcher } = await import(
+				"../quota-fetchers/copilot-models.ts"
+			);
+			const fetcher = new CopilotAvailableModelsFetcher();
+			const modelIds = await fetcher.fetchUserAvailableModelIds();
+			return { success: true, modelIds: Array.from(modelIds) };
+		} catch (err) {
+			return {
+				success: false,
+				modelIds: [],
+				error: err instanceof Error ? err.message : String(err),
+			};
+		}
+	},
+
 	"proxyConfig.getAll": async () => {
 		const { ManagementAPIClient } = await import("../management-api.ts");
 		const proxyState = getProcessState();

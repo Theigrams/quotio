@@ -16,8 +16,7 @@ final class QuotaViewModel {
     
     var apiClient: ManagementAPIClient? { _apiClient }
     @ObservationIgnored private let antigravityFetcher = AntigravityQuotaFetcher()
-    @ObservationIgnored private let openAIFetcher = OpenAIQuotaFetcher()
-    @ObservationIgnored private let copilotFetcher = CopilotQuotaFetcher()
+
     @ObservationIgnored private let glmFetcher = GLMQuotaFetcher()
     @ObservationIgnored private let directAuthService = DirectAuthFileService()
     @ObservationIgnored private let notificationManager = NotificationManager.shared
@@ -38,12 +37,9 @@ final class QuotaViewModel {
     let tunnelManager = TunnelManager.shared
     
     // Quota-Only Mode Fetchers (CLI-based)
-    @ObservationIgnored private let claudeCodeFetcher = ClaudeCodeQuotaFetcher()
     @ObservationIgnored private let cursorFetcher = CursorQuotaFetcher()
-    @ObservationIgnored private let codexCLIFetcher = CodexCLIQuotaFetcher()
-    @ObservationIgnored private let geminiCLIFetcher = GeminiCLIQuotaFetcher()
     @ObservationIgnored private let traeFetcher = TraeQuotaFetcher()
-    @ObservationIgnored private let kiroFetcher = KiroQuotaFetcher()
+
     
     // Daemon services for IPC-based operations
     @ObservationIgnored private let daemonManager = DaemonManager.shared
@@ -168,15 +164,11 @@ final class QuotaViewModel {
     /// Update proxy configuration for all quota fetchers
     func updateProxyConfiguration() async {
         await antigravityFetcher.updateProxyConfiguration()
-        await openAIFetcher.updateProxyConfiguration()
-        await copilotFetcher.updateProxyConfiguration()
+
         await glmFetcher.updateProxyConfiguration()
-        await claudeCodeFetcher.updateProxyConfiguration()
         await cursorFetcher.updateProxyConfiguration()
-        await codexCLIFetcher.updateProxyConfiguration()
-        await geminiCLIFetcher.updateProxyConfiguration()
         await traeFetcher.updateProxyConfiguration()
-        await kiroFetcher.updateProxyConfiguration()
+
     }
 
     private func setupRefreshCadenceCallback() {
@@ -372,16 +364,8 @@ final class QuotaViewModel {
         menuBarSettings.autoSelectNewAccounts(availableItems: availableItems)
     }
     
-    /// Refresh Claude Code quota using CLI
     private func refreshClaudeCodeQuotasInternal() async {
-        let quotas = await claudeCodeFetcher.fetchAsProviderQuota()
-        if quotas.isEmpty {
-            // Only remove if no other source has Claude data
-            if providerQuotas[.claude]?.isEmpty ?? true {
-                providerQuotas.removeValue(forKey: .claude)
-            }
-        } else {
-            // Merge with existing data (don't overwrite proxy data)
+        if let quotas = await daemonQuotaService.fetchQuotas(for: .claude) {
             if var existing = providerQuotas[.claude] {
                 for (email, quota) in quotas {
                     existing[email] = quota
@@ -404,15 +388,10 @@ final class QuotaViewModel {
         }
     }
     
-    /// Refresh Codex quota using CLI auth file (~/.codex/auth.json)
     private func refreshCodexCLIQuotasInternal() async {
-        // Only use CLI fetcher if proxy is not available or in quota-only mode
-        // The openAIFetcher handles Codex via proxy auth files
         guard modeManager.isMonitorMode else { return }
         
-        let quotas = await codexCLIFetcher.fetchAsProviderQuota()
-        if !quotas.isEmpty {
-            // Merge with existing codex quotas (from proxy if any)
+        if let quotas = await daemonQuotaService.fetchQuotas(for: .codex) {
             if var existing = providerQuotas[.codex] {
                 for (email, quota) in quotas {
                     existing[email] = quota
@@ -424,13 +403,10 @@ final class QuotaViewModel {
         }
     }
     
-    /// Refresh Gemini quota using CLI auth file (~/.gemini/oauth_creds.json)
     private func refreshGeminiCLIQuotasInternal() async {
-        // Only use CLI fetcher in quota-only mode
         guard modeManager.isMonitorMode else { return }
-
-        let quotas = await geminiCLIFetcher.fetchAsProviderQuota()
-        if !quotas.isEmpty {
+        
+        if let quotas = await daemonQuotaService.fetchQuotas(for: .gemini) {
             if var existing = providerQuotas[.gemini] {
                 for (email, quota) in quotas {
                     existing[email] = quota
@@ -462,38 +438,33 @@ final class QuotaViewModel {
         }
     }
     
-    /// Refresh Kiro quota using IDE JSON tokens
     private func refreshKiroQuotasInternal() async {
-        let rawQuotas = await kiroFetcher.fetchAllQuotas()
+        guard let rawQuotas = await daemonQuotaService.fetchQuotas(for: .kiro) else {
+            return
+        }
         
         var remappedQuotas: [String: ProviderQuotaData] = [:]
         
-        // Helper: clean filename (remove .json)
         func cleanName(_ name: String) -> String {
             name.replacingOccurrences(of: ".json", with: "")
         }
         
-        // 1. Remap for Proxy AuthFiles
         var consumedRawKeys = Set<String>()
         
         for file in authFiles where file.providerType == .kiro {
-            // The fetcher returns data keyed by clean filename
             let filenameKey = cleanName(file.name)
             
             if let data = rawQuotas[filenameKey] {
-                // Store under the key the UI expects (AuthFile.quotaLookupKey)
                 let targetKey = file.quotaLookupKey.isEmpty ? file.name : file.quotaLookupKey
                 remappedQuotas[targetKey] = data
                 consumedRawKeys.insert(filenameKey)
             }
         }
         
-        // 2. Remap for Direct AuthFiles (Monitor Mode)
         if modeManager.isMonitorMode {
             for file in directAuthFiles where file.provider == .kiro {
                 let filenameKey = cleanName(file.filename)
                 
-                // Skip if already processed by Proxy loop
                 if consumedRawKeys.contains(filenameKey) { continue }
                 
                 if let data = rawQuotas[filenameKey] {
@@ -504,7 +475,6 @@ final class QuotaViewModel {
             }
         }
         
-        // 3. Fallback: Include original keys ONLY if not mapped
         for (key, data) in rawQuotas {
             if !consumedRawKeys.contains(key) {
                 remappedQuotas[key] = data
@@ -530,7 +500,7 @@ final class QuotaViewModel {
         refreshTask = Task {
             while !Task.isCancelled {
                 try? await Task.sleep(nanoseconds: intervalNs)
-                await kiroFetcher.refreshAllTokensIfNeeded()
+                _ = try? await DaemonIPCClient.shared.refreshQuotaTokens(provider: "kiro")
                 await refreshQuotasDirectly()
             }
         }
@@ -548,7 +518,7 @@ final class QuotaViewModel {
             while !Task.isCancelled {
                 try? await Task.sleep(nanoseconds: intervalNs)
                 if !proxyManager.proxyStatus.running {
-                    await kiroFetcher.refreshAllTokensIfNeeded()
+                    _ = try? await DaemonIPCClient.shared.refreshQuotaTokens(provider: "kiro")
                     await refreshQuotasUnified()
                 }
             }
@@ -1209,13 +1179,17 @@ final class QuotaViewModel {
     }
     
     private func refreshOpenAIQuotasInternal() async {
-        let quotas = await openAIFetcher.fetchAllCodexQuotas()
-        providerQuotas[.codex] = quotas
+        guard !modeManager.isMonitorMode else { return }
+        
+        if let quotas = await daemonQuotaService.fetchQuotas(for: .codex) {
+            providerQuotas[.codex] = quotas
+        }
     }
     
     private func refreshCopilotQuotasInternal() async {
-        let quotas = await copilotFetcher.fetchAllCopilotQuotas()
-        providerQuotas[.copilot] = quotas
+        if let quotas = await daemonQuotaService.fetchQuotas(for: .copilot) {
+            providerQuotas[.copilot] = quotas
+        }
     }
     
     func refreshQuotaForProvider(_ provider: AIProvider) async {

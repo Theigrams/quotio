@@ -372,6 +372,14 @@ extension DaemonIPCClient {
             timeoutSeconds: timeoutSeconds
         ))
     }
+    
+    func refreshQuotaTokens(provider: String? = nil) async throws -> IPCQuotaRefreshTokensResult {
+        try await call(.quotaRefreshTokens, params: IPCQuotaRefreshTokensParams(provider: provider))
+    }
+    
+    func fetchCopilotAvailableModels() async throws -> IPCCopilotAvailableModelsResult {
+        try await call(.copilotAvailableModels)
+    }
 }
 
 enum IPCClientError: LocalizedError {
