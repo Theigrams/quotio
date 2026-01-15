@@ -91,6 +91,8 @@ struct QuotioApp: App {
         
         if autoStartDaemon {
             try? await daemonManager.start()
+        } else {
+            await daemonManager.detectRunning()
         }
         
         await viewModel.loadDirectAuthFiles()

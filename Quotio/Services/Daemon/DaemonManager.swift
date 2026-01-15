@@ -19,6 +19,21 @@ final class DaemonManager {
     
     private init() {}
     
+    func detectRunning() async {
+        guard FileManager.default.fileExists(atPath: socketPath) else {
+            isRunning = false
+            return
+        }
+        
+        if await checkHealth() {
+            isRunning = true
+            lastError = nil
+            startHealthMonitoring()
+        } else {
+            isRunning = false
+        }
+    }
+    
     var daemonBinaryPath: URL {
         // TODO: Add quotio-cli binary to app bundle via Copy Files build phase
         // For now, check in bundle first, then fall back to development path
@@ -52,10 +67,10 @@ final class DaemonManager {
         if FileManager.default.fileExists(atPath: socketPath) {
             if await checkHealth() {
                 isRunning = true
+                lastError = nil
                 startHealthMonitoring()
                 return
             }
-            try? FileManager.default.removeItem(atPath: socketPath)
         }
         
         let proc = Process()
