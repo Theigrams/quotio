@@ -1,7 +1,7 @@
 # Quotio - Project Overview and Product Requirements Document (PRD)
 
-> **Last Updated**: December 27, 2024  
-> **Version**: 1.0.0  
+> **Last Updated**: January 17, 2026  
+> **Version**: 2.0.0  
 > **Platform**: macOS 15.0+ (Sequoia)
 
 ---
@@ -9,35 +9,99 @@
 ## Table of Contents
 
 1. [Project Purpose](#project-purpose)
-2. [Target Users](#target-users)
-3. [Key Features](#key-features)
-4. [Supported AI Providers](#supported-ai-providers)
-5. [Compatible CLI Agents](#compatible-cli-agents)
-6. [App Modes](#app-modes)
-7. [System Requirements](#system-requirements)
+2. [Architecture Overview](#architecture-overview)
+3. [Target Users](#target-users)
+4. [Key Features](#key-features)
+5. [Supported AI Providers](#supported-ai-providers)
+6. [Compatible CLI Agents](#compatible-cli-agents)
+7. [App Modes](#app-modes)
+8. [System Requirements](#system-requirements)
+9. [Roadmap](#roadmap)
 
 ---
 
 ## Project Purpose
 
-Quotio is a native macOS application that serves as the **command center for AI coding assistants**. It provides a graphical user interface for managing **CLIProxyAPI** - a local proxy server that powers AI coding agents.
+Quotio is a **hybrid Swift + TypeScript application** that serves as the command center for AI coding assistants on macOS. The system consists of:
+
+1. **Native macOS App** (`Quotio/`): Swift 6 + SwiftUI menu bar application
+2. **CLI Daemon** (`packages/cli`): Bun-native daemon managing proxy lifecycle and IPC
+3. **Proxy Server** (`packages/server`): Hono-based OpenAI-compatible proxy
+4. **Shared Types** (`packages/core`): Cross-language type definitions
 
 ### Core Goals
 
-1. **Centralized Account Management**: Manage multiple AI provider accounts from different services in one unified interface.
-2. **Quota Tracking**: Monitor API usage and quotas across all connected accounts with real-time visual feedback.
-3. **CLI Tool Configuration**: Auto-detect and configure popular AI coding CLI tools to route through the centralized proxy.
-4. **Seamless Integration**: Provide menu bar integration for quick status checks without interrupting workflow.
+1. **Centralized Account Management**: Manage 12+ AI provider accounts through unified OAuth and credential management.
+2. **Quota Tracking**: Real-time monitoring across all connected accounts with visual feedback in menu bar.
+3. **CLI Tool Configuration**: Auto-detect and configure 6 AI coding tools with one-click setup.
+4. **Intelligent Failover**: Automatic provider switching on 429/5xx errors via fallback chains.
+5. **Cross-Platform Backend**: TypeScript monorepo enables future Linux/Windows support.
 
 ### Problem Statement
 
-Developers using AI coding assistants often need to:
+Developers using AI coding assistants need to:
 - Manage multiple accounts across different AI providers
 - Track quota usage to avoid service interruptions
 - Configure multiple CLI tools with consistent settings
-- Monitor real-time usage statistics
+- Handle rate limiting gracefully with automatic failover
 
-Quotio solves these challenges by providing a unified management layer with automatic configuration and quota tracking.
+Quotio solves these challenges with a hybrid architecture combining native macOS UI with cross-platform TypeScript backend.
+
+---
+
+## Architecture Overview
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    Swift macOS App (SwiftUI)                     │
+│  ┌──────────────────┐  ┌──────────────────┐  ┌────────────────┐ │
+│  │ DaemonIPCClient  │  │ QuotaViewModel   │  │ StatusBar      │ │
+│  │ (Unix Socket)    │  │ (@Observable)    │  │ Manager        │ │
+│  └────────┬─────────┘  └────────┬─────────┘  └───────┬────────┘ │
+│           │                     │                     │          │
+│           └─────────────────────┼─────────────────────┘          │
+│                                 │                                │
+│                    Unix Socket IPC (quotio.sock)                 │
+│                    JSON-RPC 2.0 Protocol                         │
+└─────────────────────────────────┼────────────────────────────────┘
+                                  │
+                                  ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                  quotio-cli daemon (Bun + TypeScript)            │
+│  ┌──────────────────┐  ┌──────────────────┐  ┌────────────────┐ │
+│  │ IPC Handlers     │  │ ProxyProcess     │  │ Config Store   │ │
+│  │ (50+ methods)    │  │ Manager          │  │ (file-based)   │ │
+│  └────────┬─────────┘  └────────┬─────────┘  └───────┬────────┘ │
+│           │                     │                     │          │
+│           └─────────────────────┼─────────────────────┘          │
+│                                 │                                │
+│                        Subprocess spawn                          │
+└─────────────────────────────────┼────────────────────────────────┘
+                                  │
+                                  ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                  @quotio/server (Hono + TypeScript)              │
+│  ┌──────────────────┐  ┌──────────────────┐  ┌────────────────┐ │
+│  │ OpenAI-compat    │  │ Provider         │  │ Credential     │ │
+│  │ API Routes       │  │ Executors        │  │ Pool           │ │
+│  └──────────────────┘  └──────────────────┘  └────────────────┘ │
+└─────────────────────────────────────────────────────────────────┘
+                                  │
+                                  ▼
+              ┌────────────────────────────────────┐
+              │         AI Provider APIs           │
+              │  (Claude, Gemini, OpenAI, etc.)    │
+              └────────────────────────────────────┘
+```
+
+### Key Components
+
+| Component | Technology | Role |
+|-----------|------------|------|
+| macOS App | Swift 6, SwiftUI, macOS 15+ | Native UI, menu bar, system integration |
+| CLI Daemon | Bun, TypeScript | IPC server, process management |
+| Proxy Server | Hono, Zod | OpenAI-compatible API, provider routing |
+| Core Types | TypeScript | Shared models, type safety |
 
 ---
 
@@ -45,11 +109,9 @@ Quotio solves these challenges by providing a unified management layer with auto
 
 ### Primary Users
 
-1. **Professional Developers**: Engineers who use AI coding assistants daily and need to manage multiple accounts or team allocations.
-
-2. **Power Users**: Developers who work with multiple AI providers and need centralized quota monitoring.
-
-3. **Team Leads/DevOps**: Personnel responsible for managing AI tool access and monitoring usage across accounts.
+1. **Professional Developers**: Engineers using AI coding assistants daily, managing multiple accounts.
+2. **Power Users**: Developers working with multiple AI providers needing centralized monitoring.
+3. **Team Leads/DevOps**: Personnel managing AI tool access and monitoring usage across accounts.
 
 ### User Personas
 
@@ -66,46 +128,45 @@ Quotio solves these challenges by providing a unified management layer with auto
 
 ### Multi-Provider Support
 
-Connect and manage accounts from multiple AI providers through a unified interface:
-- OAuth-based authentication for most providers
-- Service account JSON import for Vertex AI
-- CLI-based authentication for GitHub Copilot and Kiro
-- Browser session integration for Cursor
+Connect and manage accounts from 12 AI providers:
+- **OAuth-based**: Gemini, Claude, Codex, Qwen, iFlow, Antigravity
+- **Device Code Flow**: GitHub Copilot
+- **CLI Auth**: Kiro (Google OAuth / AWS Builder ID)
+- **File Import**: Vertex AI (Service Account JSON)
+- **IDE Detection**: Cursor, Trae (auto-detected from local databases)
 
 ### Quota Tracking
 
 Visual quota monitoring with intelligent notifications:
-- Per-account quota breakdown
+- Per-account quota breakdown with progress bars
 - Model-level usage tracking
-- Automatic low-quota alerts
-- Configurable notification thresholds
-- Historical usage statistics
+- Automatic low-quota alerts (configurable threshold)
+- Menu bar quota display with provider icons
+
+### Fallback System
+
+Automatic provider failover when requests fail:
+- Virtual model definitions with priority-ordered fallback chains
+- Automatic retry on 429 (rate limit) and 5xx errors
+- Shared config at `~/.config/quotio/fallback-config.json`
+- CLI and GUI management interfaces
 
 ### Agent Configuration
 
-One-click configuration for popular CLI coding tools:
+One-click configuration for 6 CLI coding tools:
 - Automatic agent detection
 - Configuration generation (JSON/TOML/Environment)
 - Shell profile integration (zsh/bash/fish)
-- Manual configuration mode with copy-to-clipboard
 - Model slot customization (Opus/Sonnet/Haiku)
 
 ### Menu Bar Integration
 
 Always-accessible status from the macOS menu bar:
-- Proxy status indicator
+- Proxy status indicator (running/stopped)
 - Quota percentage display per provider
 - Custom provider icons
 - Color-coded status (green/yellow/red)
 - Quick access popover
-
-### Notifications
-
-Intelligent alert system for critical events:
-- Low quota warnings (configurable threshold)
-- Account cooling period notifications
-- Proxy crash alerts
-- Sound and banner options
 
 ### Auto-Update
 
@@ -114,90 +175,66 @@ Seamless update experience via Sparkle framework:
 - One-click update installation
 - Changelog display
 
-### Bilingual Support
+### Multilingual Support
 
 Full localization for:
 - English (en)
 - Vietnamese (vi)
+- Simplified Chinese (zh-Hans)
 
 ---
 
 ## Supported AI Providers
 
-| Provider | Authentication Method | Quota Tracking | Manual Auth |
-|----------|----------------------|----------------|-------------|
-| **Google Gemini** | OAuth | Yes | Yes |
-| **Anthropic Claude** | OAuth | Yes (via CLI) | Yes |
-| **OpenAI Codex** | OAuth | Yes | Yes |
-| **Qwen Code** | OAuth | No | Yes |
-| **Vertex AI** | Service Account JSON | No | Yes |
-| **iFlow** | OAuth | No | Yes |
-| **Antigravity** | OAuth | Yes | Yes |
-| **Kiro (CodeWhisperer)** | CLI Auth (Google/AWS) | No | Yes |
-| **GitHub Copilot** | Device Code Flow | Yes | Yes |
-| **Cursor** | Browser Session | Yes | No (Auto-detect) |
+| Provider | Authentication | Quota Tracking | IDE Only |
+|----------|---------------|----------------|----------|
+| **Google Gemini** | OAuth | Yes | No |
+| **Anthropic Claude** | OAuth | Yes (via CLI) | No |
+| **OpenAI Codex** | OAuth | Yes | No |
+| **Qwen Code** | OAuth | No | No |
+| **Vertex AI** | Service Account | No | No |
+| **iFlow** | OAuth | No | No |
+| **Antigravity** | OAuth | Yes | No |
+| **Kiro (CodeWhisperer)** | CLI Auth | No | No |
+| **GitHub Copilot** | Device Code | Yes | No |
+| **GLM** | API Key | No | No |
+| **Cursor** | Auto-detect | Yes | Yes |
+| **Trae** | Auto-detect | Yes | Yes |
 
-### Provider Capabilities
-
-- **OAuth Providers**: Gemini, Claude, Codex, Qwen, iFlow, Antigravity
-- **CLI Auth**: GitHub Copilot (Device Code), Kiro (Google OAuth / AWS Builder ID)
-- **File Import**: Vertex AI (Service Account JSON)
-- **Auto-Detect Only**: Cursor (reads from local Cursor app database)
+> **Note**: Cursor and Trae are IDE quota monitoring only - they cannot be used as proxy providers.
 
 ---
 
 ## Compatible CLI Agents
 
-Quotio can automatically detect and configure the following CLI coding tools:
-
 | Agent | Binary | Config Type | Config Files |
 |-------|--------|-------------|--------------|
 | **Claude Code** | `claude` | JSON + Environment | `~/.claude/settings.json` |
-| **Codex CLI** | `codex` | TOML + JSON | `~/.codex/config.toml`, `~/.codex/auth.json` |
+| **Codex CLI** | `codex` | TOML + JSON | `~/.codex/config.toml` |
 | **Gemini CLI** | `gemini` | Environment Only | - |
-| **Amp CLI** | `amp` | JSON + Environment | `~/.config/amp/settings.json`, `~/.local/share/amp/secrets.json` |
+| **Amp CLI** | `amp` | JSON + Environment | `~/.config/amp/settings.json` |
 | **OpenCode** | `opencode`, `oc` | JSON | `~/.config/opencode/opencode.json` |
-| **Factory Droid** | `droid`, `factory-droid`, `fd` | JSON | `~/.factory/config.json` |
-
-### Configuration Modes
-
-1. **Automatic Mode**: Directly updates config files and shell profiles
-2. **Manual Mode**: Generates configuration for user to copy and apply
-
-### Model Slot Configuration
-
-Agents can be configured with custom model routing:
-- **Opus Slot**: High intelligence tasks (e.g., `gemini-claude-opus-4-5-thinking`)
-- **Sonnet Slot**: Balanced tasks (e.g., `gemini-claude-sonnet-4-5`)
-- **Haiku Slot**: Fast/simple tasks (e.g., `gemini-3-flash-preview`)
+| **Factory Droid** | `droid`, `fd` | JSON | `~/.factory/config.json` |
 
 ---
 
 ## App Modes
-
-Quotio supports two operating modes to accommodate different user needs:
 
 ### Full Mode (Default)
 
 Complete functionality including proxy server management:
 
 **Features:**
-- Run local proxy server (CLIProxyAPI)
+- Run local proxy server (@quotio/server)
 - Manage multiple AI accounts
 - Configure CLI agents
 - Track quota in menu bar
 - API key management for clients
 - Request/response logging
+- Fallback chain configuration
 
 **Visible Pages:**
-- Dashboard
-- Quota
-- Providers
-- Agents
-- API Keys
-- Logs
-- Settings
-- About
+Dashboard, Quota, Providers, Agents, Fallback, API Keys, Logs, Settings, About
 
 ### Quota-Only Mode
 
@@ -207,21 +244,11 @@ Lightweight mode for quota monitoring without proxy overhead:
 - Track quota in menu bar
 - No proxy server required
 - Minimal UI and resource usage
-- Direct quota fetching via CLI commands
+- Direct quota fetching via file system
 - Similar to CodexBar / ccusage
 
 **Visible Pages:**
-- Dashboard
-- Quota
-- Accounts (renamed from Providers)
-- Settings
-- About
-
-### Mode Selection
-
-- Users select their preferred mode during onboarding
-- Mode can be changed anytime via Settings
-- Switching from Full to Quota-Only automatically stops the proxy
+Dashboard, Quota, Accounts, Settings, About
 
 ---
 
@@ -240,75 +267,39 @@ Lightweight mode for quota monitoring without proxy overhead:
 | Requirement | Version |
 |-------------|---------|
 | **macOS** | 15.0 (Sequoia) or later |
-| **Xcode** (for development) | 16.0+ |
-| **Swift** (for development) | 6.0+ |
+| **Xcode** (development) | 16.0+ |
+| **Swift** (development) | 6.0+ |
+| **Bun** (development) | 1.1.0+ |
 
 ### Network Requirements
 
 - Internet connection for OAuth authentication
-- Localhost access for proxy server (port 8317 default)
+- Localhost access for proxy server (ports 8317, 18317)
 - Access to GitHub API for binary downloads
 
-### Optional Dependencies
-
-- **Sparkle Framework**: Auto-updates (bundled via Swift Package Manager)
-- **CLI Tools**: Required if using agent configuration features
-
 ---
 
-## Technical Architecture Overview
+## Roadmap
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                      Quotio (SwiftUI)                       │
-├─────────────────────────────────────────────────────────────┤
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐  │
-│  │  Dashboard  │  │   Quota     │  │     Providers       │  │
-│  │   Screen    │  │   Screen    │  │      Screen         │  │
-│  └─────────────┘  └─────────────┘  └─────────────────────┘  │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐  │
-│  │   Agents    │  │  API Keys   │  │      Settings       │  │
-│  │   Screen    │  │   Screen    │  │       Screen        │  │
-│  └─────────────┘  └─────────────┘  └─────────────────────┘  │
-├─────────────────────────────────────────────────────────────┤
-│                    QuotaViewModel                           │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐  │
-│  │ CLIProxy    │  │ Management  │  │    StatusBar        │  │
-│  │  Manager    │  │ APIClient   │  │     Manager         │  │
-│  └─────────────┘  └─────────────┘  └─────────────────────┘  │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐  │
-│  │   Quota     │  │   Agent     │  │   Notification      │  │
-│  │  Fetchers   │  │  Services   │  │     Manager         │  │
-│  └─────────────┘  └─────────────┘  └─────────────────────┘  │
-└─────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│                    CLIProxyAPI Binary                        │
-│            (Local HTTP Proxy on port 8317)                   │
-└─────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-          ┌────────────────────────────────────┐
-          │         AI Provider APIs           │
-          │  (Gemini, Claude, OpenAI, etc.)    │
-          └────────────────────────────────────┘
-```
+### Current (v2.0)
+- ✅ Hybrid Swift + TypeScript architecture
+- ✅ Daemon IPC communication
+- ✅ 12 AI provider support
+- ✅ Fallback system with virtual models
+- ✅ 6 CLI agent configurations
 
----
-
-## Roadmap (Future Considerations)
-
-1. **Automated Testing**: Implement unit and UI tests
-2. **Enhanced Analytics**: Usage trends and predictions
+### Planned
+1. **Remote Mode**: Connect to remote proxy servers
+2. **Cloudflare Tunnel**: Expose proxy over internet securely
 3. **Team Features**: Shared account management
-4. **Plugin System**: Custom provider integrations
-5. **Cloud Sync**: Settings synchronization across devices
+4. **Usage Analytics**: Trends and predictions
+5. **Linux/Windows CLI**: Cross-platform quota tracking
 
 ---
 
 ## References
 
-- [CLIProxyAPI GitHub Repository](https://github.com/router-for-me/CLIProxyAPIPlus)
+- [Quotio GitHub Repository](https://github.com/nguyenphutrong/quotio)
 - [Sparkle Framework Documentation](https://sparkle-project.org/)
 - [SwiftUI Documentation](https://developer.apple.com/documentation/swiftui)
+- [Hono Documentation](https://hono.dev/)

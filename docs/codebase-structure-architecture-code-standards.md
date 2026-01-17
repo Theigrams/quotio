@@ -1,857 +1,557 @@
-# Quotio - Codebase Structure, Architecture, and Code Standards
+# Quotio - Architecture and Code Standards
 
-> **Last Updated**: January 2, 2025  
-> **Swift Version**: 6.0  
-> **Minimum macOS**: 15.0 (Sequoia)
+> **Last Updated**: January 17, 2026  
+> **Version**: 2.0.0  
+> **Architecture**: Hybrid Swift + TypeScript
 
 ---
 
 ## Table of Contents
 
-1. [Directory Structure](#directory-structure)
-2. [Architecture Patterns](#architecture-patterns)
-3. [Code Style Guidelines](#code-style-guidelines)
-4. [Key Implementation Patterns](#key-implementation-patterns)
+1. [Three-Tier Architecture](#three-tier-architecture)
+2. [IPC Protocol](#ipc-protocol)
+3. [Swift Code Standards](#swift-code-standards)
+4. [TypeScript Code Standards](#typescript-code-standards)
+5. [Cross-Language Patterns](#cross-language-patterns)
+6. [Anti-Patterns](#anti-patterns)
+7. [Critical Invariants](#critical-invariants)
+8. [Build Commands](#build-commands)
 
 ---
 
-## Directory Structure
+## Three-Tier Architecture
+
+### Overview
+
+Quotio uses a three-tier architecture with clear separation of concerns:
 
 ```
-Quotio/
-├── Config/
-│   ├── Debug.xcconfig           # Debug build configuration
-│   ├── Release.xcconfig         # Release build configuration
-│   └── Local.xcconfig.example   # Template for local overrides
-│
-├── Quotio/
-│   ├── Assets.xcassets/
-│   │   ├── AccentColor.colorset/    # Accent color definition
-│   │   ├── AppIcon.appiconset/      # Production app icons
-│   │   ├── AppIconDev.appiconset/   # Development app icons
-│   │   ├── MenuBarIcons/            # Provider icons for menu bar
-│   │   │   ├── claude-menubar.imageset/
-│   │   │   ├── gemini-menubar.imageset/
-│   │   │   └── ... (other providers)
-│   │   └── ProviderIcons/           # Provider logos for UI
-│   │       ├── claude.imageset/
-│   │       ├── gemini.imageset/
-│   │       └── ... (other providers)
-│   │
-│   ├── Models/
-│   │   ├── Models.swift             # Core data types
-│   │   ├── AgentModels.swift        # CLI agent types
-│   │   ├── AntigravityActiveAccount.swift # Antigravity account model
-│   │   ├── AppMode.swift            # App mode management
-│   │   └── MenuBarSettings.swift    # Menu bar settings
-│   │
-│   ├── Services/
-│   │   ├── CLIProxyManager.swift        # Proxy lifecycle management
-│   │   ├── ManagementAPIClient.swift    # HTTP client (actor)
-│   │   ├── StatusBarManager.swift       # Menu bar management
-│   │   ├── StatusBarMenuBuilder.swift   # Native NSMenu builder
-│   │   ├── NotificationManager.swift    # User notifications
-│   │   ├── UpdaterService.swift         # Sparkle integration
-│   │   ├── AgentDetectionService.swift  # Agent detection
-│   │   ├── AgentConfigurationService.swift # Config generation
-│   │   ├── ShellProfileManager.swift    # Shell profile updates
-│   │   ├── DirectAuthFileService.swift  # Direct file scanning
-│   │   ├── CLIExecutor.swift            # CLI execution
-│   │   ├── LanguageManager.swift        # Localization
-│   │   ├── AntigravityAccountSwitcher.swift # Account switching orchestrator
-│   │   ├── AntigravityDatabaseService.swift # SQLite database operations
-│   │   ├── AntigravityProcessManager.swift  # IDE process lifecycle
-│   │   ├── AntigravityProtobufHandler.swift # Protobuf encoding/decoding
-│   │   ├── AntigravityQuotaFetcher.swift
-│   │   ├── OpenAIQuotaFetcher.swift
-│   │   ├── CopilotQuotaFetcher.swift
-│   │   ├── ClaudeCodeQuotaFetcher.swift
-│   │   ├── CursorQuotaFetcher.swift
-│   │   ├── CodexCLIQuotaFetcher.swift
-│   │   └── GeminiCLIQuotaFetcher.swift
-│   │
-│   ├── ViewModels/
-│   │   ├── QuotaViewModel.swift         # Main app state
-│   │   └── AgentSetupViewModel.swift    # Agent setup state
-│   │
-│   ├── Views/
-│   │   ├── Components/
-│   │   │   ├── AccountRow.swift         # Account row with switch button
-│   │   │   ├── AgentCard.swift          # Agent display card
-│   │   │   ├── AgentConfigSheet.swift   # Configuration sheet
-│   │   │   ├── ProviderIcon.swift       # Provider icon component
-│   │   │   ├── QuotaCard.swift          # Quota display card
-│   │   │   ├── QuotaProgressBar.swift   # Progress bar component
-│   │   │   ├── SidebarView.swift        # Navigation sidebar
-│   │   │   └── SwitchAccountSheet.swift # Account switch confirmation
-│   │   ├── Onboarding/
-│   │   │   └── ModePickerView.swift     # Mode selection
-│   │   └── Screens/
-│   │       ├── DashboardScreen.swift
-│   │       ├── QuotaScreen.swift
-│   │       ├── ProvidersScreen.swift
-│   │       ├── AgentSetupScreen.swift
-│   │       ├── APIKeysScreen.swift
-│   │       ├── LogsScreen.swift
-│   │       └── SettingsScreen.swift
-│   │
-│   ├── Info.plist                   # App metadata
-│   ├── Quotio.entitlements          # App entitlements
-│   └── QuotioApp.swift              # App entry point
-│
-├── Quotio.xcodeproj/
-│   ├── project.pbxproj              # Project configuration
-│   └── xcshareddata/
-│       └── xcschemes/
-│           └── Quotio.xcscheme      # Build scheme
-│
-├── scripts/
-│   ├── build.sh                     # Build script
-│   ├── release.sh                   # Release workflow
-│   ├── bump-version.sh              # Version management
-│   ├── notarize.sh                  # Apple notarization
-│   ├── package.sh                   # DMG packaging
-│   ├── generate-appcast.sh          # Sparkle appcast
-│   ├── config.sh                    # Shared configuration
-│   └── ExportOptions.plist          # Archive export options
-│
-├── screenshots/                     # Documentation screenshots
-│
-├── AGENTS.md                        # Development guidelines
-├── CHANGELOG.md                     # Version history
-├── README.md                        # Project readme (English)
-├── README.vi.md                     # Project readme (Vietnamese)
-└── RELEASE.md                       # Release documentation
+┌─────────────────────────────────────────────────────────────────┐
+│ TIER 1: Swift macOS App (Presentation Layer)                    │
+│ ────────────────────────────────────────────────────────────────│
+│ • SwiftUI views, menu bar integration                           │
+│ • @Observable ViewModels for reactive state                     │
+│ • Actor-based services for thread safety                        │
+│ • DaemonIPCClient for backend communication                     │
+└────────────────────────────┬────────────────────────────────────┘
+                             │ Unix Socket IPC (JSON-RPC 2.0)
+                             ▼
+┌─────────────────────────────────────────────────────────────────┐
+│ TIER 2: quotio-cli Daemon (Application Layer)                   │
+│ ────────────────────────────────────────────────────────────────│
+│ • Bun-native daemon process                                     │
+│ • 50+ IPC method handlers                                       │
+│ • Proxy process lifecycle management                            │
+│ • File-based configuration storage                              │
+└────────────────────────────┬────────────────────────────────────┘
+                             │ HTTP/Subprocess
+                             ▼
+┌─────────────────────────────────────────────────────────────────┐
+│ TIER 3: @quotio/server (Data/API Layer)                         │
+│ ────────────────────────────────────────────────────────────────│
+│ • Hono HTTP framework                                           │
+│ • OpenAI-compatible API routes                                  │
+│ • Provider executors and credential pooling                     │
+│ • OAuth and authentication management                           │
+└─────────────────────────────────────────────────────────────────┘
 ```
+
+### Communication Patterns
+
+| From | To | Method | Protocol |
+|------|-----|--------|----------|
+| Swift App | CLI Daemon | Unix Socket | JSON-RPC 2.0 |
+| CLI Daemon | Proxy Server | HTTP | REST API |
+| CLI Daemon | Proxy Server | Subprocess | spawn() |
+| CLI Tools | Proxy Server | HTTP | OpenAI-compat |
 
 ---
 
-## Architecture Patterns
+## IPC Protocol
 
-### MVVM (Model-View-ViewModel)
+### JSON-RPC 2.0 over Unix Socket
 
-Quotio follows the MVVM architectural pattern with SwiftUI:
+The Swift app communicates with the quotio-cli daemon via JSON-RPC 2.0 over a Unix socket at `~/.cache/quotio-cli/quotio.sock`.
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                          View Layer                          │
-│  (SwiftUI Views in Views/Screens/ and Views/Components/)    │
-└─────────────────────────────┬───────────────────────────────┘
-                              │ @Environment(ViewModel.self)
-                              │ @Bindable var vm = viewModel
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│                       ViewModel Layer                        │
-│  (QuotaViewModel, AgentSetupViewModel in ViewModels/)       │
-│  - @Observable macro                                         │
-│  - @MainActor for UI thread safety                          │
-└─────────────────────────────┬───────────────────────────────┘
-                              │ async/await calls
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│                       Service Layer                          │
-│  (CLIProxyManager, ManagementAPIClient, *Fetcher in Services/)│
-│  - Singleton pattern for managers                            │
-│  - Actor isolation for API clients                           │
-└─────────────────────────────┬───────────────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│                        Model Layer                           │
-│  (Data types in Models/)                                     │
-│  - Codable for JSON serialization                            │
-│  - Sendable for cross-actor transfer                         │
-└─────────────────────────────────────────────────────────────┘
+### Request Format
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "proxy.start",
+  "params": { "port": 8317 }
+}
 ```
 
-### Observable Pattern (Swift 6)
+### Response Format
 
-The app uses the new `@Observable` macro instead of `ObservableObject`:
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": { "success": true, "pid": 12345 }
+}
+```
+
+### Error Format
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "error": {
+    "code": 1001,
+    "message": "Proxy not running"
+  }
+}
+```
+
+### IPC Methods (50+)
+
+| Category | Methods |
+|----------|---------|
+| **Daemon** | `daemon.ping`, `daemon.status`, `daemon.shutdown` |
+| **Proxy** | `proxy.start`, `proxy.stop`, `proxy.status`, `proxy.health`, `proxy.healthCheck`, `proxy.latestVersion` |
+| **Auth** | `auth.list`, `auth.delete`, `auth.deleteAll`, `auth.setDisabled`, `auth.models` |
+| **OAuth** | `oauth.start`, `oauth.poll` |
+| **Quota** | `quota.fetch`, `quota.list`, `quota.refreshTokens` |
+| **Config** | `config.get`, `config.set`, `proxyConfig.getAll`, `proxyConfig.get`, `proxyConfig.set` |
+| **API Keys** | `apiKeys.list`, `apiKeys.add`, `apiKeys.delete` |
+| **Logs** | `logs.fetch`, `logs.clear` |
+| **Agent** | `agent.detect`, `agent.configure` |
+| **Remote** | `remote.setConfig`, `remote.getConfig`, `remote.clearConfig`, `remote.testConnection` |
+
+### Swift IPC Client
 
 ```swift
-// ViewModel Declaration
+actor DaemonIPCClient {
+    func call<P: Encodable, R: Decodable>(
+        method: IPCMethod,
+        params: P?
+    ) async throws -> R {
+        let request = IPCRequest(id: nextId(), method: method.rawValue, params: params)
+        let data = try JSONEncoder().encode(request)
+        let response = try await sendToSocket(data)
+        return try JSONDecoder().decode(IPCResponse<R>.self, from: response).result!
+    }
+}
+```
+
+### TypeScript IPC Handler
+
+```typescript
+export function createDaemonService(): DaemonService {
+  return {
+    async handleRequest(request: IPCRequest): Promise<IPCResponse> {
+      switch (request.method) {
+        case 'proxy.start':
+          return await handleProxyStart(request.params);
+        case 'auth.list':
+          return await handleAuthList(request.params);
+        // ... 48 more methods
+      }
+    }
+  };
+}
+```
+
+---
+
+## Swift Code Standards
+
+### Swift 6 Concurrency (CRITICAL)
+
+```swift
+// UI-bound classes: @MainActor @Observable
 @MainActor
 @Observable
 final class QuotaViewModel {
     var isLoading = false
     var authFiles: [AuthFile] = []
-    // Properties are automatically observed
+    
+    func refreshData() async {
+        isLoading = true
+        defer { isLoading = false }
+        // ...
+    }
 }
 
-// View Usage
+// Thread-safe services: actor
+actor DaemonIPCClient {
+    private var connection: NWConnection?
+    
+    func call<P, R>(...) async throws -> R {
+        // Safe concurrent access
+    }
+}
+
+// Data crossing actor boundaries: Sendable
+struct AuthFile: Codable, Sendable {
+    let id: String
+    let name: String
+}
+```
+
+### @Observable Pattern (Not ObservableObject)
+
+```swift
+// ViewModel declaration
+@MainActor
+@Observable
+final class QuotaViewModel {
+    var isLoading = false
+    var authFiles: [AuthFile] = []
+}
+
+// View injection via @Environment
 struct DashboardScreen: View {
     @Environment(QuotaViewModel.self) private var viewModel
     
     var body: some View {
         @Bindable var vm = viewModel  // For two-way bindings
-        
-        List(selection: $vm.currentPage) {
-            // ...
-        }
+        List(selection: $vm.currentPage) { ... }
     }
-}
-```
-
-### Actor-Based Concurrency
-
-Thread-safe services use the `actor` keyword:
-
-```swift
-actor ManagementAPIClient {
-    private let baseURL: String
-    private let authKey: String
-    private let session: URLSession
-    
-    func fetchAuthFiles() async throws -> [AuthFile] {
-        // Actor isolation ensures thread safety
-        let data = try await makeRequest("/auth-files")
-        return try JSONDecoder().decode(AuthFilesResponse.self, from: data).files
-    }
-}
-```
-
-### Singleton Pattern for Managers
-
-Long-lived services use the singleton pattern:
-
-```swift
-@MainActor
-@Observable
-final class StatusBarManager {
-    static let shared = StatusBarManager()
-    
-    private var statusItem: NSStatusItem?
-    
-    private init() {}  // Private initializer
-    
-    func updateStatusBar(...) {
-        // ...
-    }
-}
-```
-
----
-
-## Code Style Guidelines
-
-### Swift Version and Concurrency
-
-**Swift 6** with strict concurrency checking is required:
-
-```swift
-// All UI-related classes must be MainActor
-@MainActor
-@Observable
-final class QuotaViewModel {
-    // UI state
-}
-
-// Thread-safe services use actor
-actor ManagementAPIClient {
-    // Network operations
-}
-
-// Data types crossing actor boundaries must be Sendable
-struct AuthFile: Codable, Identifiable, Hashable, Sendable {
-    let id: String
-    // ...
-}
-
-// Async operations use async/await
-func refreshData() async {
-    let files = try await client.fetchAuthFiles()
-    self.authFiles = files
-}
-```
-
-### Observable Pattern
-
-Use `@Observable` macro (not `ObservableObject`):
-
-```swift
-// Declaration
-@MainActor
-@Observable
-final class QuotaViewModel {
-    var isLoading = false
-    var authFiles: [AuthFile] = []
-}
-
-// View access via @Environment
-@Environment(QuotaViewModel.self) private var viewModel
-
-// Two-way bindings via @Bindable
-var body: some View {
-    @Bindable var vm = viewModel
-    Toggle("Auto Start", isOn: $vm.autoStart)
 }
 ```
 
 ### Naming Conventions
 
-| Element | Convention | Examples |
-|---------|------------|----------|
-| **Types** | PascalCase | `AIProvider`, `QuotaViewModel`, `StatusBarManager` |
-| **Properties** | camelCase | `authFiles`, `isLoading`, `proxyStatus` |
-| **Methods** | camelCase | `refreshData()`, `startProxy()`, `toggleItem(_:)` |
-| **Constants** | camelCase | `managementKey`, `warningThreshold` |
-| **Enum Types** | PascalCase | `AIProvider`, `AppMode`, `NavigationPage` |
-| **Enum Cases** | camelCase | `case gemini`, `case claude`, `case quotaOnly` |
-| **File Names** | Match primary type | `QuotaViewModel.swift`, `CLIProxyManager.swift` |
+| Element | Convention | Example |
+|---------|------------|---------|
+| Types | PascalCase | `AIProvider`, `QuotaViewModel` |
+| Properties | camelCase | `authFiles`, `isLoading` |
+| Methods | camelCase | `refreshData()`, `startProxy()` |
+| Enum Cases | camelCase | `case gemini`, `case quotaOnly` |
+| File Names | Match primary type | `QuotaViewModel.swift` |
 
-### Import Order
-
-Organize imports in this order with blank lines between groups:
+### Codable with snake_case APIs
 
 ```swift
-// 1. System frameworks
-import Foundation
-import SwiftUI
-import AppKit
-import ServiceManagement
-
-// 2. Conditional imports for optional frameworks
-#if canImport(Sparkle)
-import Sparkle
-#endif
-
-// 3. Local modules (if any)
-// (Currently none in this project)
-```
-
-### Type Definitions
-
-**Enums with Raw Values for API Compatibility**:
-
-```swift
-enum AIProvider: String, CaseIterable, Codable, Identifiable {
-    case gemini = "gemini-cli"
-    case claude = "claude"
-    case codex = "codex"
-    case copilot = "github-copilot"
-    
-    var id: String { rawValue }
-    
-    var displayName: String {
-        switch self {
-        case .gemini: return "Gemini CLI"
-        case .claude: return "Claude Code"
-        case .codex: return "Codex (OpenAI)"
-        case .copilot: return "GitHub Copilot"
-        }
-    }
-}
-```
-
-**Codable Structs with CodingKeys for snake_case APIs**:
-
-```swift
-struct AuthFile: Codable, Identifiable, Hashable, Sendable {
+struct AuthFile: Codable, Sendable {
     let id: String
-    let name: String
-    let provider: String
     let statusMessage: String?
-    let runtimeOnly: Bool?
     let accountType: String?
-    let createdAt: String?
     
     enum CodingKeys: String, CodingKey {
-        case id, name, provider
+        case id
         case statusMessage = "status_message"
-        case runtimeOnly = "runtime_only"
         case accountType = "account_type"
-        case createdAt = "created_at"
     }
 }
 ```
 
 ### View Structure
 
-Organize views with `MARK: -` comments:
-
 ```swift
 struct DashboardScreen: View {
     @Environment(QuotaViewModel.self) private var viewModel
     
     // MARK: - Computed Properties
-    
     private var isSetupComplete: Bool {
-        viewModel.proxyManager.isBinaryInstalled &&
         viewModel.proxyManager.proxyStatus.running
     }
     
-    private var totalAccounts: Int {
-        viewModel.authFiles.count
-    }
-    
     // MARK: - Body
-    
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
                 headerSection
                 statsSection
-                quickActionsSection
             }
             .padding()
         }
     }
     
     // MARK: - Subviews
-    
-    private var headerSection: some View {
-        HStack {
-            Text("Dashboard")
-                .font(.title)
-            Spacer()
-        }
-    }
-    
-    private var statsSection: some View {
-        // ...
-    }
-    
-    private var quickActionsSection: some View {
-        // ...
-    }
+    private var headerSection: some View { ... }
+    private var statsSection: some View { ... }
 }
 ```
 
 ### Error Handling
 
-Use custom error enums conforming to `LocalizedError`:
-
 ```swift
 enum APIError: LocalizedError {
     case invalidURL
-    case invalidResponse
     case httpError(Int)
-    case decodingError(String)
+    case ipcError(String)
     
     var errorDescription: String? {
         switch self {
         case .invalidURL: return "Invalid URL"
-        case .invalidResponse: return "Invalid response"
         case .httpError(let code): return "HTTP error: \(code)"
-        case .decodingError(let msg): return "Decoding error: \(msg)"
+        case .ipcError(let msg): return "IPC error: \(msg)"
         }
     }
 }
-
-// Usage in ViewModel
-func refreshData() async {
-    do {
-        self.authFiles = try await client.fetchAuthFiles()
-    } catch {
-        // Store for UI display
-        self.errorMessage = error.localizedDescription
-    }
-}
-```
-
-### Localization
-
-All user-facing strings must use localization:
-
-```swift
-// Extension method usage
-Text("nav.dashboard".localized())
-Label("action.refresh".localized(), systemImage: "arrow.clockwise")
-
-// Key format: category.subcategory.item
-// Examples:
-// - nav.dashboard
-// - action.startProxy
-// - status.running
-// - settings.port
-// - error.networkError
-```
-
-### UserDefaults Usage
-
-Use `@AppStorage` in views, `UserDefaults.standard` in services:
-
-```swift
-// In Views - for reactive properties
-struct SettingsScreen: View {
-    @AppStorage("autoStartProxy") private var autoStartProxy = false
-    @AppStorage("loggingToFile") private var loggingToFile = true
-    
-    var body: some View {
-        Toggle("Auto Start", isOn: $autoStartProxy)
-    }
-}
-
-// In Services - for direct access
-final class CLIProxyManager {
-    init() {
-        let savedPort = UserDefaults.standard.integer(forKey: "proxyPort")
-        if savedPort > 0 && savedPort < 65536 {
-            self.proxyStatus.port = UInt16(savedPort)
-        }
-    }
-    
-    var port: UInt16 {
-        didSet {
-            UserDefaults.standard.set(Int(newValue), forKey: "proxyPort")
-        }
-    }
-}
-```
-
-### Color Handling
-
-Use hex color initializer from `Models.swift`:
-
-```swift
-extension Color {
-    init?(hex: String) {
-        var hexSanitized = hex.trimmingCharacters(in: .whitespacesAndNewlines)
-        hexSanitized = hexSanitized.replacingOccurrences(of: "#", with: "")
-        
-        var rgb: UInt64 = 0
-        guard Scanner(string: hexSanitized).scanHexInt64(&rgb) else { return nil }
-        
-        let r = Double((rgb & 0xFF0000) >> 16) / 255.0
-        let g = Double((rgb & 0x00FF00) >> 8) / 255.0
-        let b = Double(rgb & 0x0000FF) / 255.0
-        
-        self.init(red: r, green: g, blue: b)
-    }
-}
-
-// Usage in AIProvider
-var color: Color {
-    switch self {
-    case .gemini: return Color(hex: "4285F4") ?? .blue
-    case .claude: return Color(hex: "D97706") ?? .orange
-    case .codex: return Color(hex: "10A37F") ?? .green
-    }
-}
-```
-
-### Comments
-
-Use appropriate comment styles:
-
-```swift
-// Single-line implementation notes
-let port: UInt16 = 8317  // Default proxy port
-
-/// Documentation comments for public APIs
-/// - Parameter provider: The AI provider to authenticate
-/// - Returns: OAuth URL response or error
-func getOAuthURL(for provider: AIProvider) async throws -> OAuthURLResponse
-
-// MARK: - Section Headers
-// Use to organize code sections
-
-// MARK: - Computed Properties
-// MARK: - Body
-// MARK: - Subviews
-// MARK: - Private Methods
-
-// Avoid obvious comments
-// BAD: Increment counter by 1
-// GOOD: (no comment needed for self-explanatory code)
 ```
 
 ---
 
-## Key Implementation Patterns
+## TypeScript Code Standards
 
-### Async Data Refresh with Parallel Requests
+### Bun + Biome Conventions
+
+```typescript
+// Use Bun APIs for file operations
+const content = await Bun.file(path).text();
+await Bun.write(path, JSON.stringify(data, null, 2));
+
+// Use import for JSON (ESM)
+import pkg from "../package.json";
+
+// Use Biome formatting (2-space indent, no semicolons optional)
+export async function fetchQuota(): Promise<QuotaResult> {
+  // ...
+}
+```
+
+### Type Definitions
+
+```typescript
+// Const enums for string values
+export const AIProvider = {
+  CLAUDE: 'claude',
+  GEMINI: 'gemini-cli',
+  OPENAI: 'codex',
+  // ...
+} as const;
+export type AIProvider = typeof AIProvider[keyof typeof AIProvider];
+
+// Interfaces for data structures
+export interface FallbackEntry {
+  id: string;
+  provider: AIProvider;
+  modelId: string;
+  priority: number;
+}
+```
+
+### IPC Handler Pattern
+
+```typescript
+// Each method gets a dedicated handler
+async function handleProxyStart(
+  params: IPCProxyStartParams
+): Promise<IPCResult<IPCProxyStartResult>> {
+  try {
+    const manager = getProxyProcessManager();
+    const result = await manager.start(params.port);
+    return { success: true, data: result };
+  } catch (error) {
+    return { success: false, error: String(error) };
+  }
+}
+```
+
+### Service Pattern
+
+```typescript
+// Services are singleton classes
+export class FallbackSettingsService {
+  private static instance: FallbackSettingsService;
+  
+  static getInstance(): FallbackSettingsService {
+    if (!this.instance) {
+      this.instance = new FallbackSettingsService();
+    }
+    return this.instance;
+  }
+  
+  async loadConfig(): Promise<FallbackConfiguration> {
+    const configPath = paths.fallbackConfig;
+    if (await Bun.file(configPath).exists()) {
+      return JSON.parse(await Bun.file(configPath).text());
+    }
+    return defaultConfig;
+  }
+}
+```
+
+---
+
+## Cross-Language Patterns
+
+### Type Mirroring
+
+Types defined in `@quotio/core` must be mirrored in Swift:
+
+| TypeScript | Swift |
+|------------|-------|
+| `models/provider.ts` → `AIProvider` | `Models/Models.swift` → `AIProvider` |
+| `models/agent.ts` → `CLIAgent` | `Models/AgentModels.swift` → `CLIAgent` |
+| `models/fallback.ts` → `VirtualModel` | `Models/FallbackModels.swift` → `VirtualModel` |
+
+### JSON Serialization
+
+Both sides use JSON with snake_case for cross-language compatibility:
 
 ```swift
-func refreshData() async {
-    guard let client = apiClient else { return }
-    
-    do {
-        // Parallel async requests
-        async let files = client.fetchAuthFiles()
-        async let stats = client.fetchUsageStats()
-        async let keys = client.fetchAPIKeys()
-        
-        // Await all results
-        self.authFiles = try await files
-        self.usageStats = try await stats
-        self.apiKeys = try await keys
-    } catch {
-        if !Task.isCancelled {
-            errorMessage = error.localizedDescription
-        }
+// Swift: Use CodingKeys for snake_case
+struct FallbackEntry: Codable {
+    let modelId: String
+    enum CodingKeys: String, CodingKey {
+        case modelId = "model_id"
     }
 }
 ```
 
-### Mode-Aware Logic
-
-```swift
-func initialize() async {
-    if modeManager.isQuotaOnlyMode {
-        // Quota-only mode: Direct quota fetching
-        await loadDirectAuthFiles()
-        await refreshQuotasDirectly()
-        startQuotaOnlyAutoRefresh()
-    } else {
-        // Full mode: Proxy management
-        if autoStartProxy && proxyManager.isBinaryInstalled {
-            await startProxy()
-        }
-    }
+```typescript
+// TypeScript: Use snake_case in interfaces
+interface FallbackEntry {
+  model_id: string;
 }
 ```
 
-### Process Management
+### Shared Configuration
 
-```swift
-func start() async throws {
-    guard isBinaryInstalled else {
-        throw ProxyError.binaryNotFound
-    }
-    
-    isStarting = true
-    defer { isStarting = false }
-    
-    let process = Process()
-    process.executableURL = URL(fileURLWithPath: binaryPath)
-    process.arguments = ["-config", configPath]
-    
-    // Set up environment
-    var environment = ProcessInfo.processInfo.environment
-    environment["TERM"] = "xterm-256color"
-    process.environment = environment
-    
-    // Termination handler
-    process.terminationHandler = { terminatedProcess in
-        let status = terminatedProcess.terminationStatus
-        Task { @MainActor [weak self] in
-            self?.proxyStatus.running = false
-            if status != 0 {
-                self?.lastError = "Process exited with code: \(status)"
-            }
-        }
-    }
-    
-    try process.run()
-    self.process = process
-    
-    // Wait for startup
-    try await Task.sleep(nanoseconds: 1_500_000_000)
-    
-    if process.isRunning {
-        proxyStatus.running = true
-    } else {
-        throw ProxyError.startupFailed
-    }
-}
+`~/.config/quotio/fallback-config.json` is read/written by both Swift and TypeScript:
+
+```
+Swift FallbackSettingsManager ←→ ~/.config/quotio/fallback-config.json ←→ TS FallbackSettingsService
 ```
 
-### Menu Bar Integration with NSHostingView
+---
 
-```swift
-func updateStatusBar(
-    items: [MenuBarQuotaDisplayItem],
-    colorMode: MenuBarColorMode,
-    isRunning: Bool,
-    showMenuBarIcon: Bool,
-    showQuota: Bool,
-    menuContentProvider: @escaping () -> AnyView
-) {
-    guard showMenuBarIcon else {
-        removeStatusItem()
-        return
-    }
-    
-    if statusItem == nil {
-        statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
-    }
-    
-    // Configure popover
-    popover?.contentViewController = NSHostingController(rootView: menuContentProvider())
-    
-    // Create SwiftUI content view
-    let contentView: AnyView
-    if !showQuota || !isRunning || items.isEmpty {
-        contentView = AnyView(StatusBarDefaultView(isRunning: isRunning))
-    } else {
-        contentView = AnyView(StatusBarQuotaView(items: items, colorMode: colorMode))
-    }
-    
-    // Wrap in NSHostingView
-    let hostingView = NSHostingView(rootView: contentView)
-    hostingView.setFrameSize(hostingView.intrinsicContentSize)
-    
-    // Add to status bar button
-    let containerView = StatusBarContainerView(...)
-    containerView.addSubview(hostingView)
-    button.addSubview(containerView)
-}
+## Anti-Patterns
+
+### Swift Anti-Patterns
+
+| Pattern | Problem | Solution |
+|---------|---------|----------|
+| `Text("localhost:\(port)")` | Locale formats as "8.217" | `Text("localhost:" + String(port))` |
+| Direct `UserDefaults` in View | Inconsistent | `@AppStorage("key")` |
+| Blocking main thread | UI freeze | `Task { await ... }` |
+| Force unwrap `!` | Crashes | Guard/if-let |
+| `ObservableObject` | Deprecated in Swift 6 | `@Observable` macro |
+| `@Published` | Deprecated | Direct property access |
+
+### TypeScript Anti-Patterns
+
+| Pattern | Problem | Solution |
+|---------|---------|----------|
+| `require()` for JSON | ESM incompatibility | `import pkg from "...json"` |
+| Sync file operations | Blocks event loop | `await Bun.file().text()` |
+| Hardcoded paths | Platform issues | Use `utils/paths.ts` |
+| `console.log` in production | Noisy | Use structured logging |
+| Manual `try/catch` in every handler | Repetitive | Use error middleware |
+
+---
+
+## Critical Invariants
+
+### From Code Comments - NEVER Violate
+
+| Component | Rule |
+|-----------|------|
+| `ProxyStorageManager` | Never delete current version symlink |
+| `AgentConfigurationService` | Backups never overwritten |
+| `ProxyBridge` | Target host always localhost |
+| `CLIProxyManager` | Base URL always points to CLIProxyAPI directly |
+| `DaemonIPCClient` | Local mode ONLY - Unix socket limitation |
+| `ManagementAPIClient` | **DEPRECATED** for local use - remote mode only |
+
+### IPC Contract Rules
+
+1. Changes to `IPCProtocol.swift` MUST mirror `packages/cli/src/ipc/protocol.ts`
+2. All IPC methods must handle timeout gracefully
+3. Socket reconnection must be automatic on disconnect
+
+### Fallback Configuration Rules
+
+1. `~/.config/quotio/fallback-config.json` is shared source of truth
+2. Both Swift and TypeScript must use same schema version
+3. File watcher in Swift detects CLI-made changes
+
+### Process Management Rules
+
+1. Single daemon instance enforced via PID file
+2. Daemon health check before all IPC operations
+3. Proxy server runs as subprocess of daemon
+
+---
+
+## Build Commands
+
+### Swift (macOS App)
+
+```bash
+# Debug build
+xcodebuild -project Quotio.xcodeproj -scheme Quotio -configuration Debug build
+
+# Release build
+./scripts/build.sh
+
+# Full release (build + package + notarize + appcast)
+./scripts/release.sh
+
+# Check compile errors
+xcodebuild -project Quotio.xcodeproj -scheme Quotio -configuration Debug build 2>&1 | head -50
 ```
 
-### OAuth Polling Pattern
+### TypeScript (Monorepo)
 
-```swift
-private func pollOAuthStatus(state: String, provider: AIProvider) async {
-    guard let client = apiClient else { return }
-    
-    // Poll for up to 2 minutes (60 iterations × 2 seconds)
-    for _ in 0..<60 {
-        try? await Task.sleep(nanoseconds: 2_000_000_000)
-        
-        do {
-            let response = try await client.pollOAuthStatus(state: state)
-            
-            switch response.status {
-            case "ok":
-                oauthState = OAuthState(provider: provider, status: .success)
-                await refreshData()
-                return
-            case "error":
-                oauthState = OAuthState(provider: provider, status: .error, error: response.error)
-                return
-            default:
-                continue  // Keep polling
-            }
-        } catch {
-            continue  // Retry on network errors
-        }
-    }
-    
-    oauthState = OAuthState(provider: provider, status: .error, error: "OAuth timeout")
-}
+```bash
+# Install dependencies
+bun install
+
+# Build all packages
+bun run build
+
+# Build individual packages
+bun run --cwd packages/core build
+bun run --cwd packages/cli build
+bun run --cwd packages/server build
+
+# Development mode
+bun run --cwd packages/cli dev
+bun run --cwd packages/server dev
+
+# Type checking
+bun run typecheck
+
+# Linting (Biome)
+bun run lint
+bun run format
 ```
 
-### Auto-Refresh Task Pattern
+### Cross-Package Commands
 
-```swift
-private var refreshTask: Task<Void, Never>?
+```bash
+# Run from monorepo root
+turbo run build          # Build all packages
+turbo run typecheck      # Type check all
+turbo run lint           # Lint all
 
-private func startAutoRefresh() {
-    refreshTask?.cancel()
-    refreshTask = Task {
-        while !Task.isCancelled {
-            try? await Task.sleep(nanoseconds: 15_000_000_000)  // 15 seconds
-            await refreshData()
-        }
-    }
-}
-
-func stopProxy() {
-    refreshTask?.cancel()
-    refreshTask = nil
-    proxyManager.stop()
-}
-```
-
-### Notification Throttling Pattern
-
-```swift
-func notifyQuotaLow(provider: String, account: String, remainingPercent: Double) {
-    let key = "\(provider)_\(account)"
-    let lastNotified = lastQuotaNotifications[key] ?? .distantPast
-    
-    // Only notify once per hour
-    guard Date().timeIntervalSince(lastNotified) > 3600 else { return }
-    
-    let content = UNMutableNotificationContent()
-    content.title = "Low Quota Alert"
-    content.body = "\(provider) account \(account) has \(Int(remainingPercent))% remaining"
-    content.sound = .default
-    
-    let request = UNNotificationRequest(
-        identifier: "quota-\(key)",
-        content: content,
-        trigger: nil
-    )
-    
-    UNUserNotificationCenter.current().add(request)
-    lastQuotaNotifications[key] = Date()
-}
-```
-
-### Configuration Generation Pattern
-
-```swift
-func generateConfiguration(
-    agent: CLIAgent,
-    config: AgentConfiguration,
-    mode: ConfigurationMode,
-    storageOption: ConfigStorageOption = .jsonOnly,
-    detectionService: AgentDetectionService
-) async throws -> AgentConfigResult {
-    
-    switch agent {
-    case .claudeCode:
-        return try await generateClaudeCodeConfig(config, mode: mode, storageOption: storageOption)
-    case .codexCLI:
-        return try await generateCodexConfig(config, mode: mode)
-    case .geminiCLI:
-        return generateGeminiCLIConfig(config, mode: mode)
-    case .ampCLI:
-        return try await generateAmpConfig(config, mode: mode)
-    case .openCode:
-        return try await generateOpenCodeConfig(config, mode: mode)
-    case .factoryDroid:
-        return try await generateFactoryDroidConfig(config, mode: mode)
-    }
-}
+# Run CLI commands
+./packages/cli/dist/quotio proxy start
+./packages/cli/dist/quotio fallback list
 ```
 
 ---
 
 ## Testing Guidelines
 
-> **Note**: This project currently has no automated tests.
+### Manual Testing Checklist
 
-When implementing features, test manually:
+- [ ] Run app in Xcode (`Cmd + R`)
+- [ ] Test light/dark mode transitions
+- [ ] Verify menu bar integration
+- [ ] Test all provider OAuth flows
+- [ ] Validate fallback chain execution
+- [ ] Test mode switching (Full ↔ Quota-Only)
+- [ ] Verify localization (en, vi, zh-Hans)
+- [ ] Test daemon start/stop/restart
+- [ ] Verify IPC reconnection on disconnect
 
-1. **Build Verification**:
-   ```bash
-   xcodebuild -project Quotio.xcodeproj -scheme Quotio -configuration Debug build
-   ```
-
-2. **UI Testing**:
-   - Run app in Xcode (`Cmd + R`)
-   - Test in both light and dark mode
-   - Verify all screens render correctly
-
-3. **Menu Bar Testing**:
-   - Check icon displays correctly
-   - Verify popover opens/closes
-   - Test quota display updates
-
-4. **Localization Testing**:
-   - Switch system language to Vietnamese
-   - Verify all strings are translated
-
-5. **Mode Testing**:
-   - Test Full Mode with proxy
-   - Test Quota-Only Mode without proxy
-   - Test mode switching
-
----
-
-## Build Commands Reference
+### TypeScript Testing
 
 ```bash
-# Open project in Xcode
-open Quotio.xcodeproj
+# Run tests
+bun test
 
-# Build for development (Debug)
-xcodebuild -project Quotio.xcodeproj -scheme Quotio -configuration Debug build
-
-# Build for release (unsigned)
-./scripts/build.sh
-
-# Archive for distribution
-xcodebuild archive \
-    -project Quotio.xcodeproj \
-    -scheme Quotio \
-    -configuration Release \
-    -archivePath build/Quotio.xcarchive \
-    -destination "generic/platform=macOS"
-
-# Check for compile errors
-xcodebuild -project Quotio.xcodeproj -scheme Quotio -configuration Debug build 2>&1 | head -50
+# Run specific package tests
+bun test --cwd packages/cli
+bun test --cwd packages/server
 ```

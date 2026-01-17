@@ -1,451 +1,423 @@
 # Quotio - Codebase Summary
 
-> **Last Updated**: January 2, 2025  
-> **Swift Version**: 6.0  
-> **Minimum macOS**: 15.0 (Sequoia)
+> **Last Updated**: January 17, 2026  
+> **Version**: 2.0.0  
+> **Architecture**: Hybrid Swift + TypeScript
 
 ---
 
 ## Table of Contents
 
 1. [Technology Stack](#technology-stack)
-2. [Dependencies](#dependencies)
-3. [High-Level Module Overview](#high-level-module-overview)
-4. [Key Files and Their Purposes](#key-files-and-their-purposes)
-5. [Data Flow Overview](#data-flow-overview)
-6. [Build and Configuration Files](#build-and-configuration-files)
+2. [Module Overview](#module-overview)
+3. [Entry Points](#entry-points)
+4. [Key Files Reference](#key-files-reference)
+5. [Data Flow Diagrams](#data-flow-diagrams)
+6. [Dependency Graph](#dependency-graph)
+7. [Runtime Files](#runtime-files)
 
 ---
 
 ## Technology Stack
+
+### macOS Application (Swift)
 
 | Category | Technology |
 |----------|------------|
 | **Platform** | macOS 15.0+ (Sequoia) |
 | **Language** | Swift 6 with strict concurrency |
 | **UI Framework** | SwiftUI |
-| **App Framework** | AppKit (for NSStatusBar, NSPasteboard) |
+| **App Framework** | AppKit (NSStatusBar, NSPasteboard) |
 | **Concurrency** | Swift Concurrency (async/await, actors) |
-| **State Management** | Observable macro pattern |
+| **State** | @Observable macro pattern |
 | **Package Manager** | Swift Package Manager |
 | **Auto-Update** | Sparkle Framework |
 
-### Key Swift 6 Features Used
+### TypeScript Monorepo
 
-- **`@Observable`** macro for reactive state
-- **`@MainActor`** for UI-bound classes
-- **`actor`** for thread-safe services
-- **`Sendable`** conformance for cross-actor data
-- **`async/await`** for all asynchronous operations
-
----
-
-## Dependencies
-
-### Third-Party Dependencies
-
-| Dependency | Purpose | Integration |
-|------------|---------|-------------|
-| **Sparkle** | Auto-update framework | Swift Package Manager |
-
-### System Frameworks
-
-| Framework | Purpose |
-|-----------|---------|
-| **SwiftUI** | User interface |
-| **AppKit** | Menu bar, pasteboard, workspace |
-| **Foundation** | Core utilities, networking |
-| **ServiceManagement** | Launch services |
-
-### External Binaries
-
-| Binary | Source | Purpose |
-|--------|--------|---------|
-| **CLIProxyAPI** | GitHub (auto-downloaded) | Local proxy server |
+| Category | Technology |
+|----------|------------|
+| **Runtime** | Bun 1.1+ |
+| **Monorepo** | Turborepo |
+| **HTTP Framework** | Hono 4.7+ |
+| **Validation** | Zod 3.24+ |
+| **Linting** | Biome (replaces ESLint/Prettier) |
+| **Language** | TypeScript 5.8+ |
 
 ---
 
-## High-Level Module Overview
+## Module Overview
 
-### Application Layer
+### Swift macOS App (`Quotio/`)
 
 ```
 Quotio/
-├── QuotioApp.swift          # App entry point, lifecycle management
-└── Info.plist               # App metadata and permissions
+├── QuotioApp.swift              # @main entry, AppDelegate, ContentView
+├── Models/                      # 16 files - Enums, Codable structs
+│   ├── Models.swift             # AIProvider, AuthFile, ProxyStatus
+│   ├── AgentModels.swift        # CLIAgent, AgentConfiguration
+│   ├── FallbackModels.swift     # VirtualModel, FallbackEntry
+│   └── OperatingMode.swift      # Full/QuotaOnly mode management
+├── Services/                    # 30+ files - Business logic
+│   ├── Daemon/                  # IPC client and daemon services
+│   │   ├── DaemonIPCClient.swift    # Unix socket JSON-RPC client
+│   │   ├── DaemonManager.swift      # Daemon lifecycle
+│   │   ├── DaemonProxyConfigService.swift
+│   │   ├── DaemonAuthService.swift
+│   │   └── DaemonQuotaService.swift
+│   ├── Proxy/                   # Proxy management
+│   │   ├── CLIProxyManager.swift    # Binary lifecycle
+│   │   ├── ProxyBridge.swift        # TCP connection bridge
+│   │   └── FallbackFormatConverter.swift
+│   ├── QuotaFetchers/           # Provider-specific fetchers
+│   │   └── *QuotaFetcher.swift  # 8 actor-based fetchers
+│   └── StatusBarManager.swift   # Menu bar integration
+├── ViewModels/                  # 3 files - @Observable state
+│   ├── QuotaViewModel.swift     # Central app state
+│   ├── AgentSetupViewModel.swift
+│   └── LogsViewModel.swift
+├── Views/                       # UI components
+│   ├── Screens/                 # 8 full-page views
+│   ├── Components/              # 20+ reusable components
+│   └── Onboarding/              # 5 onboarding steps
+└── Assets.xcassets/             # Icons and colors
 ```
 
-### Models Layer
+### CLI Package (`packages/cli/`)
 
 ```
-Quotio/Models/
-├── Models.swift             # Core data types (AIProvider, AuthFile, etc.)
-├── AgentModels.swift        # CLI agent configuration types
-├── AntigravityActiveAccount.swift # Antigravity account model and switch state
-├── AppMode.swift            # App mode management (Full/Quota-Only)
-└── MenuBarSettings.swift    # Menu bar configuration and persistence
+packages/cli/
+├── src/
+│   ├── index.ts                 # CLI entry point
+│   ├── cli/
+│   │   └── commands/            # Command handlers
+│   │       ├── proxy.ts         # proxy start/stop/status
+│   │       ├── auth.ts          # auth list/delete
+│   │       ├── quota.ts         # quota fetch/list
+│   │       └── fallback.ts      # fallback management
+│   ├── ipc/
+│   │   ├── server.ts            # Unix socket server
+│   │   └── protocol.ts          # JSON-RPC 2.0 types
+│   └── services/
+│       ├── daemon/
+│       │   └── service.ts       # 50+ IPC method handlers
+│       ├── proxy-process/       # Server subprocess management
+│       ├── quota-fetchers/      # Provider quota extraction
+│       ├── fallback/            # Virtual model routing
+│       └── agent-detection/     # CLI agent discovery
+└── package.json
 ```
 
-### Services Layer
+### Server Package (`packages/server/`)
 
 ```
-Quotio/Services/
-├── CLIProxyManager.swift        # Proxy process lifecycle
-├── ManagementAPIClient.swift    # HTTP client for proxy API
-├── StatusBarManager.swift       # NSStatusBar management
-├── StatusBarMenuBuilder.swift   # Native NSMenu builder (menu bar content)
-├── NotificationManager.swift    # User notification handling
-├── UpdaterService.swift         # Sparkle integration
-├── AgentDetectionService.swift  # CLI agent detection
-├── AgentConfigurationService.swift # Agent config generation
-├── ShellProfileManager.swift    # Shell profile updates
-├── DirectAuthFileService.swift  # Direct auth file scanning
-├── CLIExecutor.swift            # CLI command execution
-├── LanguageManager.swift        # Localization management
-├── AntigravityAccountSwitcher.swift  # Account switching orchestrator
-├── AntigravityDatabaseService.swift  # SQLite database operations
-├── AntigravityProcessManager.swift   # IDE process lifecycle management
-├── AntigravityProtobufHandler.swift  # Protobuf encoding/decoding
-└── *QuotaFetcher.swift          # Provider-specific quota fetchers (7 files)
+packages/server/
+├── src/
+│   ├── index.ts                 # Hono app entry
+│   ├── api/
+│   │   └── routes/
+│   │       ├── v1/              # OpenAI-compatible endpoints
+│   │       ├── management/      # Admin API
+│   │       └── oauth/           # OAuth callbacks
+│   ├── executor/                # Provider request handlers
+│   │   ├── claude.ts
+│   │   ├── gemini.ts
+│   │   ├── openai.ts
+│   │   ├── copilot.ts
+│   │   ├── pool.ts              # Credential pooling
+│   │   └── selector.ts          # Round Robin / Fill First
+│   ├── translator/              # Request format conversion
+│   ├── auth/                    # OAuth implementations
+│   │   └── oauth/               # Per-provider handlers
+│   └── resilience/              # Circuit breaker, retry
+└── package.json
 ```
 
-### ViewModels Layer
+### Core Package (`packages/core/`)
 
 ```
-Quotio/ViewModels/
-├── QuotaViewModel.swift         # Main app state container
-└── AgentSetupViewModel.swift    # Agent configuration state
-```
-
-### Views Layer
-
-```
-Quotio/Views/
-├── Components/
-│   ├── AccountRow.swift         # Account row with switch button
-│   ├── AgentCard.swift          # Agent display card
-│   ├── AgentConfigSheet.swift   # Agent configuration sheet
-│   ├── ProviderIcon.swift       # Provider icon component
-│   ├── QuotaCard.swift          # Quota display card
-│   ├── QuotaProgressBar.swift   # Progress bar component
-│   ├── SidebarView.swift        # Navigation sidebar
-│   └── SwitchAccountSheet.swift # Account switch confirmation dialog
-└── Screens/
-    ├── DashboardScreen.swift    # Main dashboard
-    ├── QuotaScreen.swift        # Quota monitoring
-    ├── ProvidersScreen.swift    # Provider management
-    ├── AgentSetupScreen.swift   # Agent configuration
-    ├── APIKeysScreen.swift      # API key management
-    ├── LogsScreen.swift         # Log viewer
-    └── SettingsScreen.swift     # App settings
-```
-
-### Assets
-
-```
-Quotio/Assets.xcassets/
-├── AppIcon.appiconset/          # App icons (production)
-├── AppIconDev.appiconset/       # App icons (development)
-├── MenuBarIcons/                # Provider icons for menu bar
-├── ProviderIcons/               # Provider logos
-└── AccentColor.colorset/        # Accent color definition
+packages/core/
+├── src/
+│   ├── index.ts                 # Barrel export
+│   ├── models/
+│   │   ├── provider.ts          # AIProvider enum
+│   │   ├── agent.ts             # CLIAgent enum
+│   │   ├── fallback.ts          # VirtualModel, FallbackEntry
+│   │   ├── auth.ts              # AuthFile, Credential
+│   │   ├── quota.ts             # QuotaResult, UsageStats
+│   │   └── config.ts            # AppConfig types
+│   └── types/
+│       └── index.ts             # Shared utility types
+└── package.json
 ```
 
 ---
 
-## Key Files and Their Purposes
+## Entry Points
 
-### Entry Point
+| Module | Entry Point | Purpose |
+|--------|-------------|---------|
+| macOS App | `Quotio/QuotioApp.swift` | SwiftUI @main, AppDelegate, menu bar |
+| CLI | `packages/cli/src/index.ts` | Bun CLI with command parser |
+| Server | `packages/server/src/index.ts` | Hono HTTP server |
+| Core | `packages/core/src/index.ts` | Shared type exports |
 
-| File | Purpose |
-|------|---------|
-| **QuotioApp.swift** | App entry, scene definition, AppDelegate, ContentView, menu bar orchestration |
+---
 
-### Core Data Types
+## Key Files Reference
+
+### Swift - Models
 
 | File | Key Types | Purpose |
 |------|-----------|---------|
-| **Models.swift** | `AIProvider`, `ProxyStatus`, `AuthFile`, `UsageStats`, `AppConfig`, `NavigationPage` | Core domain models |
-| **AgentModels.swift** | `CLIAgent`, `AgentConfigType`, `ModelSlot`, `AgentStatus`, `AgentConfiguration` | CLI agent types |
-| **AppMode.swift** | `AppMode`, `AppModeManager` | Full/Quota-Only mode management |
-| **MenuBarSettings.swift** | `MenuBarQuotaItem`, `MenuBarColorMode`, `QuotaDisplayMode`, `MenuBarSettingsManager`, `AppearanceManager` | Menu bar configuration |
+| `Models.swift` | `AIProvider`, `AuthFile`, `ProxyStatus`, `NavigationPage` | Core domain types |
+| `AgentModels.swift` | `CLIAgent`, `AgentConfiguration`, `ModelSlot` | CLI agent definitions |
+| `FallbackModels.swift` | `VirtualModel`, `FallbackEntry`, `FallbackConfiguration` | Fallback chain types |
+| `OperatingMode.swift` | `OperatingMode`, `OperatingModeManager` | Full/QuotaOnly mode |
 
-### Services
+### Swift - Services
 
-| File | Key Class/Actor | Purpose |
-|------|-----------------|---------|
-| **CLIProxyManager.swift** | `CLIProxyManager`, `ProxyError`, `AuthCommand` | Proxy binary lifecycle, download, CLI auth commands |
-| **ManagementAPIClient.swift** | `ManagementAPIClient`, `APIError` | HTTP requests to proxy management API |
-| **StatusBarManager.swift** | `StatusBarManager` | NSStatusItem management, popover handling |
-| **NotificationManager.swift** | `NotificationManager` | User notification delivery and management |
-| **AgentDetectionService.swift** | `AgentDetectionService` | Find installed CLI agents |
-| **AgentConfigurationService.swift** | `AgentConfigurationService` | Generate agent configurations |
-| **ShellProfileManager.swift** | `ShellProfileManager` | Update shell profiles (zsh/bash/fish) |
+| File | Pattern | Purpose |
+|------|---------|---------|
+| `DaemonIPCClient.swift` | Actor | Unix socket JSON-RPC client |
+| `DaemonManager.swift` | @MainActor @Observable | Daemon lifecycle management |
+| `CLIProxyManager.swift` | @MainActor @Observable | Proxy binary and process control |
+| `ProxyBridge.swift` | Class | TCP connection bridging |
+| `StatusBarManager.swift` | @MainActor Singleton | Menu bar icon and state |
+| `*QuotaFetcher.swift` | Actor | Provider-specific quota extraction |
 
-### Quota Fetchers
+### Swift - ViewModels
 
-| File | Provider(s) | Method |
-|------|-------------|--------|
-| **AntigravityQuotaFetcher.swift** | Antigravity | API calls using auth files |
-| **OpenAIQuotaFetcher.swift** | Codex (OpenAI) | API calls using auth files |
-| **CopilotQuotaFetcher.swift** | GitHub Copilot | API calls using auth files |
-| **ClaudeCodeQuotaFetcher.swift** | Claude | CLI command (`claude usage`) |
-| **CursorQuotaFetcher.swift** | Cursor | Browser session/database |
-| **CodexCLIQuotaFetcher.swift** | Codex | CLI auth file (`~/.codex/auth.json`) |
-| **GeminiCLIQuotaFetcher.swift** | Gemini | CLI auth file (`~/.gemini/oauth_creds.json`) |
+| File | Class | Responsibilities |
+|------|-------|------------------|
+| `QuotaViewModel.swift` | `QuotaViewModel` | Central state, proxy control, OAuth, quotas |
+| `AgentSetupViewModel.swift` | `AgentSetupViewModel` | Agent detection, configuration |
+| `LogsViewModel.swift` | `LogsViewModel` | Request log fetching and display |
 
-### ViewModels
+### TypeScript - CLI
 
-| File | Key Class | Responsibilities |
-|------|-----------|------------------|
-| **QuotaViewModel.swift** | `QuotaViewModel`, `OAuthState` | Central app state, proxy control, OAuth flow, quota management, menu bar items |
-| **AgentSetupViewModel.swift** | `AgentSetupViewModel` | Agent detection, configuration, testing |
+| File | Exports | Purpose |
+|------|---------|---------|
+| `services/daemon/service.ts` | `createDaemonService` | 50+ IPC method handlers |
+| `ipc/protocol.ts` | `IPCMethods`, request/response types | JSON-RPC 2.0 contract |
+| `services/proxy-process/manager.ts` | `ProxyProcessManager` | Server subprocess control |
+| `services/fallback/settings-service.ts` | `FallbackSettingsService` | Shared config read/write |
+
+### TypeScript - Server
+
+| File | Exports | Purpose |
+|------|---------|---------|
+| `api/index.ts` | `createApp` | Hono app factory |
+| `proxy/dispatcher.ts` | `ProxyDispatcher` | Request routing to providers |
+| `executor/pool.ts` | `CredentialPool` | Account rotation with cooldown |
+| `translator/*.ts` | Format converters | OpenAI ↔ Provider translation |
 
 ---
 
-## Data Flow Overview
+## Data Flow Diagrams
 
-### Application Startup Flow
+### Application Startup (Full Mode)
 
 ```
 1. QuotioApp.init()
    │
    ├─▶ @State viewModel = QuotaViewModel()
-   │   └─▶ CLIProxyManager.shared initialized
+   │   ├─▶ DaemonManager.shared → Check daemon status
+   │   └─▶ DaemonIPCClient → Establish socket connection
    │
    ├─▶ Check onboarding status
-   │   └─▶ Show ModePickerView if not completed
+   │   └─▶ Show OnboardingFlow if not completed
    │
    └─▶ initializeApp()
        ├─▶ Apply appearance settings
-       ├─▶ Mode-based initialization
-       │   ├─▶ Full Mode: Start proxy if autoStart enabled
-       │   └─▶ Quota-Only: Load direct auth files, fetch quotas
-       │
+       ├─▶ Start daemon if not running
+       ├─▶ Start proxy if autoStart enabled
        └─▶ Update status bar
 ```
 
-### Full Mode Data Flow
+### IPC Request Flow
 
 ```
 ┌──────────────────┐
-│   User Action    │
-│ (Start Proxy)    │
-└────────┬─────────┘
-         │
-         ▼
-┌──────────────────┐
-│ QuotaViewModel   │
-│  .startProxy()   │
+│  Swift Method    │
+│  (e.g. startProxy)│
 └────────┬─────────┘
          │
          ▼
 ┌──────────────────┐       ┌────────────────────┐
-│ CLIProxyManager  │──────▶│   CLIProxyAPI      │
-│    .start()      │       │   (Binary)         │
-└────────┬─────────┘       └────────────────────┘
+│ DaemonIPCClient  │───────│ Unix Socket        │
+│ .call(method,    │       │ quotio.sock        │
+│      params)     │       └────────┬───────────┘
+└──────────────────┘                │
+                                    ▼
+                    ┌────────────────────────────┐
+                    │ quotio-cli daemon          │
+                    │ handleRequest(jsonrpc)     │
+                    └────────────┬───────────────┘
+                                 │
+          ┌──────────────────────┼──────────────────────┐
+          ▼                      ▼                      ▼
+    ┌──────────┐          ┌──────────┐          ┌──────────┐
+    │ proxy.*  │          │ auth.*   │          │ config.* │
+    │ handlers │          │ handlers │          │ handlers │
+    └────┬─────┘          └──────────┘          └──────────┘
          │
          ▼
-┌──────────────────┐
-│ ManagementAPI    │
-│    Client        │ ◀─── HTTP requests to localhost:8317
-└────────┬─────────┘
-         │
-         ▼
-┌──────────────────┐
-│  Auto-Refresh    │ ──── Every 15 seconds
-│    Task          │
-└────────┬─────────┘
-         │
-         ▼
-┌──────────────────┐
-│ UI Updates via   │
-│  @Observable     │
-└──────────────────┘
+    ┌──────────────────┐
+    │ ProxyProcess     │
+    │ Manager          │
+    │ → spawn server   │
+    └──────────────────┘
 ```
 
 ### Quota Fetching Flow
 
 ```
 ┌──────────────────────────────────────────────────────┐
-│                  refreshAllQuotas()                   │
+│                  QuotaViewModel.refreshAllQuotas()    │
 └────────────────────────┬─────────────────────────────┘
                          │
     ┌────────────────────┼────────────────────┐
     │                    │                    │
     ▼                    ▼                    ▼
-┌─────────┐        ┌─────────┐         ┌─────────┐
-│Antigrav │        │ OpenAI  │         │ Copilot │
-│ Fetcher │        │ Fetcher │         │ Fetcher │
-└────┬────┘        └────┬────┘         └────┬────┘
-    │                   │                    │
-    ▼                   ▼                    ▼
-┌─────────────────────────────────────────────────┐
-│           providerQuotas: [AIProvider:         │
-│                 [String: ProviderQuotaData]]   │
-└─────────────────────────────────────────────────┘
+┌─────────────┐    ┌─────────────┐     ┌─────────────┐
+│ Claude      │    │ Copilot     │     │ Cursor      │
+│ QuotaFetcher│    │ QuotaFetcher│     │ QuotaFetcher│
+│ (actor)     │    │ (actor)     │     │ (actor)     │
+└──────┬──────┘    └──────┬──────┘     └──────┬──────┘
+       │                  │                   │
+       ▼                  ▼                   ▼
+┌─────────────────────────────────────────────────────┐
+│ providerQuotas: [AIProvider: [String: QuotaData]]   │
+└─────────────────────────────────────────────────────┘
                          │
                          ▼
-┌─────────────────────────────────────────────────┐
-│           StatusBarManager.updateStatusBar()    │
-└─────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────┐
+│           StatusBarManager.updateStatusBar()         │
+└─────────────────────────────────────────────────────┘
 ```
 
-### OAuth Authentication Flow
+### Fallback Request Flow
 
 ```
-┌──────────────┐     ┌───────────────┐     ┌─────────────────┐
-│    User      │────▶│ QuotaViewModel │────▶│ Management API  │
-│ Clicks Auth  │     │  .startOAuth() │     │ Client          │
-└──────────────┘     └───────┬───────┘     └────────┬────────┘
-                             │                      │
-                             │     GET /xxx-auth-url
-                             │◀─────────────────────┘
-                             │
-                             ▼
-                    ┌─────────────────┐
-                    │  Open Browser   │
-                    │   (OAuth URL)   │
-                    └────────┬────────┘
-                             │
-                             ▼
-                    ┌─────────────────┐
-                    │  Poll Status    │
-                    │  (every 2s)     │
-                    └────────┬────────┘
-                             │
-                    Success? ─┴─ Continue polling
-                             │
-                             ▼
-                    ┌─────────────────┐
-                    │  Refresh Data   │
-                    └─────────────────┘
-```
-
-### Agent Configuration Flow
-
-```
-┌─────────────────┐     ┌──────────────────────┐
-│  AgentSetup     │────▶│ AgentSetupViewModel   │
-│   Screen        │     │  .applyConfiguration()│
-└─────────────────┘     └──────────┬───────────┘
-                                   │
-                                   ▼
-                       ┌───────────────────────┐
-                       │ AgentConfiguration    │
-                       │      Service          │
-                       └──────────┬────────────┘
-                                  │
-         ┌────────────────────────┼────────────────────────┐
-         │                        │                        │
-         ▼                        ▼                        ▼
-┌─────────────────┐    ┌─────────────────┐     ┌─────────────────┐
-│  Write Config   │    │  Update Shell   │     │   Copy to       │
-│   JSON/TOML     │    │    Profile      │     │   Clipboard     │
-└─────────────────┘    └─────────────────┘     └─────────────────┘
+┌──────────────────┐
+│  CLI Tool        │
+│  (Claude Code)   │
+└────────┬─────────┘
+         │ POST /v1/chat/completions
+         │ model: "quotio-opus"
+         ▼
+┌──────────────────┐
+│  ProxyBridge     │
+│  (port 8317)     │
+├──────────────────┤
+│ Check fallback   │
+│ config enabled?  │
+└────────┬─────────┘
+         │ Yes
+         ▼
+┌──────────────────┐
+│ Resolve virtual  │
+│ model → entries  │
+│ [claude@1,       │
+│  gemini@2]       │
+└────────┬─────────┘
+         │
+         ▼
+┌──────────────────┐       ┌────────────────┐
+│ Try entry #1:    │──429──│ Cooldown,      │
+│ claude-opus      │ error │ try entry #2   │
+└────────┬─────────┘       └────────────────┘
+         │ 200 OK
+         ▼
+┌──────────────────┐
+│ Return response  │
+│ to CLI tool      │
+└──────────────────┘
 ```
 
 ---
 
-## Build and Configuration Files
+## Dependency Graph
 
-### Xcode Project
+### Package Dependencies
 
-| File/Directory | Purpose |
-|----------------|---------|
-| **Quotio.xcodeproj/** | Xcode project container |
-| **project.pbxproj** | Project settings, targets, build phases |
-| **xcschemes/Quotio.xcscheme** | Build scheme configuration |
-| **Package.resolved** | Swift Package Manager dependency lock |
+```
+┌─────────────────┐
+│  @quotio/core   │ ← Shared types (no dependencies)
+└────────┬────────┘
+         │
+    ┌────┴────┐
+    ▼         ▼
+┌─────────┐  ┌─────────┐
+│ @quotio │  │ @quotio │
+│ /cli    │  │ /server │
+└────┬────┘  └────┬────┘
+     │            │
+     └──────┬─────┘
+            ▼
+    ┌─────────────┐
+    │ Swift App   │
+    │ (via IPC)   │
+    └─────────────┘
+```
 
-### Build Configurations
+### Swift Service Dependencies
 
-| File | Purpose |
-|------|---------|
-| **Config/Debug.xcconfig** | Debug build settings |
-| **Config/Release.xcconfig** | Release build settings |
-| **Config/Local.xcconfig.example** | Template for local overrides |
+```
+QuotaViewModel
+├── DaemonManager
+│   └── DaemonIPCClient
+├── DaemonQuotaService
+│   └── DaemonIPCClient
+├── All QuotaFetchers (8)
+├── NotificationManager
+├── RequestTracker
+└── StatusBarManager
+    └── StatusBarMenuBuilder
 
-### Build Scripts
-
-| Script | Purpose |
-|--------|---------|
-| **scripts/build.sh** | Build release archive |
-| **scripts/release.sh** | Full release workflow |
-| **scripts/bump-version.sh** | Version management |
-| **scripts/notarize.sh** | Apple notarization |
-| **scripts/package.sh** | DMG packaging |
-| **scripts/generate-appcast.sh** | Sparkle appcast generation |
-| **scripts/config.sh** | Shared configuration |
-| **scripts/ExportOptions.plist** | Archive export options |
-
-### App Configuration
-
-| File | Purpose |
-|------|---------|
-| **Info.plist** | App metadata, permissions, URL schemes |
-| **Quotio.entitlements** | Sandbox and capability entitlements |
+CLIProxyManager
+├── ProxyBridge
+├── ProxyStorageManager
+└── CompatibilityChecker
+```
 
 ---
 
-## Runtime File Locations
+## Runtime Files
+
+### Configuration
+
+| Path | Purpose |
+|------|---------|
+| `~/.config/quotio/` | Config directory |
+| `~/.config/quotio/fallback-config.json` | Shared fallback configuration |
+| `~/.cache/quotio-cli/quotio.sock` | Unix socket for IPC |
+| `~/.cache/quotio-cli/daemon.pid` | Daemon PID file |
+
+### Auth Files
+
+| Path | Provider |
+|------|----------|
+| `~/.cli-proxy-api/gemini-cli-*.json` | Gemini |
+| `~/.cli-proxy-api/claude-*.json` | Claude |
+| `~/.cli-proxy-api/codex-*.json` | OpenAI Codex |
+| `~/.cli-proxy-api/github-copilot-*.json` | GitHub Copilot |
 
 ### Application Support
 
-```
-~/Library/Application Support/Quotio/
-├── CLIProxyAPI          # Downloaded proxy binary
-└── config.yaml          # Proxy configuration
-```
+| Path | Purpose |
+|------|---------|
+| `~/Library/Application Support/Quotio/` | App data |
+| `~/Library/Application Support/Quotio/CLIProxyAPI` | Downloaded binary |
 
-### Auth Files Directory
-
-```
-~/.cli-proxy-api/
-├── gemini-cli-*.json    # Gemini auth files
-├── claude-*.json        # Claude auth files
-├── codex-*.json         # Codex auth files
-├── github-copilot-*.json # Copilot auth files
-└── ...                  # Other provider auth files
-```
-
-### User Defaults Keys
+### UserDefaults Keys
 
 | Key | Type | Purpose |
 |-----|------|---------|
 | `proxyPort` | Int | Proxy server port |
-| `managementKey` | String | Management API secret key |
-| `autoStartProxy` | Bool | Auto-start proxy on launch |
-| `appMode` | String | Current app mode |
-| `hasCompletedOnboarding` | Bool | Onboarding completion status |
-| `menuBarSelectedQuotaItems` | Data | Selected menu bar items |
-| `menuBarColorMode` | String | Menu bar color mode |
-| `showMenuBarIcon` | Bool | Show menu bar icon |
-| `menuBarShowQuota` | Bool | Show quota in menu bar |
-| `quotaDisplayMode` | String | Quota display mode |
-| `loggingToFile` | Bool | Enable file logging |
-| `appearanceMode` | String | Light/dark/system mode |
-| `quotaAlertThreshold` | Double | Low quota notification threshold |
-
----
-
-## Localization Structure
-
-```
-Quotio/
-└── Resources/
-    ├── en.lproj/
-    │   └── Localizable.strings
-    └── vi.lproj/
-        └── Localizable.strings
-```
-
-### Localization Key Patterns
-
-| Pattern | Example | Usage |
-|---------|---------|-------|
-| `nav.*` | `nav.dashboard` | Navigation labels |
-| `action.*` | `action.startProxy` | Button actions |
-| `status.*` | `status.running` | Status indicators |
-| `settings.*` | `settings.port` | Settings labels |
-| `error.*` | `error.invalidURL` | Error messages |
+| `autoStartProxy` | Bool | Auto-start on launch |
+| `operatingMode` | String | full/quotaOnly |
+| `hasCompletedOnboarding` | Bool | Onboarding status |
+| `menuBarSelectedQuotaItems` | Data | Menu bar items |
+| `quotaAlertThreshold` | Double | Low quota threshold |
