@@ -20,11 +20,15 @@ struct QuotioApp: App {
     @State private var statusBarManager = StatusBarManager.shared
     @State private var modeManager = OperatingModeManager.shared
     @State private var appearanceManager = AppearanceManager.shared
-    @State private var languageManager = LanguageManager.shared
     @State private var showOnboarding = false
     @State private var hasInitialized = false  // Track initialization state
+    @AppStorage("appLanguage") private var appLanguage = "en"
     @AppStorage("autoStartProxy") private var autoStartProxy = false
     @Environment(\.openWindow) private var openWindow
+
+    private var normalizedAppLanguage: String {
+        appLanguage == "zh" ? "zh-Hans" : appLanguage
+    }
     
     private var quotaItems: [MenuBarQuotaDisplayItem] {
         guard menuBarSettings.showQuotaInMenuBar else { return [] }
@@ -136,11 +140,12 @@ struct QuotioApp: App {
     }
 
     private var configuredContentView: some View {
+        let normalizedLanguage = normalizedAppLanguage
         let baseView = ContentView()
-            .id(languageManager.currentLanguage)
+            .id(normalizedLanguage)
             .environment(viewModel)
             .environment(logsViewModel)
-            .environment(\.locale, languageManager.locale)
+            .environment(\.locale, Locale(identifier: normalizedLanguage))
             .task {
                 guard !hasInitialized else { return }
                 hasInitialized = true
@@ -153,7 +158,7 @@ struct QuotioApp: App {
                 updateStatusBar()
                 statusBarManager.rebuildMenuInPlace()
             }
-            .onChange(of: languageManager.currentLanguage) { _, _ in
+            .onChange(of: appLanguage) { _, _ in
                 statusBarManager.rebuildMenuInPlace()
             }
             .onChange(of: menuBarSettings.showQuotaInMenuBar) { updateStatusBar() }
