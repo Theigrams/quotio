@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 55;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -17,26 +17,7 @@
 		78D386B42EFBF30500C40FB6 /* Local.xcconfig.example */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Local.xcconfig.example; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		78D386962EFBF30400C40FB7 /* Exceptions for "Quotio" folder in "Quotio" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = 78D386932EFBF30400C40FB6 /* Quotio */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		78D386962EFBF30400C40FB6 /* Quotio */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				78D386962EFBF30400C40FB7 /* Exceptions for "Quotio" folder in "Quotio" target */,
-			);
-			path = Quotio;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		78D386912EFBF30400C40FB6 /* Frameworks */ = {
@@ -92,9 +73,6 @@
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				78D386962EFBF30400C40FB6 /* Quotio */,
-			);
 			name = Quotio;
 			packageProductDependencies = (
 				78D386B12EFBF30500C40FB6 /* Sparkle */,
@@ -110,11 +88,12 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 2620;
-				LastUpgradeCheck = 2620;
+				LastSwiftUpdateCheck = 2327;
+				LastUpgradeCheck = 2327;
+				compatibilityVersion = "Xcode 9.4";
 				TargetAttributes = {
 					78D386932EFBF30400C40FB6 = {
-						CreatedOnToolsVersion = 26.2;
+						CreatedOnToolsVersion = 15.4;
 					};
 				};
 			};
@@ -127,9 +106,7 @@
 				"zh-Hans",
 				fr,
 			);
-			mainGroup = 78D3868B2EFBF30400C40FB6;
-			minimizedProjectReferenceProxies = 1;
-			packageReferences = (
+			mainGroup = 78D3868B2EFBF30400C40FB6;			packageReferences = (
 				78D386B02EFBF30500C40FB6 /* XCRemoteSwiftPackageReference "Sparkle" */,
 			);
 			preferredProjectObjectVersion = 77;
@@ -308,7 +285,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 14.6;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 0.7.6;
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
@@ -319,9 +296,7 @@
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_APP_INTENTS_METADATA = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 6.0;
-				XROS_DEPLOYMENT_TARGET = 26.2;
+				SWIFT_VERSION = 5.10;
 			};
 			name = Debug;
 		};
@@ -356,7 +331,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 14.6;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 0.7.6;
 				PRODUCT_BUNDLE_IDENTIFIER = proseek.io.vn.Quotio;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -369,9 +344,7 @@
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_APP_INTENTS_METADATA = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 6.0;
-				XROS_DEPLOYMENT_TARGET = 26.2;
+				SWIFT_VERSION = 5.10;
 			};
 			name = Release;
 		};
