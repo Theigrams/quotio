@@ -5,6 +5,7 @@
 
 import SwiftUI
 
+@MainActor
 struct WelcomeStep: View {
     @Bindable var viewModel: OnboardingViewModel
     
@@ -47,6 +48,3 @@ struct WelcomeStep: View {
     }
 }
 
-#Preview {
-    WelcomeStep(viewModel: OnboardingViewModel())
-}

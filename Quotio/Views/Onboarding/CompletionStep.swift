@@ -5,6 +5,7 @@
 
 import SwiftUI
 
+@MainActor
 struct CompletionStep: View {
     @Bindable var viewModel: OnboardingViewModel
     let onComplete: () -> Void
@@ -88,6 +89,3 @@ struct CompletionStep: View {
     }
 }
 
-#Preview {
-    CompletionStep(viewModel: OnboardingViewModel()) {}
-}

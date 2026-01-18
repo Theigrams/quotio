@@ -8,7 +8,7 @@ import SwiftUI
 
 // MARK: - Provider Types
 
-nonisolated enum AIProvider: String, CaseIterable, Codable, Identifiable {
+enum AIProvider: String, CaseIterable, Codable, Identifiable {
     case gemini = "gemini-cli"
     case claude = "claude"
     case codex = "codex"
@@ -220,7 +220,7 @@ nonisolated enum AIProvider: String, CaseIterable, Codable, Identifiable {
 
 // MARK: - Proxy Status
 
-nonisolated struct ProxyStatus: Codable {
+struct ProxyStatus: Codable {
     var running: Bool = false
     var port: UInt16 = 8317
     
@@ -231,7 +231,7 @@ nonisolated struct ProxyStatus: Codable {
 
 // MARK: - Auth File (from Management API)
 
-nonisolated struct AuthFile: Codable, Identifiable, Hashable, Sendable {
+struct AuthFile: Codable, Identifiable, Hashable, Sendable {
     let id: String
     let name: String
     let provider: String
@@ -309,13 +309,13 @@ nonisolated struct AuthFile: Codable, Identifiable, Hashable, Sendable {
     }
 }
 
-nonisolated struct AuthFilesResponse: Codable, Sendable {
+struct AuthFilesResponse: Codable, Sendable {
     let files: [AuthFile]
 }
 
 // MARK: - API Keys (Proxy Service Auth)
 
-nonisolated struct APIKeysResponse: Codable, Sendable {
+struct APIKeysResponse: Codable, Sendable {
     let apiKeys: [String]
     
     enum CodingKeys: String, CodingKey {
@@ -325,7 +325,7 @@ nonisolated struct APIKeysResponse: Codable, Sendable {
 
 // MARK: - Usage Statistics
 
-nonisolated struct UsageStats: Codable, Sendable {
+struct UsageStats: Codable, Sendable {
     let usage: UsageData?
     let failedRequests: Int?
     
@@ -335,7 +335,7 @@ nonisolated struct UsageStats: Codable, Sendable {
     }
 }
 
-nonisolated struct UsageData: Codable, Sendable {
+struct UsageData: Codable, Sendable {
     let totalRequests: Int?
     let successCount: Int?
     let failureCount: Int?
@@ -360,21 +360,21 @@ nonisolated struct UsageData: Codable, Sendable {
 
 // MARK: - OAuth Flow
 
-nonisolated struct OAuthURLResponse: Codable, Sendable {
+struct OAuthURLResponse: Codable, Sendable {
     let status: String
     let url: String?
     let state: String?
     let error: String?
 }
 
-nonisolated struct OAuthStatusResponse: Codable, Sendable {
+struct OAuthStatusResponse: Codable, Sendable {
     let status: String
     let error: String?
 }
 
 // MARK: - App Config
 
-nonisolated struct AppConfig: Codable {
+struct AppConfig: Codable {
     var host: String = ""
     var port: UInt16 = 8317
     var authDir: String = "~/.cli-proxy-api"
@@ -405,11 +405,11 @@ nonisolated struct AppConfig: Codable {
     }
 }
 
-nonisolated struct RoutingConfig: Codable {
+struct RoutingConfig: Codable {
     var strategy: String = "round-robin"
 }
 
-nonisolated struct QuotaExceededConfig: Codable {
+struct QuotaExceededConfig: Codable {
     var switchProject: Bool = true
     var switchPreviewModel: Bool = true
     
@@ -419,7 +419,7 @@ nonisolated struct QuotaExceededConfig: Codable {
     }
 }
 
-nonisolated struct RemoteManagementConfig: Codable {
+struct RemoteManagementConfig: Codable {
     var allowRemote: Bool = false
     var secretKey: String = ""
     var disableControlPanel: Bool = false
@@ -433,7 +433,7 @@ nonisolated struct RemoteManagementConfig: Codable {
 
 // MARK: - Log Entry
 
-nonisolated struct LogEntry: Identifiable {
+struct LogEntry: Identifiable {
     let id = UUID()
     let timestamp: Date
     let level: LogLevel
@@ -455,7 +455,7 @@ nonisolated struct LogEntry: Identifiable {
 
 // MARK: - Navigation
 
-nonisolated enum NavigationPage: String, CaseIterable, Identifiable {
+enum NavigationPage: String, CaseIterable, Identifiable {
     case dashboard = "Dashboard"
     case quota = "Quota"
     case providers = "Providers"
@@ -485,7 +485,7 @@ nonisolated enum NavigationPage: String, CaseIterable, Identifiable {
 
 // MARK: - Color Extension
 
-nonisolated extension Color {
+extension Color {
     init?(hex: String) {
         var hexSanitized = hex.trimmingCharacters(in: .whitespacesAndNewlines)
         hexSanitized = hexSanitized.replacingOccurrences(of: "#", with: "")
@@ -516,7 +516,7 @@ extension Int {
 
 // MARK: - Proxy URL Validation
 
-nonisolated enum ProxyURLValidationResult: Equatable {
+enum ProxyURLValidationResult: Equatable {
     case valid
     case empty
     case invalidScheme
@@ -547,7 +547,7 @@ nonisolated enum ProxyURLValidationResult: Equatable {
     }
 }
 
-nonisolated enum ProxyURLValidator {
+enum ProxyURLValidator {
     static let supportedSchemes = ["socks5", "http", "https"]
     
     static func validate(_ urlString: String) -> ProxyURLValidationResult {

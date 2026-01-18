@@ -66,15 +66,3 @@ struct AccountsEmptyState: View {
     }
 }
 
-// MARK: - Preview
-
-#Preview {
-    List {
-        Section {
-            AccountsEmptyState(
-                onScanIDEs: { print("Scan IDEs") },
-                onAddProvider: { print("Add provider") }
-            )
-        }
-    }
-}

@@ -5,6 +5,7 @@
 
 import SwiftUI
 
+@MainActor
 struct AgentCard: View {
     let status: AgentStatus
     let onConfigure: () -> Void
@@ -104,44 +105,3 @@ private struct StatusBadge: View {
     }
 }
 
-#Preview {
-    VStack(spacing: 16) {
-        AgentCard(
-            status: AgentStatus(
-                agent: .claudeCode,
-                installed: true,
-                configured: true,
-                binaryPath: "/usr/local/bin/claude",
-                version: "1.0.0",
-                lastConfigured: Date()
-            ),
-            onConfigure: {}
-        )
-        
-        AgentCard(
-            status: AgentStatus(
-                agent: .geminiCLI,
-                installed: true,
-                configured: false,
-                binaryPath: "/opt/homebrew/bin/gemini",
-                version: nil,
-                lastConfigured: nil
-            ),
-            onConfigure: {}
-        )
-        
-        AgentCard(
-            status: AgentStatus(
-                agent: .openCode,
-                installed: true,
-                configured: false,
-                binaryPath: nil,
-                version: nil,
-                lastConfigured: nil
-            ),
-            onConfigure: {}
-        )
-    }
-    .padding()
-    .frame(width: 600)
-}

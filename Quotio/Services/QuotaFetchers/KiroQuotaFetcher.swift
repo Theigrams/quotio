@@ -10,7 +10,7 @@ import Foundation
 
 // MARK: - Kiro Response Models
 
-nonisolated struct KiroUsageResponse: Decodable {
+struct KiroUsageResponse: Decodable {
     let usageBreakdownList: [KiroUsageBreakdown]?
     let subscriptionInfo: KiroSubscriptionInfo?
     let userInfo: KiroUserInfo?
@@ -47,7 +47,7 @@ nonisolated struct KiroUsageResponse: Decodable {
     }
 }
 
-nonisolated struct KiroTokenResponse: Codable {
+struct KiroTokenResponse: Codable {
     let accessToken: String
     let expiresIn: Int
     let tokenType: String?

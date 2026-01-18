@@ -9,6 +9,7 @@
 import SwiftUI
 
 /// Sheet for confirming and executing Antigravity account switch
+@MainActor
 struct SwitchAccountSheet: View {
     @Environment(QuotaViewModel.self) private var viewModel
     @State private var settings = MenuBarSettingsManager.shared
@@ -255,12 +256,3 @@ struct SwitchAccountSheet: View {
     }
 }
 
-// MARK: - Preview
-
-#Preview {
-    SwitchAccountSheet(
-        accountEmail: "user@gmail.com",
-        onDismiss: {}
-    )
-    .environment(QuotaViewModel())
-}

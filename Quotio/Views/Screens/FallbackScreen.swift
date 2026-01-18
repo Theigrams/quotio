@@ -5,13 +5,20 @@
 
 import SwiftUI
 
+// Wrapper for UUID to make it Identifiable in Swift 5.10
+struct IdentifiableUUID: Identifiable {
+    let id: UUID
+    init(_ id: UUID) { self.id = id }
+}
+
+@MainActor
 struct FallbackScreen: View {
     @Environment(QuotaViewModel.self) private var viewModel
     @State private var fallbackSettings = FallbackSettingsManager.shared
     @State private var showAddVirtualModelSheet = false
     @State private var editingVirtualModel: VirtualModel?
     @State private var showAddEntrySheet = false
-    @State private var addingEntryToModelId: UUID?
+    @State private var addingEntryToModelId: IdentifiableUUID?
     @State private var showReconfigureAlert = false
     @State private var showDuplicateNameAlert = false
     @State private var previousFallbackEnabled: Bool?
@@ -69,7 +76,8 @@ struct FallbackScreen: View {
                 }
             )
         }
-        .sheet(item: $addingEntryToModelId) { modelId in
+        .sheet(item: $addingEntryToModelId) { wrappedModelId in
+            let modelId = wrappedModelId.id
             let virtualModel = fallbackSettings.virtualModels.first(where: { $0.id == modelId })
             AddFallbackEntrySheet(
                 virtualModelId: modelId,
@@ -276,7 +284,7 @@ struct FallbackScreen: View {
                             fallbackSettings.removeVirtualModel(id: model.id)
                         },
                         onAddEntry: {
-                            addingEntryToModelId = model.id
+                            addingEntryToModelId = IdentifiableUUID(model.id)
                         },
                         onDeleteEntry: { entryId in
                             fallbackSettings.removeFallbackEntry(from: model.id, entryId: entryId)
@@ -311,6 +319,7 @@ struct FallbackScreen: View {
 
 // MARK: - Virtual Models Empty State
 
+@MainActor
 struct VirtualModelsEmptyState: View {
     let isEnabled: Bool
     let onAdd: () -> Void
@@ -353,6 +362,7 @@ struct VirtualModelsEmptyState: View {
 
 // MARK: - Virtual Model Row
 
+@MainActor
 struct VirtualModelRow: View {
     let model: VirtualModel
     let isGlobalEnabled: Bool
@@ -471,6 +481,7 @@ struct VirtualModelRow: View {
 
 // MARK: - Fallback Entry Row
 
+@MainActor
 struct FallbackEntryRow: View {
     let entry: FallbackEntry
     let isEnabled: Bool

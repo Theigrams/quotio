@@ -8,6 +8,7 @@
 import SwiftUI
 
 /// Compact badge showing current mode in sidebar, clickable to open settings
+@MainActor
 struct CurrentModeBadge: View {
     @Environment(QuotaViewModel.self) private var viewModel
     private var modeManager = OperatingModeManager.shared
@@ -114,9 +115,3 @@ struct CurrentModeBadge: View {
     }
 }
 
-#Preview {
-    CurrentModeBadge()
-        .environment(QuotaViewModel())
-        .padding()
-        .frame(width: 200)
-}

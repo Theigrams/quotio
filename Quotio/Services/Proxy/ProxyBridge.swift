@@ -396,33 +396,41 @@ final class ProxyBridge {
 
         let metadata = extractMetadata(method: method, path: path, body: body)
 
+        // Capture values for Task
+        let capturedBody = body
+        let capturedHeaders = headers
+        let capturedMethod = method
+        let capturedPath = path
+        let capturedHttpVersion = httpVersion
+        let capturedRequestSize = data.count
+
         // Check for virtual model and create fallback context
         Task { @MainActor [weak self] in
             guard let self = self else { return }
 
-            let fallbackContext = self.createFallbackContext(body: body)
+            let fallbackContext = self.createFallbackContext(body: capturedBody)
             let resolvedBody: String
 
             if fallbackContext.hasFallback, let entry = fallbackContext.currentEntry {
                 // Replace model in body with resolved model
-                resolvedBody = self.replaceModelInBody(body, with: entry.modelId)
+                resolvedBody = self.replaceModelInBody(capturedBody, with: entry.modelId)
             } else {
-                resolvedBody = body
+                resolvedBody = capturedBody
             }
 
             let targetPortValue = self.targetPort
             let targetHostValue = self.targetHost
 
             self.forwardRequest(
-                method: method,
-                path: path,
-                version: httpVersion,
-                headers: headers,
+                method: capturedMethod,
+                path: capturedPath,
+                version: capturedHttpVersion,
+                headers: capturedHeaders,
                 body: resolvedBody,
                 originalConnection: connection,
                 connectionId: connectionId,
                 startTime: startTime,
-                requestSize: data.count,
+                requestSize: capturedRequestSize,
                 metadata: metadata,
                 targetPort: targetPortValue,
                 targetHost: targetHostValue,

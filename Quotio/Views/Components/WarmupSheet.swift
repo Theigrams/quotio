@@ -5,6 +5,7 @@
 
 import SwiftUI
 
+@MainActor
 struct WarmupSheet: View {
     @Environment(QuotaViewModel.self) private var viewModel
     @State private var settings = MenuBarSettingsManager.shared

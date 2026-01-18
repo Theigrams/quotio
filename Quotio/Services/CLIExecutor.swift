@@ -9,7 +9,7 @@
 import Foundation
 
 /// Result of a CLI command execution
-nonisolated struct CLIExecutionResult: Sendable {
+struct CLIExecutionResult: Sendable {
     let output: String
     let errorOutput: String
     let exitCode: Int32
@@ -338,7 +338,7 @@ actor CLIExecutor {
 
 // MARK: - Detected CLI Info
 
-nonisolated struct DetectedCLI: Identifiable, Sendable {
+struct DetectedCLI: Identifiable, Sendable {
     let id: String
     let name: String
     let displayName: String

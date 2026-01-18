@@ -64,31 +64,3 @@ private struct SmallProgressIndicator: NSViewRepresentable {
     }
 }
 
-#Preview {
-    HStack(spacing: 20) {
-        VStack {
-            SmallProgressView()
-            Text("Default (16)")
-                .font(.caption)
-        }
-        
-        VStack {
-            SmallProgressView(size: 8)
-            Text("Size 8")
-                .font(.caption)
-        }
-        
-        VStack {
-            SmallProgressView(size: 12)
-            Text("Size 12")
-                .font(.caption)
-        }
-        
-        VStack {
-            SmallProgressView(size: 20)
-            Text("Size 20")
-                .font(.caption)
-        }
-    }
-    .padding()
-}

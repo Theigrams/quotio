@@ -5,6 +5,7 @@
 
 import SwiftUI
 
+@MainActor
 struct ModeSelectionStep: View {
     @Bindable var viewModel: OnboardingViewModel
     
@@ -65,6 +66,7 @@ struct ModeSelectionStep: View {
     }
 }
 
+@MainActor
 struct OperatingModeCard: View {
     let mode: OperatingMode
     let isSelected: Bool
@@ -162,6 +164,3 @@ struct OperatingModeCard: View {
     }
 }
 
-#Preview {
-    ModeSelectionStep(viewModel: OnboardingViewModel())
-}

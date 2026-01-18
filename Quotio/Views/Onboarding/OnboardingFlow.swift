@@ -16,11 +16,11 @@ enum OnboardingStep: Int, CaseIterable {
     
     var title: String {
         switch self {
-        case .welcome: return "onboarding.step.welcome".localizedStatic()
-        case .modeSelection: return "onboarding.step.mode".localizedStatic()
-        case .remoteSetup: return "onboarding.step.remote".localizedStatic()
-        case .providers: return "onboarding.step.providers".localizedStatic()
-        case .completion: return "onboarding.step.completion".localizedStatic()
+        case .welcome: return "onboarding.step.welcome".localized()
+        case .modeSelection: return "onboarding.step.mode".localized()
+        case .remoteSetup: return "onboarding.step.remote".localized()
+        case .providers: return "onboarding.step.providers".localized()
+        case .completion: return "onboarding.step.completion".localized()
         }
     }
 }
@@ -110,6 +110,7 @@ enum SlideDirection {
     case backward
 }
 
+@MainActor
 struct OnboardingFlow: View {
     @Environment(\.dismiss) private var dismiss
     @State private var viewModel = OnboardingViewModel()
@@ -177,6 +178,3 @@ struct OnboardingFlow: View {
     }
 }
 
-#Preview {
-    OnboardingFlow()
-}

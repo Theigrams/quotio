@@ -5,6 +5,7 @@
 
 import SwiftUI
 
+@MainActor
 struct AgentSetupScreen: View {
     @Environment(QuotaViewModel.self) private var quotaViewModel
     @State private var selectedAgentForConfig: CLIAgent?
@@ -193,8 +194,3 @@ private struct NotInstalledAgentCard: View {
     }
 }
 
-#Preview {
-    AgentSetupScreen()
-        .environment(QuotaViewModel())
-        .frame(width: 700, height: 600)
-}

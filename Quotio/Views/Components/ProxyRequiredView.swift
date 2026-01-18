@@ -93,11 +93,3 @@ struct ProxyRequiredView: View {
     }
 }
 
-#Preview {
-    ProxyRequiredView(
-        description: "Start the proxy to manage API keys"
-    ) {
-        try? await Task.sleep(nanoseconds: 1_000_000_000)
-    }
-    .frame(width: 500, height: 400)
-}

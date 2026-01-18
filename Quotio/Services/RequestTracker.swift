@@ -61,8 +61,9 @@ final class RequestTracker {
             object: nil,
             queue: .main
         ) { [weak self] _ in
+            guard let self = self else { return }
             Task { @MainActor in
-                self?.trimHistoryForBackground()
+                self.trimHistoryForBackground()
             }
         }
     }

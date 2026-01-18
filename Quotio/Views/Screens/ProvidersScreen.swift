@@ -13,6 +13,7 @@ import SwiftUI
 import AppKit
 import UniformTypeIdentifiers
 
+@MainActor
 struct ProvidersScreen: View {
     @Environment(QuotaViewModel.self) private var viewModel
     @State private var isImporterPresented = false
@@ -446,6 +447,7 @@ struct ProvidersScreen: View {
 
 // MARK: - Custom Provider Row
 
+@MainActor
 struct CustomProviderRow: View {
     let provider: CustomProvider
     let onEdit: () -> Void
@@ -547,6 +549,7 @@ struct CustomProviderRow: View {
 
 // MARK: - Menu Bar Badge Component
 
+@MainActor
 struct MenuBarBadge: View {
     let isSelected: Bool
     let onTap: () -> Void
@@ -696,6 +699,7 @@ private extension View {
 
 // MARK: - Menu Bar Hint View
 
+@MainActor
 struct MenuBarHintView: View {
     var body: some View {
         HStack(spacing: 6) {
@@ -711,6 +715,7 @@ struct MenuBarHintView: View {
 
 // MARK: - OAuth Sheet
 
+@MainActor
 struct OAuthSheet: View {
     @Environment(QuotaViewModel.self) private var viewModel
     let provider: AIProvider
@@ -773,7 +778,6 @@ struct OAuthSheet: View {
                     }
                     .pickerStyle(.menu)
                     .labelsHidden()
-                    
 
                 }
                 .frame(maxWidth: 320)

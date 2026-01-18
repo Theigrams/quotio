@@ -338,6 +338,7 @@ final class MenuActionHandler: NSObject {
 
 // MARK: Header View
 
+@MainActor
 private struct MenuHeaderView: View {
     let isLoading: Bool
     
@@ -363,6 +364,7 @@ private struct MenuHeaderView: View {
 
 // MARK: - Provider Picker View (separate from accounts list)
 
+@MainActor
 private struct MenuProviderPickerView: View {
     @AppStorage("menuBarSelectedProvider") private var selectedProviderRaw: String = ""
     
@@ -398,6 +400,7 @@ private struct MenuProviderPickerView: View {
 
 // MARK: Provider Filter Button
 
+@MainActor
 private struct ProviderFilterButton: View {
     let provider: AIProvider
     let isSelected: Bool
@@ -430,6 +433,7 @@ private struct ProviderFilterButton: View {
 
 // MARK: Monochrome Provider Icon
 
+@MainActor
 private struct ProviderIconMono: View {
     let provider: AIProvider
     let size: CGFloat
@@ -454,6 +458,7 @@ private struct ProviderIconMono: View {
 
 // MARK: - Network Info View (Proxy + Tunnel Combined)
 
+@MainActor
 private struct MenuNetworkInfoView: View {
     let port: String
     let isProxyRunning: Bool
@@ -601,6 +606,7 @@ private struct MenuNetworkInfoView: View {
 
 // MARK: Account Card View
 
+@MainActor
 private struct MenuAccountCardView: View {
     let email: String
     let data: ProviderQuotaData
@@ -941,6 +947,7 @@ private func menuStatusColor(remainingPercent: Double, displayMode: QuotaDisplay
 
 // MARK: - Layout Subviews
 
+@MainActor
 private struct LowestBarLayout: View {
     let models: [ModelBadgeData]
     
@@ -1021,6 +1028,7 @@ private struct LowestBarLayout: View {
     }
 }
 
+@MainActor
 private struct RingGridLayout: View {
     let models: [ModelBadgeData]
     
@@ -1065,6 +1073,7 @@ private struct RingGridLayout: View {
     }
 }
 
+@MainActor
 private struct CardGridLayout: View {
     let models: [ModelBadgeData]
     
@@ -1114,6 +1123,7 @@ private struct CardGridLayout: View {
 
 // MARK: - Shared Components
 
+@MainActor
 private struct ModernProgressBar: View {
     let percentage: Double
     let height: CGFloat
@@ -1149,6 +1159,7 @@ private struct ModernProgressBar: View {
     }
 }
 
+@MainActor
 private struct PercentageBadge: View {
     let percentage: Double
     var style: Style = .pill
@@ -1185,6 +1196,7 @@ private struct PercentageBadge: View {
 
 // MARK: Model Detail View (for submenu)
 
+@MainActor
 private struct MenuModelDetailView: View {
     let model: ModelQuota
     let showRawName: Bool
@@ -1237,6 +1249,7 @@ private struct MenuModelDetailView: View {
 
 // MARK: Empty State View
 
+@MainActor
 private struct MenuEmptyStateView: View {
     var body: some View {
         VStack(spacing: 6) {
@@ -1252,6 +1265,7 @@ private struct MenuEmptyStateView: View {
 
 // MARK: View More Accounts
 
+@MainActor
 private struct MenuViewMoreAccountsView: View {
     let remainingCount: Int
     let isExpanded: Bool
@@ -1322,6 +1336,7 @@ private extension AIProvider {
 
 // MARK: - Menu Actions View
 
+@MainActor
 private struct MenuActionsView: View {
     @Environment(QuotaViewModel.self) private var viewModel
     
@@ -1360,6 +1375,7 @@ private struct MenuActionsView: View {
 
 // MARK: - Menu Bar Action Button
 
+@MainActor
 private struct MenuBarActionButton: View {
     let icon: String
     let title: String

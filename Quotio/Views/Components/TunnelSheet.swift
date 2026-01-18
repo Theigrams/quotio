@@ -8,6 +8,7 @@
 import SwiftUI
 import AppKit
 
+@MainActor
 struct TunnelSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(QuotaViewModel.self) private var viewModel
@@ -383,8 +384,3 @@ struct TunnelSheet: View {
     }
 }
 
-#Preview {
-    TunnelSheet()
-        .environment(QuotaViewModel())
-        .frame(width: 520, height: 450)
-}

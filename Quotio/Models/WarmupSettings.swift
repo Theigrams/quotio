@@ -327,7 +327,7 @@ final class WarmupSettingsManager {
     }
 }
 
-nonisolated struct WarmupAccountKey: Hashable, Sendable {
+struct WarmupAccountKey: Hashable, Sendable {
     let provider: AIProvider
     let accountKey: String
     

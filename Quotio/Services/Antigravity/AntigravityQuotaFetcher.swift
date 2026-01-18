@@ -10,7 +10,7 @@ import SwiftUI
 
 // MARK: - Model Group
 
-nonisolated enum AntigravityModelGroup: String, CaseIterable, Identifiable {
+enum AntigravityModelGroup: String, CaseIterable, Identifiable {
     case claude = "Claude"
     case geminiPro = "Gemini Pro"
     case geminiFlash = "Gemini Flash"
@@ -47,7 +47,7 @@ nonisolated enum AntigravityModelGroup: String, CaseIterable, Identifiable {
     }
 }
 
-nonisolated struct GroupedModelQuota: Identifiable, Sendable {
+struct GroupedModelQuota: Identifiable, Sendable {
     let group: AntigravityModelGroup
     let models: [ModelQuota]
     
@@ -112,7 +112,7 @@ nonisolated struct GroupedModelQuota: Identifiable, Sendable {
 
 // MARK: - Models
 
-nonisolated struct ModelQuota: Codable, Identifiable, Sendable {
+struct ModelQuota: Codable, Identifiable, Sendable {
     let name: String
     let percentage: Double
     let resetTime: String
@@ -201,7 +201,7 @@ nonisolated struct ModelQuota: Codable, Identifiable, Sendable {
         // Windsurf quota names
         case "windsurf-usage": return "Usage"
         // Warp quota names
-        case "warp-usage": return "warp.credits.label".localizedStatic()
+        case "warp-usage": return "warp.credits.label".localized()
         case let name where name.hasPrefix("warp-bonus-"):
             let index = Int(String(name.dropFirst("warp-bonus-".count))) ?? 0
             return "Bonus \(index + 1)"
@@ -246,7 +246,7 @@ nonisolated struct ModelQuota: Codable, Identifiable, Sendable {
     }
 }
 
-nonisolated struct ProviderQuotaData: Codable, Sendable {
+struct ProviderQuotaData: Codable, Sendable {
     var models: [ModelQuota]
     var lastUpdated: Date
     var isForbidden: Bool
@@ -321,7 +321,7 @@ nonisolated struct ProviderQuotaData: Codable, Sendable {
 
 // MARK: - Subscription Info Models
 
-nonisolated struct SubscriptionTier: Codable, Sendable {
+struct SubscriptionTier: Codable, Sendable {
     let id: String
     let name: String
     let description: String
@@ -333,12 +333,12 @@ nonisolated struct SubscriptionTier: Codable, Sendable {
     let userDefinedCloudaicompanionProject: Bool?
 }
 
-nonisolated struct PrivacyNotice: Codable, Sendable {
+struct PrivacyNotice: Codable, Sendable {
     let showNotice: Bool?
     let noticeText: String?
 }
 
-nonisolated struct SubscriptionInfo: Codable, Sendable {
+struct SubscriptionInfo: Codable, Sendable {
     let currentTier: SubscriptionTier?
     let allowedTiers: [SubscriptionTier]?
     let cloudaicompanionProject: String?
@@ -380,20 +380,20 @@ nonisolated struct SubscriptionInfo: Codable, Sendable {
 
 // MARK: - API Response Models
 
-nonisolated private struct QuotaAPIResponse: Codable, Sendable {
+private struct QuotaAPIResponse: Codable, Sendable {
     let models: [String: ModelInfo]
 }
 
-nonisolated private struct ModelInfo: Codable, Sendable {
+private struct ModelInfo: Codable, Sendable {
     let quotaInfo: QuotaInfo?
 }
 
-nonisolated private struct QuotaInfo: Codable, Sendable {
+private struct QuotaInfo: Codable, Sendable {
     let remainingFraction: Double?
     let resetTime: String?
 }
 
-nonisolated private struct TokenRefreshResponse: Codable, Sendable {
+private struct TokenRefreshResponse: Codable, Sendable {
     let accessToken: String
     let expiresIn: Int
     let tokenType: String?
@@ -407,7 +407,7 @@ nonisolated private struct TokenRefreshResponse: Codable, Sendable {
 
 // MARK: - Auth File Model
 
-nonisolated struct AntigravityAuthFile: Codable, Sendable {
+struct AntigravityAuthFile: Codable, Sendable {
     var accessToken: String
     let email: String
     var expired: String?
@@ -834,7 +834,7 @@ actor AntigravityQuotaFetcher {
 
 // MARK: - Errors
 
-nonisolated enum QuotaFetchError: LocalizedError {
+enum QuotaFetchError: LocalizedError {
     case invalidURL
     case invalidResponse
     case forbidden

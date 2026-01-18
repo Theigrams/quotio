@@ -65,17 +65,3 @@ struct TunnelStatusBadge: View {
     }
 }
 
-#Preview {
-    VStack(spacing: 8) {
-        TunnelStatusBadge(status: .idle)
-        TunnelStatusBadge(status: .starting)
-        TunnelStatusBadge(status: .active)
-        TunnelStatusBadge(status: .stopping)
-        TunnelStatusBadge(status: .error)
-        
-        Divider()
-        
-        TunnelStatusBadge(status: .active, compact: true)
-    }
-    .padding()
-}

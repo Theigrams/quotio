@@ -12,7 +12,7 @@ import Foundation
 
 /// Handles error detection for cross-provider fallback
 /// Format conversion is no longer needed since fallback only works between same model types
-nonisolated struct FallbackFormatConverter {
+struct FallbackFormatConverter {
 
     /// Check if a model name is a Claude model
     static func isClaudeModel(_ modelName: String) -> Bool {

@@ -23,18 +23,3 @@ struct ExperimentalBadge: View {
     }
 }
 
-#Preview {
-    VStack(spacing: 16) {
-        HStack {
-            Text("Feature Name")
-            ExperimentalBadge()
-        }
-        
-        HStack {
-            Text("Another Feature")
-                .fontWeight(.medium)
-            ExperimentalBadge()
-        }
-    }
-    .padding()
-}

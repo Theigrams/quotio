@@ -224,10 +224,3 @@ enum GLMEndpoint: String, CaseIterable, Codable, Identifiable, Sendable {
     }
 }
 
-// MARK: - Preview
-
-#Preview {
-    GLMAPIKeySheet(provider: nil) { provider in
-        print("Saved: \(provider.name)")
-    }
-}

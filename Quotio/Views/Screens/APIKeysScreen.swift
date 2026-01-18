@@ -6,6 +6,7 @@
 import SwiftUI
 import AppKit
 
+@MainActor
 struct APIKeysScreen: View {
     @Environment(QuotaViewModel.self) private var viewModel
     
@@ -154,6 +155,7 @@ struct APIKeysScreen: View {
     }
 }
 
+@MainActor
 struct APIKeyRow: View {
     let key: String
     let isEditing: Bool
@@ -223,6 +225,7 @@ struct APIKeyRow: View {
     }
 }
 
+@MainActor
 struct AddAPIKeyRow: View {
     @Binding var newKey: String
     let onSave: () -> Void

@@ -6,18 +6,226 @@
 	objectVersion = 55;
 	objects = {
 
+		9CEB99A029E134E506FA4BEA /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A3BC07CE4191F8D0EB2E6AD3 /* Localizable.xcstrings */; };
+		AA7303A26B5B06758B203E14 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E9C2B90A5DCA5D29F2BEC039 /* Assets.xcassets */; };
 /* Begin PBXBuildFile section */
+		03D74368B3B0ECCE3343B9C6 /* AntigravityAccountSwitcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC854788BDA934ECF00750A3 /* AntigravityAccountSwitcher.swift */; };
+		04224828AC15B0AA2F72DCB7 /* CopilotQuotaFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA20410F9CEA6202EAC46D27 /* CopilotQuotaFetcher.swift */; };
+		04E6449095A92E3D97870056 /* AgentDetectionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E56454B9FECC50DCE74FE80 /* AgentDetectionService.swift */; };
+		05524F48B5FA706472040145 /* RequestLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3D84BC99CEC6A6B3DED1514 /* RequestLog.swift */; };
+		079445EBB5215CA4C3F86EF3 /* AgentSetupScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310E4427B1C8835609E94947 /* AgentSetupScreen.swift */; };
+		07A64E32BBFE268A8F78C00A /* WarmupSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582D48C2A398EADAD079A9C0 /* WarmupSheet.swift */; };
+		08AE448487A5A63BCCB2DC88 /* TunnelStatusBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB143EDA7FAF4541E47743D /* TunnelStatusBadge.swift */; };
+		08FE4C1A849EBDD2044A53D9 /* ExperimentalBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51434B408C81DDA40975F846 /* ExperimentalBadge.swift */; };
+		133F438BB0D27A97C5630A62 /* MenuBarSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557942BEB177761F6402272E /* MenuBarSettings.swift */; };
+		15F9403681682468AAE856D5 /* CloudflaredService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125B4EE985FDE1462ED43501 /* CloudflaredService.swift */; };
+		16124510A0003443C19C7918 /* QuotaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00234675A7C17CBFFD5017D4 /* QuotaViewModel.swift */; };
+		16544072BFBFFEA1601186AA /* FallbackScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26AF47EA8DFFDEEA6704DEAA /* FallbackScreen.swift */; };
+		17204BDC8B1161BB3A701871 /* IDEScanSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27874D5A9E092ADABC08CE34 /* IDEScanSettings.swift */; };
+		192246F5B4EB6DF62C68FDE8 /* TunnelModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC1649E4BAD39A5A96006219 /* TunnelModels.swift */; };
+		1AE14C0BB6096954ECB15650 /* ChecksumVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E34415086B6D1F27E759394 /* ChecksumVerifier.swift */; };
+		1CBA4255B2D6D94D7C8F4A24 /* ConnectionMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C047A09679428A7861DA03 /* ConnectionMode.swift */; };
+		1EAB4E83B13C7AEA84D9F356 /* CodexCLIQuotaFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4047F4A5D0E6C645AEA16F /* CodexCLIQuotaFetcher.swift */; };
+		20144496920CFB662AF81713 /* ProviderStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F74D53A09CA0F847D482AD /* ProviderStep.swift */; };
+		20C040BBBA889A666FEC8D1D /* WarmupSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 195E438F8D321110A559BCCF /* WarmupSettings.swift */; };
+		21604A848AB4432349AA9B31 /* CompatibilityChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99D6453BA00851D56ED532C7 /* CompatibilityChecker.swift */; };
+		27094CE589CC3413630E343C /* RequestTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669944B785C15EA1176C64B1 /* RequestTracker.swift */; };
+		2FEB4EFA8AF5D02C01116CE4 /* OnboardingFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D704ECC92D402B11DF7686A /* OnboardingFlow.swift */; };
+		326D4747B23346B910D29826 /* AgentCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABE245CFAE17A66F5798FDC7 /* AgentCard.swift */; };
+		32A64F40A054E176B97425B7 /* SmallProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37204F11906F3C46A85ECFAF /* SmallProgressView.swift */; };
+		35394F00910B2AB847C95E06 /* QuotaCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C84C9B979D200829B55F5F /* QuotaCard.swift */; };
+		36C14239867E5851D9EEAAF9 /* RemoteSetupStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E947A794A5D26D6F5F7769 /* RemoteSetupStep.swift */; };
+		36E346E381454995CC607EEF /* SwitchAccountSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7994FFD900AE3B859984570 /* SwitchAccountSheet.swift */; };
+		37C7496D937140F1BC9CE388 /* GLMAPIKeySheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83EE4886A12AD9277B45B173 /* GLMAPIKeySheet.swift */; };
+		3AAE4E2EAD70D1DB1FB1267B /* CLIProxyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B34552A2B7160994124B93 /* CLIProxyManager.swift */; };
+		3B1E4601AD35E5D89BEA8AD3 /* FallbackFormatConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5942EDA8FFE18A2E32687C /* FallbackFormatConverter.swift */; };
+		3C0F4D0A8407920C300E5EC1 /* ProxyRequiredView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBA457BAC947EE8B087D8FA /* ProxyRequiredView.swift */; };
+		3C6E4285AFCAD85D6B853C30 /* ProxyConfigurationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC0F4612954D0A167FCF6CE4 /* ProxyConfigurationService.swift */; };
+		45BC4F64856A597C925590A7 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A944420AA8A21FA2FD73245 /* Models.swift */; };
+		47C64C4397867562DF4BC2C8 /* FallbackSettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64FB413DA9B767FFF28D8BA8 /* FallbackSettingsManager.swift */; };
+		4A304887988565580ABD88B9 /* TraeQuotaFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D04FF492C6F20AEA75FFBF /* TraeQuotaFetcher.swift */; };
+		4B4B4A35934047FBA1F170EB /* TunnelSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8CC488EA595CFD920E87CB3 /* TunnelSheet.swift */; };
+		4CFD45A0B8E41D941508DCD7 /* OpenAIQuotaFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E3C4C00AAFCC9F960E435AA /* OpenAIQuotaFetcher.swift */; };
+		50574189801D9F296D00E8C1 /* StatusBarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382E43A0AA71234E1F4DD0BC /* StatusBarManager.swift */; };
+		5A5549F3BA792205E7B83F9E /* CompletionStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D2A492E82BF70F0B4A0E3A4 /* CompletionStep.swift */; };
+		629F48AF9A347737863DC1A7 /* CustomProviderModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EA54D0CA024CA5D1010FF7C /* CustomProviderModels.swift */; };
+		632C4A89956E76EE04A9BE1F /* QuotaProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F879453298C385A38492696E /* QuotaProgressBar.swift */; };
+		636F49FEA0E8D11E6F3BA971 /* AntigravityDatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF244BE7ABF14FACCF50B3D1 /* AntigravityDatabaseService.swift */; };
+		644D4AE694CA6C5FBB78A576 /* CLIExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B584DDB9CFC8C907C4783DC /* CLIExecutor.swift */; };
+		657F485993B9B33B00C16B6B /* GLMQuotaFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842442BD854A7BC76AB32EE9 /* GLMQuotaFetcher.swift */; };
+		65924AD8BA5B6239308B28E2 /* CustomProviderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5D403483F1B33245061336 /* CustomProviderService.swift */; };
+		677B4473821643A3255BE9AD /* KiroQuotaFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AD45AAB8BFD4E21D5386E8 /* KiroQuotaFetcher.swift */; };
+		6927455B8480E2EF0F11E03C /* LaunchAtLoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 894A43ADB831C191AEE5D119 /* LaunchAtLoginManager.swift */; };
+		6AA14664B8149F4593C49218 /* AddProviderPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB3496492E5AEA9DEE58A7F /* AddProviderPopover.swift */; };
+		6F474BB49A0A8057A73CCE7F /* RingProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A34099863310B80D15FC86 /* RingProgressView.swift */; };
+		705F497EB5EC4C13FBD0FDD3 /* AntigravityProtobufHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F95454E9A53A9F6D06DF256 /* AntigravityProtobufHandler.swift */; };
+		71AF496287654E1CDA2A1DB8 /* WarpConnectionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C82F482C8EF820A26A007C59 /* WarpConnectionSheet.swift */; };
+		73264C33AB3D0A5838F5ECAC /* LogsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B454B0DB807FB1A175F14FF /* LogsViewModel.swift */; };
+		75D24319876B7EB6C048F541 /* ProviderAccountsGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC364DE6B329623DC98A7D18 /* ProviderAccountsGroup.swift */; };
+		76FE4FE18A88C87D5A7DCA9A /* LanguageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22064B58B5CFAE686530BCCF /* LanguageManager.swift */; };
+		776745D695EC5CF4030D9396 /* AntigravityActiveAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346D4B1FAF90AEEBC9EF8813 /* AntigravityActiveAccount.swift */; };
+		77E84C528F596E0CDF0CEE28 /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A7F46C19B21790541C15150 /* SettingsScreen.swift */; };
 		782F8F9C2EFD797D00CE18C5 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 78D386B12EFBF30500C40FB6 /* Sparkle */; };
+		795148A0AAEBC4FF2B0B42D6 /* ProxyBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8647496C9BEBBFE31B751740 /* ProxyBridge.swift */; };
+		7FB3495E89F51F23CD4216DA /* GeminiCLIQuotaFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604E4A3699C19D7394F335B3 /* GeminiCLIQuotaFetcher.swift */; };
+		85E7496D9E86C72EB0B05F7A /* ShellProfileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC764F18BF7EB2F284D4E884 /* ShellProfileManager.swift */; };
+		89C4446A8FA7D2635349BF4D /* StatusBarMenuBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8834871AE97E5056E7542A4 /* StatusBarMenuBuilder.swift */; };
+		90C74A088270E762AB965F17 /* APIKeysScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDF4EBDA3EAF1D736D58820 /* APIKeysScreen.swift */; };
+		92B044428FD5E34ABF0595FA /* ProviderDisclosureGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0461497CB4CD73B69A60CE13 /* ProviderDisclosureGroup.swift */; };
+		932F4C7DB6A2ABCA1486ED3B /* WarpQuotaFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22E424894D2406299785624 /* WarpQuotaFetcher.swift */; };
+		94314F6D8B4772A6CCE06BB1 /* AgentConfigSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB014370B05C1DA79BA84340 /* AgentConfigSheet.swift */; };
+		9716489D82EF2D766CD4409F /* LogsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = E935470486028C5309E995E1 /* LogsScreen.swift */; };
+		98E8462F9131BCAF8C70355F /* ClaudeCodeQuotaFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DC4AF4ABABA3995A11D4F5 /* ClaudeCodeQuotaFetcher.swift */; };
+		9AD24F048B1FDE03A31370BE /* WarpService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7834F56836955852E5F7BEE /* WarpService.swift */; };
+		9F9940DABF07C19B17514F05 /* ProxyStorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57874294AD24C5FBA1F2F6CE /* ProxyStorageManager.swift */; };
+		A163439797B62AC1CCD8ABAA /* AntigravityQuotaFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFA14FA59686364F60E9D7DA /* AntigravityQuotaFetcher.swift */; };
+		A314419E97E4F4F1862B3B5C /* OperatingMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F85479F87A02D01C1397067 /* OperatingMode.swift */; };
+		A3C74C33AFBD830B120C9E48 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54544FF7A444CA4509C1958E /* Constants.swift */; };
+		A6FA4DFAA92CFA6CC06F8505 /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920D4A9B99824BBEDE8E9974 /* SidebarView.swift */; };
+		A7D14237BAD7FE862B2B6024 /* QuotioApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A194760AD8B92B87B448C8D /* QuotioApp.swift */; };
+		AA084C2BA8335D40365B16C2 /* FallbackSheets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017D4DA3A5E74508923B82A2 /* FallbackSheets.swift */; };
+		AAC14668905EB2674FE41853 /* AgentModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D14A48BF1E6EAC1A58AFB7 /* AgentModels.swift */; };
+		AF2A4E7D8A55C0FF61455F00 /* CursorQuotaFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5964381ADF57122403F86C2 /* CursorQuotaFetcher.swift */; };
+		B24A4ED08CA48664209451CC /* AppMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613E4763AE868531A77536DD /* AppMode.swift */; };
+		B6EF4DEB9BF0487C14107C4C /* QuotaScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09F4580ADBEDB83BE820761 /* QuotaScreen.swift */; };
+		BB6841F9AAC9064D0C09AAC3 /* AgentSetupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A94F1DA7A8BF39AEA12374 /* AgentSetupViewModel.swift */; };
+		BC2443FBB41D529839BBD12B /* ManagementAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74E7442D85C338B13482B6FB /* ManagementAPIClient.swift */; };
+		BC8B499295AD5B4FAE6FAAD0 /* AntigravityProcessManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B84D7E995F548495D28FE8 /* AntigravityProcessManager.swift */; };
+		BCAB41D092EB7B9E9655DC6C /* TunnelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35394C64ACA1CD6122AADB90 /* TunnelManager.swift */; };
+		C1464EE086B60E7AB84CD830 /* ModeSelectionStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A24789BC96D163D2CE5E06 /* ModeSelectionStep.swift */; };
+		C2C446DF81A3B3A17C1CEA14 /* ProxyVersionModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119A4C189B25976ABAD41419 /* ProxyVersionModels.swift */; };
+		C8E94144A7C8BE361C11408D /* FallbackModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DDC4ADF8AAF75239AC0CFD0 /* FallbackModels.swift */; };
+		C915410D94DA156C3FA95868 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFD47BE9F231E1C30929148 /* NotificationManager.swift */; };
+		CBE142C2A4CDEF16496A0A27 /* WarmupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 178F43A2A5CB402F7F48BC07 /* WarmupService.swift */; };
+		CBFC453796B8C753B53AF6F6 /* AgentConfigurationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE6412F9C1AE21D5F1D1DF8 /* AgentConfigurationService.swift */; };
+		CC5C4160927D02C928D9B808 /* DashboardScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2338491A965A8B593F03D712 /* DashboardScreen.swift */; };
+		D386401D9943C582EBDAF282 /* IDEScanSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188D4BFF82AE83BBF65F30B5 /* IDEScanSheet.swift */; };
+		D47941D4A0C4EF44B7308587 /* DirectAuthFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BF2440A997FE0AAA7FBB4E3 /* DirectAuthFileService.swift */; };
+		D59A44408666D67D311A67FF /* ProviderIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186947C3989DE89B64ADE052 /* ProviderIcon.swift */; };
+		D63945B3B8AD7853EEEF7041 /* AccountRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69004A8F915CCF14575AA414 /* AccountRow.swift */; };
+		E1554A6BBA79551FE6580380 /* ImageCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 918E4DE2B6624EB4D708365D /* ImageCacheService.swift */; };
+		E4D04D4695FE66C4DEFB7D2C /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 199F4F8BA2997065B3D916CA /* KeychainHelper.swift */; };
+		E74043EB9A826E97F47A9E18 /* CustomProviderSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06594A88A9AFE46D26898F4D /* CustomProviderSheet.swift */; };
+		F11D4E5DA09F4AA39A3A04FA /* ProvidersScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8404E81AC17B741D526DF1E /* ProvidersScreen.swift */; };
+		F26B44DCB99C4CC64DCFF15E /* AccountsEmptyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D546878CF4C9F9E2C8ECF5 /* AccountsEmptyState.swift */; };
+		F28F4E4EBB395E9EA9D7FD82 /* WelcomeStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B8454B86083DD86162EC46 /* WelcomeStep.swift */; };
+		F79749AA85997692940F04E1 /* CurrentModeBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4943338DF9C6E3B845E481 /* CurrentModeBadge.swift */; };
+		F8C84147B7CC18FF96C7B168 /* RemoteConnectionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CDC406CB8B9AA0BBE626EA2 /* RemoteConnectionSheet.swift */; };
+		FB114470A1A95902B2F0C06A /* QuotioButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7742D18E94E291175DEDB2 /* QuotioButtonStyles.swift */; };
+		FD68461AAB02D20AC8F19C29 /* UpdaterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4554486DACA4ECE4BDA28CB8 /* UpdaterService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		00234675A7C17CBFFD5017D4 /* QuotaViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = QuotaViewModel.swift; path = Quotio/ViewModels/QuotaViewModel.swift; sourceTree = SOURCE_ROOT; };
+		017D4DA3A5E74508923B82A2 /* FallbackSheets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FallbackSheets.swift; path = Quotio/Views/Components/FallbackSheets.swift; sourceTree = SOURCE_ROOT; };
+		0461497CB4CD73B69A60CE13 /* ProviderDisclosureGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProviderDisclosureGroup.swift; path = Quotio/Views/Components/ProviderDisclosureGroup.swift; sourceTree = SOURCE_ROOT; };
+		06594A88A9AFE46D26898F4D /* CustomProviderSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CustomProviderSheet.swift; path = Quotio/Views/Components/CustomProviderSheet.swift; sourceTree = SOURCE_ROOT; };
+		07A24789BC96D163D2CE5E06 /* ModeSelectionStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ModeSelectionStep.swift; path = Quotio/Views/Onboarding/ModeSelectionStep.swift; sourceTree = SOURCE_ROOT; };
+		0AE6412F9C1AE21D5F1D1DF8 /* AgentConfigurationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AgentConfigurationService.swift; path = Quotio/Services/AgentConfigurationService.swift; sourceTree = SOURCE_ROOT; };
+		119A4C189B25976ABAD41419 /* ProxyVersionModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProxyVersionModels.swift; path = Quotio/Models/ProxyVersionModels.swift; sourceTree = SOURCE_ROOT; };
+		125B4EE985FDE1462ED43501 /* CloudflaredService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CloudflaredService.swift; path = Quotio/Services/Tunnel/CloudflaredService.swift; sourceTree = SOURCE_ROOT; };
+		15A94F1DA7A8BF39AEA12374 /* AgentSetupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AgentSetupViewModel.swift; path = Quotio/ViewModels/AgentSetupViewModel.swift; sourceTree = SOURCE_ROOT; };
+		178F43A2A5CB402F7F48BC07 /* WarmupService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WarmupService.swift; path = Quotio/Services/WarmupService.swift; sourceTree = SOURCE_ROOT; };
+		186947C3989DE89B64ADE052 /* ProviderIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProviderIcon.swift; path = Quotio/Views/Components/ProviderIcon.swift; sourceTree = SOURCE_ROOT; };
+		188D4BFF82AE83BBF65F30B5 /* IDEScanSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = IDEScanSheet.swift; path = Quotio/Views/Components/IDEScanSheet.swift; sourceTree = SOURCE_ROOT; };
+		195E438F8D321110A559BCCF /* WarmupSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WarmupSettings.swift; path = Quotio/Models/WarmupSettings.swift; sourceTree = SOURCE_ROOT; };
+		199F4F8BA2997065B3D916CA /* KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = KeychainHelper.swift; path = Quotio/Services/KeychainHelper.swift; sourceTree = SOURCE_ROOT; };
+		1D704ECC92D402B11DF7686A /* OnboardingFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OnboardingFlow.swift; path = Quotio/Views/Onboarding/OnboardingFlow.swift; sourceTree = SOURCE_ROOT; };
+		22064B58B5CFAE686530BCCF /* LanguageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LanguageManager.swift; path = Quotio/Services/LanguageManager.swift; sourceTree = SOURCE_ROOT; };
+		2338491A965A8B593F03D712 /* DashboardScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DashboardScreen.swift; path = Quotio/Views/Screens/DashboardScreen.swift; sourceTree = SOURCE_ROOT; };
+		26AF47EA8DFFDEEA6704DEAA /* FallbackScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FallbackScreen.swift; path = Quotio/Views/Screens/FallbackScreen.swift; sourceTree = SOURCE_ROOT; };
+		27874D5A9E092ADABC08CE34 /* IDEScanSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = IDEScanSettings.swift; path = Quotio/Models/IDEScanSettings.swift; sourceTree = SOURCE_ROOT; };
+		29D04FF492C6F20AEA75FFBF /* TraeQuotaFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TraeQuotaFetcher.swift; path = Quotio/Services/QuotaFetchers/TraeQuotaFetcher.swift; sourceTree = SOURCE_ROOT; };
+		2EA54D0CA024CA5D1010FF7C /* CustomProviderModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CustomProviderModels.swift; path = Quotio/Models/CustomProviderModels.swift; sourceTree = SOURCE_ROOT; };
+		310E4427B1C8835609E94947 /* AgentSetupScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AgentSetupScreen.swift; path = Quotio/Views/Screens/AgentSetupScreen.swift; sourceTree = SOURCE_ROOT; };
+		346D4B1FAF90AEEBC9EF8813 /* AntigravityActiveAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AntigravityActiveAccount.swift; path = Quotio/Models/AntigravityActiveAccount.swift; sourceTree = SOURCE_ROOT; };
+		35394C64ACA1CD6122AADB90 /* TunnelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TunnelManager.swift; path = Quotio/Services/Tunnel/TunnelManager.swift; sourceTree = SOURCE_ROOT; };
+		37204F11906F3C46A85ECFAF /* SmallProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SmallProgressView.swift; path = Quotio/Views/Components/SmallProgressView.swift; sourceTree = SOURCE_ROOT; };
+		37B34552A2B7160994124B93 /* CLIProxyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CLIProxyManager.swift; path = Quotio/Services/Proxy/CLIProxyManager.swift; sourceTree = SOURCE_ROOT; };
+		382E43A0AA71234E1F4DD0BC /* StatusBarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StatusBarManager.swift; path = Quotio/Services/StatusBarManager.swift; sourceTree = SOURCE_ROOT; };
+		3B584DDB9CFC8C907C4783DC /* CLIExecutor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CLIExecutor.swift; path = Quotio/Services/CLIExecutor.swift; sourceTree = SOURCE_ROOT; };
+		3CDC406CB8B9AA0BBE626EA2 /* RemoteConnectionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RemoteConnectionSheet.swift; path = Quotio/Views/Components/RemoteConnectionSheet.swift; sourceTree = SOURCE_ROOT; };
+		3FFD47BE9F231E1C30929148 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NotificationManager.swift; path = Quotio/Services/NotificationManager.swift; sourceTree = SOURCE_ROOT; };
+		42AD45AAB8BFD4E21D5386E8 /* KiroQuotaFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = KiroQuotaFetcher.swift; path = Quotio/Services/QuotaFetchers/KiroQuotaFetcher.swift; sourceTree = SOURCE_ROOT; };
+		4554486DACA4ECE4BDA28CB8 /* UpdaterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UpdaterService.swift; path = Quotio/Services/UpdaterService.swift; sourceTree = SOURCE_ROOT; };
+		46C84C9B979D200829B55F5F /* QuotaCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = QuotaCard.swift; path = Quotio/Views/Components/QuotaCard.swift; sourceTree = SOURCE_ROOT; };
+		4A944420AA8A21FA2FD73245 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Models.swift; path = Quotio/Models/Models.swift; sourceTree = SOURCE_ROOT; };
+		4B454B0DB807FB1A175F14FF /* LogsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LogsViewModel.swift; path = Quotio/ViewModels/LogsViewModel.swift; sourceTree = SOURCE_ROOT; };
+		4F95454E9A53A9F6D06DF256 /* AntigravityProtobufHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AntigravityProtobufHandler.swift; path = Quotio/Services/Antigravity/AntigravityProtobufHandler.swift; sourceTree = SOURCE_ROOT; };
+		51434B408C81DDA40975F846 /* ExperimentalBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ExperimentalBadge.swift; path = Quotio/Views/Components/ExperimentalBadge.swift; sourceTree = SOURCE_ROOT; };
+		54544FF7A444CA4509C1958E /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = Quotio/Models/Constants.swift; sourceTree = SOURCE_ROOT; };
+		557942BEB177761F6402272E /* MenuBarSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MenuBarSettings.swift; path = Quotio/Models/MenuBarSettings.swift; sourceTree = SOURCE_ROOT; };
+		57874294AD24C5FBA1F2F6CE /* ProxyStorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProxyStorageManager.swift; path = Quotio/Services/Proxy/ProxyStorageManager.swift; sourceTree = SOURCE_ROOT; };
+		582D48C2A398EADAD079A9C0 /* WarmupSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WarmupSheet.swift; path = Quotio/Views/Components/WarmupSheet.swift; sourceTree = SOURCE_ROOT; };
+		5A194760AD8B92B87B448C8D /* QuotioApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = QuotioApp.swift; path = Quotio/QuotioApp.swift; sourceTree = SOURCE_ROOT; };
+		5E56454B9FECC50DCE74FE80 /* AgentDetectionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AgentDetectionService.swift; path = Quotio/Services/AgentDetectionService.swift; sourceTree = SOURCE_ROOT; };
+		604E4A3699C19D7394F335B3 /* GeminiCLIQuotaFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GeminiCLIQuotaFetcher.swift; path = Quotio/Services/QuotaFetchers/GeminiCLIQuotaFetcher.swift; sourceTree = SOURCE_ROOT; };
+		613E4763AE868531A77536DD /* AppMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppMode.swift; path = Quotio/Models/AppMode.swift; sourceTree = SOURCE_ROOT; };
+		64FB413DA9B767FFF28D8BA8 /* FallbackSettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FallbackSettingsManager.swift; path = Quotio/Services/FallbackSettingsManager.swift; sourceTree = SOURCE_ROOT; };
+		669944B785C15EA1176C64B1 /* RequestTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RequestTracker.swift; path = Quotio/Services/RequestTracker.swift; sourceTree = SOURCE_ROOT; };
+		69004A8F915CCF14575AA414 /* AccountRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AccountRow.swift; path = Quotio/Views/Components/AccountRow.swift; sourceTree = SOURCE_ROOT; };
+		6A7F46C19B21790541C15150 /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsScreen.swift; path = Quotio/Views/Screens/SettingsScreen.swift; sourceTree = SOURCE_ROOT; };
+		6B5D403483F1B33245061336 /* CustomProviderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CustomProviderService.swift; path = Quotio/Services/CustomProviderService.swift; sourceTree = SOURCE_ROOT; };
+		6D2A492E82BF70F0B4A0E3A4 /* CompletionStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CompletionStep.swift; path = Quotio/Views/Onboarding/CompletionStep.swift; sourceTree = SOURCE_ROOT; };
+		70E947A794A5D26D6F5F7769 /* RemoteSetupStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RemoteSetupStep.swift; path = Quotio/Views/Onboarding/RemoteSetupStep.swift; sourceTree = SOURCE_ROOT; };
+		72B8454B86083DD86162EC46 /* WelcomeStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WelcomeStep.swift; path = Quotio/Views/Onboarding/WelcomeStep.swift; sourceTree = SOURCE_ROOT; };
+		74E7442D85C338B13482B6FB /* ManagementAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ManagementAPIClient.swift; path = Quotio/Services/ManagementAPIClient.swift; sourceTree = SOURCE_ROOT; };
 		78D386942EFBF30400C40FB6 /* Quotio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Quotio.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		78D386B22EFBF30500C40FB6 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		78D386B32EFBF30500C40FB6 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		78D386B42EFBF30500C40FB6 /* Local.xcconfig.example */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Local.xcconfig.example; sourceTree = "<group>"; };
+		7F85479F87A02D01C1397067 /* OperatingMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OperatingMode.swift; path = Quotio/Models/OperatingMode.swift; sourceTree = SOURCE_ROOT; };
+		83EE4886A12AD9277B45B173 /* GLMAPIKeySheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GLMAPIKeySheet.swift; path = Quotio/Views/Components/GLMAPIKeySheet.swift; sourceTree = SOURCE_ROOT; };
+		842442BD854A7BC76AB32EE9 /* GLMQuotaFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GLMQuotaFetcher.swift; path = Quotio/Services/GLMQuotaFetcher.swift; sourceTree = SOURCE_ROOT; };
+		8647496C9BEBBFE31B751740 /* ProxyBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProxyBridge.swift; path = Quotio/Services/Proxy/ProxyBridge.swift; sourceTree = SOURCE_ROOT; };
+		894A43ADB831C191AEE5D119 /* LaunchAtLoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LaunchAtLoginManager.swift; path = Quotio/Services/LaunchAtLoginManager.swift; sourceTree = SOURCE_ROOT; };
+		8DDC4ADF8AAF75239AC0CFD0 /* FallbackModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FallbackModels.swift; path = Quotio/Models/FallbackModels.swift; sourceTree = SOURCE_ROOT; };
+		8E34415086B6D1F27E759394 /* ChecksumVerifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ChecksumVerifier.swift; path = Quotio/Services/ChecksumVerifier.swift; sourceTree = SOURCE_ROOT; };
+		8E3C4C00AAFCC9F960E435AA /* OpenAIQuotaFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OpenAIQuotaFetcher.swift; path = Quotio/Services/QuotaFetchers/OpenAIQuotaFetcher.swift; sourceTree = SOURCE_ROOT; };
+		918E4DE2B6624EB4D708365D /* ImageCacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ImageCacheService.swift; path = Quotio/Services/ImageCacheService.swift; sourceTree = SOURCE_ROOT; };
+		920D4A9B99824BBEDE8E9974 /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SidebarView.swift; path = Quotio/Views/Components/SidebarView.swift; sourceTree = SOURCE_ROOT; };
+		99D6453BA00851D56ED532C7 /* CompatibilityChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CompatibilityChecker.swift; path = Quotio/Services/CompatibilityChecker.swift; sourceTree = SOURCE_ROOT; };
+		9BF2440A997FE0AAA7FBB4E3 /* DirectAuthFileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DirectAuthFileService.swift; path = Quotio/Services/DirectAuthFileService.swift; sourceTree = SOURCE_ROOT; };
+		9C5942EDA8FFE18A2E32687C /* FallbackFormatConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FallbackFormatConverter.swift; path = Quotio/Services/Proxy/FallbackFormatConverter.swift; sourceTree = SOURCE_ROOT; };
+		A0DC4AF4ABABA3995A11D4F5 /* ClaudeCodeQuotaFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ClaudeCodeQuotaFetcher.swift; path = Quotio/Services/QuotaFetchers/ClaudeCodeQuotaFetcher.swift; sourceTree = SOURCE_ROOT; };
+		ABE245CFAE17A66F5798FDC7 /* AgentCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AgentCard.swift; path = Quotio/Views/Components/AgentCard.swift; sourceTree = SOURCE_ROOT; };
+		AC0F4612954D0A167FCF6CE4 /* ProxyConfigurationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProxyConfigurationService.swift; path = Quotio/Services/ProxyConfigurationService.swift; sourceTree = SOURCE_ROOT; };
+		AC1649E4BAD39A5A96006219 /* TunnelModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TunnelModels.swift; path = Quotio/Models/TunnelModels.swift; sourceTree = SOURCE_ROOT; };
+		AD4047F4A5D0E6C645AEA16F /* CodexCLIQuotaFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CodexCLIQuotaFetcher.swift; path = Quotio/Services/QuotaFetchers/CodexCLIQuotaFetcher.swift; sourceTree = SOURCE_ROOT; };
+		AE7742D18E94E291175DEDB2 /* QuotioButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = QuotioButtonStyles.swift; path = Quotio/Views/Components/QuotioButtonStyles.swift; sourceTree = SOURCE_ROOT; };
+		AFBA457BAC947EE8B087D8FA /* ProxyRequiredView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProxyRequiredView.swift; path = Quotio/Views/Components/ProxyRequiredView.swift; sourceTree = SOURCE_ROOT; };
+		B22E424894D2406299785624 /* WarpQuotaFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WarpQuotaFetcher.swift; path = Quotio/Services/QuotaFetchers/WarpQuotaFetcher.swift; sourceTree = SOURCE_ROOT; };
+		B7C047A09679428A7861DA03 /* ConnectionMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConnectionMode.swift; path = Quotio/Models/ConnectionMode.swift; sourceTree = SOURCE_ROOT; };
+		B8834871AE97E5056E7542A4 /* StatusBarMenuBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StatusBarMenuBuilder.swift; path = Quotio/Services/StatusBarMenuBuilder.swift; sourceTree = SOURCE_ROOT; };
+		B8CC488EA595CFD920E87CB3 /* TunnelSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TunnelSheet.swift; path = Quotio/Views/Components/TunnelSheet.swift; sourceTree = SOURCE_ROOT; };
+		BC364DE6B329623DC98A7D18 /* ProviderAccountsGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProviderAccountsGroup.swift; path = Quotio/Views/Components/ProviderAccountsGroup.swift; sourceTree = SOURCE_ROOT; };
+		C3D84BC99CEC6A6B3DED1514 /* RequestLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RequestLog.swift; path = Quotio/Models/RequestLog.swift; sourceTree = SOURCE_ROOT; };
+		C5B84D7E995F548495D28FE8 /* AntigravityProcessManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AntigravityProcessManager.swift; path = Quotio/Services/Antigravity/AntigravityProcessManager.swift; sourceTree = SOURCE_ROOT; };
+		C82F482C8EF820A26A007C59 /* WarpConnectionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WarpConnectionSheet.swift; path = Quotio/Views/Components/WarpConnectionSheet.swift; sourceTree = SOURCE_ROOT; };
+		CCB3496492E5AEA9DEE58A7F /* AddProviderPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AddProviderPopover.swift; path = Quotio/Views/Components/AddProviderPopover.swift; sourceTree = SOURCE_ROOT; };
+		CF244BE7ABF14FACCF50B3D1 /* AntigravityDatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AntigravityDatabaseService.swift; path = Quotio/Services/Antigravity/AntigravityDatabaseService.swift; sourceTree = SOURCE_ROOT; };
+		CFA14FA59686364F60E9D7DA /* AntigravityQuotaFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AntigravityQuotaFetcher.swift; path = Quotio/Services/Antigravity/AntigravityQuotaFetcher.swift; sourceTree = SOURCE_ROOT; };
+		D7834F56836955852E5F7BEE /* WarpService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WarpService.swift; path = Quotio/Services/WarpService.swift; sourceTree = SOURCE_ROOT; };
+		D7D14A48BF1E6EAC1A58AFB7 /* AgentModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AgentModels.swift; path = Quotio/Models/AgentModels.swift; sourceTree = SOURCE_ROOT; };
+		DDB143EDA7FAF4541E47743D /* TunnelStatusBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TunnelStatusBadge.swift; path = Quotio/Views/Components/TunnelStatusBadge.swift; sourceTree = SOURCE_ROOT; };
+		E1F74D53A09CA0F847D482AD /* ProviderStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProviderStep.swift; path = Quotio/Views/Onboarding/ProviderStep.swift; sourceTree = SOURCE_ROOT; };
+		E3D546878CF4C9F9E2C8ECF5 /* AccountsEmptyState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AccountsEmptyState.swift; path = Quotio/Views/Components/AccountsEmptyState.swift; sourceTree = SOURCE_ROOT; };
+		E5964381ADF57122403F86C2 /* CursorQuotaFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CursorQuotaFetcher.swift; path = Quotio/Services/QuotaFetchers/CursorQuotaFetcher.swift; sourceTree = SOURCE_ROOT; };
+		E935470486028C5309E995E1 /* LogsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LogsScreen.swift; path = Quotio/Views/Screens/LogsScreen.swift; sourceTree = SOURCE_ROOT; };
+		E9A34099863310B80D15FC86 /* RingProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RingProgressView.swift; path = Quotio/Views/Components/RingProgressView.swift; sourceTree = SOURCE_ROOT; };
+		EA20410F9CEA6202EAC46D27 /* CopilotQuotaFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CopilotQuotaFetcher.swift; path = Quotio/Services/QuotaFetchers/CopilotQuotaFetcher.swift; sourceTree = SOURCE_ROOT; };
+		EC764F18BF7EB2F284D4E884 /* ShellProfileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ShellProfileManager.swift; path = Quotio/Services/ShellProfileManager.swift; sourceTree = SOURCE_ROOT; };
+		EDDF4EBDA3EAF1D736D58820 /* APIKeysScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = APIKeysScreen.swift; path = Quotio/Views/Screens/APIKeysScreen.swift; sourceTree = SOURCE_ROOT; };
+		F09F4580ADBEDB83BE820761 /* QuotaScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = QuotaScreen.swift; path = Quotio/Views/Screens/QuotaScreen.swift; sourceTree = SOURCE_ROOT; };
+		F7994FFD900AE3B859984570 /* SwitchAccountSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SwitchAccountSheet.swift; path = Quotio/Views/Components/SwitchAccountSheet.swift; sourceTree = SOURCE_ROOT; };
+		F8404E81AC17B741D526DF1E /* ProvidersScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProvidersScreen.swift; path = Quotio/Views/Screens/ProvidersScreen.swift; sourceTree = SOURCE_ROOT; };
+		F879453298C385A38492696E /* QuotaProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = QuotaProgressBar.swift; path = Quotio/Views/Components/QuotaProgressBar.swift; sourceTree = SOURCE_ROOT; };
+		FA4943338DF9C6E3B845E481 /* CurrentModeBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CurrentModeBadge.swift; path = Quotio/Views/Components/CurrentModeBadge.swift; sourceTree = SOURCE_ROOT; };
+		FB014370B05C1DA79BA84340 /* AgentConfigSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AgentConfigSheet.swift; path = Quotio/Views/Components/AgentConfigSheet.swift; sourceTree = SOURCE_ROOT; };
+		FC854788BDA934ECF00750A3 /* AntigravityAccountSwitcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AntigravityAccountSwitcher.swift; path = Quotio/Services/Antigravity/AntigravityAccountSwitcher.swift; sourceTree = SOURCE_ROOT; };
+		A3BC07CE4191F8D0EB2E6AD3 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; name = Localizable.xcstrings; path = Quotio/Localizable.xcstrings; sourceTree = "<group>"; };
+		E9C2B90A5DCA5D29F2BEC039 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = Quotio/Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-
 
 /* Begin PBXFrameworksBuildPhase section */
 		78D386912EFBF30400C40FB6 /* Frameworks */ = {
@@ -31,12 +239,123 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		01524FB58B3F756560074E6D /* Quotio */ = {
+			isa = PBXGroup;
+			children = (
+				5A194760AD8B92B87B448C8D /* QuotioApp.swift */,
+				00234675A7C17CBFFD5017D4 /* QuotaViewModel.swift */,
+				4B454B0DB807FB1A175F14FF /* LogsViewModel.swift */,
+				15A94F1DA7A8BF39AEA12374 /* AgentSetupViewModel.swift */,
+				54544FF7A444CA4509C1958E /* Constants.swift */,
+				B7C047A09679428A7861DA03 /* ConnectionMode.swift */,
+				346D4B1FAF90AEEBC9EF8813 /* AntigravityActiveAccount.swift */,
+				7F85479F87A02D01C1397067 /* OperatingMode.swift */,
+				8DDC4ADF8AAF75239AC0CFD0 /* FallbackModels.swift */,
+				557942BEB177761F6402272E /* MenuBarSettings.swift */,
+				613E4763AE868531A77536DD /* AppMode.swift */,
+				AC1649E4BAD39A5A96006219 /* TunnelModels.swift */,
+				4A944420AA8A21FA2FD73245 /* Models.swift */,
+				27874D5A9E092ADABC08CE34 /* IDEScanSettings.swift */,
+				195E438F8D321110A559BCCF /* WarmupSettings.swift */,
+				119A4C189B25976ABAD41419 /* ProxyVersionModels.swift */,
+				2EA54D0CA024CA5D1010FF7C /* CustomProviderModels.swift */,
+				C3D84BC99CEC6A6B3DED1514 /* RequestLog.swift */,
+				D7D14A48BF1E6EAC1A58AFB7 /* AgentModels.swift */,
+				6A7F46C19B21790541C15150 /* SettingsScreen.swift */,
+				F09F4580ADBEDB83BE820761 /* QuotaScreen.swift */,
+				26AF47EA8DFFDEEA6704DEAA /* FallbackScreen.swift */,
+				2338491A965A8B593F03D712 /* DashboardScreen.swift */,
+				310E4427B1C8835609E94947 /* AgentSetupScreen.swift */,
+				E935470486028C5309E995E1 /* LogsScreen.swift */,
+				F8404E81AC17B741D526DF1E /* ProvidersScreen.swift */,
+				EDDF4EBDA3EAF1D736D58820 /* APIKeysScreen.swift */,
+				AE7742D18E94E291175DEDB2 /* QuotioButtonStyles.swift */,
+				06594A88A9AFE46D26898F4D /* CustomProviderSheet.swift */,
+				CCB3496492E5AEA9DEE58A7F /* AddProviderPopover.swift */,
+				F879453298C385A38492696E /* QuotaProgressBar.swift */,
+				51434B408C81DDA40975F846 /* ExperimentalBadge.swift */,
+				AFBA457BAC947EE8B087D8FA /* ProxyRequiredView.swift */,
+				017D4DA3A5E74508923B82A2 /* FallbackSheets.swift */,
+				FA4943338DF9C6E3B845E481 /* CurrentModeBadge.swift */,
+				37204F11906F3C46A85ECFAF /* SmallProgressView.swift */,
+				186947C3989DE89B64ADE052 /* ProviderIcon.swift */,
+				69004A8F915CCF14575AA414 /* AccountRow.swift */,
+				C82F482C8EF820A26A007C59 /* WarpConnectionSheet.swift */,
+				582D48C2A398EADAD079A9C0 /* WarmupSheet.swift */,
+				920D4A9B99824BBEDE8E9974 /* SidebarView.swift */,
+				FB014370B05C1DA79BA84340 /* AgentConfigSheet.swift */,
+				E9A34099863310B80D15FC86 /* RingProgressView.swift */,
+				188D4BFF82AE83BBF65F30B5 /* IDEScanSheet.swift */,
+				F7994FFD900AE3B859984570 /* SwitchAccountSheet.swift */,
+				DDB143EDA7FAF4541E47743D /* TunnelStatusBadge.swift */,
+				83EE4886A12AD9277B45B173 /* GLMAPIKeySheet.swift */,
+				46C84C9B979D200829B55F5F /* QuotaCard.swift */,
+				E3D546878CF4C9F9E2C8ECF5 /* AccountsEmptyState.swift */,
+				B8CC488EA595CFD920E87CB3 /* TunnelSheet.swift */,
+				BC364DE6B329623DC98A7D18 /* ProviderAccountsGroup.swift */,
+				3CDC406CB8B9AA0BBE626EA2 /* RemoteConnectionSheet.swift */,
+				0461497CB4CD73B69A60CE13 /* ProviderDisclosureGroup.swift */,
+				ABE245CFAE17A66F5798FDC7 /* AgentCard.swift */,
+				72B8454B86083DD86162EC46 /* WelcomeStep.swift */,
+				07A24789BC96D163D2CE5E06 /* ModeSelectionStep.swift */,
+				6D2A492E82BF70F0B4A0E3A4 /* CompletionStep.swift */,
+				70E947A794A5D26D6F5F7769 /* RemoteSetupStep.swift */,
+				1D704ECC92D402B11DF7686A /* OnboardingFlow.swift */,
+				E1F74D53A09CA0F847D482AD /* ProviderStep.swift */,
+				D7834F56836955852E5F7BEE /* WarpService.swift */,
+				178F43A2A5CB402F7F48BC07 /* WarmupService.swift */,
+				3B584DDB9CFC8C907C4783DC /* CLIExecutor.swift */,
+				22064B58B5CFAE686530BCCF /* LanguageManager.swift */,
+				199F4F8BA2997065B3D916CA /* KeychainHelper.swift */,
+				918E4DE2B6624EB4D708365D /* ImageCacheService.swift */,
+				6B5D403483F1B33245061336 /* CustomProviderService.swift */,
+				3FFD47BE9F231E1C30929148 /* NotificationManager.swift */,
+				842442BD854A7BC76AB32EE9 /* GLMQuotaFetcher.swift */,
+				382E43A0AA71234E1F4DD0BC /* StatusBarManager.swift */,
+				894A43ADB831C191AEE5D119 /* LaunchAtLoginManager.swift */,
+				5E56454B9FECC50DCE74FE80 /* AgentDetectionService.swift */,
+				669944B785C15EA1176C64B1 /* RequestTracker.swift */,
+				8E34415086B6D1F27E759394 /* ChecksumVerifier.swift */,
+				0AE6412F9C1AE21D5F1D1DF8 /* AgentConfigurationService.swift */,
+				74E7442D85C338B13482B6FB /* ManagementAPIClient.swift */,
+				4554486DACA4ECE4BDA28CB8 /* UpdaterService.swift */,
+				64FB413DA9B767FFF28D8BA8 /* FallbackSettingsManager.swift */,
+				9BF2440A997FE0AAA7FBB4E3 /* DirectAuthFileService.swift */,
+				AC0F4612954D0A167FCF6CE4 /* ProxyConfigurationService.swift */,
+				99D6453BA00851D56ED532C7 /* CompatibilityChecker.swift */,
+				B8834871AE97E5056E7542A4 /* StatusBarMenuBuilder.swift */,
+				EC764F18BF7EB2F284D4E884 /* ShellProfileManager.swift */,
+				37B34552A2B7160994124B93 /* CLIProxyManager.swift */,
+				8647496C9BEBBFE31B751740 /* ProxyBridge.swift */,
+				57874294AD24C5FBA1F2F6CE /* ProxyStorageManager.swift */,
+				9C5942EDA8FFE18A2E32687C /* FallbackFormatConverter.swift */,
+				B22E424894D2406299785624 /* WarpQuotaFetcher.swift */,
+				604E4A3699C19D7394F335B3 /* GeminiCLIQuotaFetcher.swift */,
+				A0DC4AF4ABABA3995A11D4F5 /* ClaudeCodeQuotaFetcher.swift */,
+				EA20410F9CEA6202EAC46D27 /* CopilotQuotaFetcher.swift */,
+				8E3C4C00AAFCC9F960E435AA /* OpenAIQuotaFetcher.swift */,
+				AD4047F4A5D0E6C645AEA16F /* CodexCLIQuotaFetcher.swift */,
+				E5964381ADF57122403F86C2 /* CursorQuotaFetcher.swift */,
+				29D04FF492C6F20AEA75FFBF /* TraeQuotaFetcher.swift */,
+				42AD45AAB8BFD4E21D5386E8 /* KiroQuotaFetcher.swift */,
+				125B4EE985FDE1462ED43501 /* CloudflaredService.swift */,
+				35394C64ACA1CD6122AADB90 /* TunnelManager.swift */,
+				CFA14FA59686364F60E9D7DA /* AntigravityQuotaFetcher.swift */,
+				CF244BE7ABF14FACCF50B3D1 /* AntigravityDatabaseService.swift */,
+				C5B84D7E995F548495D28FE8 /* AntigravityProcessManager.swift */,
+				FC854788BDA934ECF00750A3 /* AntigravityAccountSwitcher.swift */,
+				4F95454E9A53A9F6D06DF256 /* AntigravityProtobufHandler.swift */,
+			);
+			name = Quotio;
+			sourceTree = "<group>";
+		};
 		78D3868B2EFBF30400C40FB6 = {
 			isa = PBXGroup;
 			children = (
 				78D386B52EFBF30500C40FB6 /* Config */,
-				78D386962EFBF30400C40FB6 /* Quotio */,
+				78D386962EFBF30400C40FB6,
 				78D386952EFBF30400C40FB6 /* Products */,
+				01524FB58B3F756560074E6D /* Quotio */,
 			);
 			sourceTree = "<group>";
 		};
@@ -90,12 +409,12 @@
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 2327;
 				LastUpgradeCheck = 2327;
-				compatibilityVersion = "Xcode 9.4";
 				TargetAttributes = {
 					78D386932EFBF30400C40FB6 = {
 						CreatedOnToolsVersion = 15.4;
 					};
 				};
+				compatibilityVersion = "Xcode 9.4";
 			};
 			buildConfigurationList = 78D3868F2EFBF30400C40FB6 /* Build configuration list for PBXProject "Quotio" */;
 			developmentRegion = en;
@@ -106,7 +425,8 @@
 				"zh-Hans",
 				fr,
 			);
-			mainGroup = 78D3868B2EFBF30400C40FB6;			packageReferences = (
+			mainGroup = 78D3868B2EFBF30400C40FB6;
+			packageReferences = (
 				78D386B02EFBF30500C40FB6 /* XCRemoteSwiftPackageReference "Sparkle" */,
 			);
 			preferredProjectObjectVersion = 77;
@@ -124,6 +444,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9CEB99A029E134E506FA4BEA /* Localizable.xcstrings in Resources */,
+				AA7303A26B5B06758B203E14 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -134,6 +456,109 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7D14237BAD7FE862B2B6024 /* QuotioApp.swift in Sources */,
+				16124510A0003443C19C7918 /* QuotaViewModel.swift in Sources */,
+				73264C33AB3D0A5838F5ECAC /* LogsViewModel.swift in Sources */,
+				BB6841F9AAC9064D0C09AAC3 /* AgentSetupViewModel.swift in Sources */,
+				A3C74C33AFBD830B120C9E48 /* Constants.swift in Sources */,
+				1CBA4255B2D6D94D7C8F4A24 /* ConnectionMode.swift in Sources */,
+				776745D695EC5CF4030D9396 /* AntigravityActiveAccount.swift in Sources */,
+				A314419E97E4F4F1862B3B5C /* OperatingMode.swift in Sources */,
+				C8E94144A7C8BE361C11408D /* FallbackModels.swift in Sources */,
+				133F438BB0D27A97C5630A62 /* MenuBarSettings.swift in Sources */,
+				B24A4ED08CA48664209451CC /* AppMode.swift in Sources */,
+				192246F5B4EB6DF62C68FDE8 /* TunnelModels.swift in Sources */,
+				45BC4F64856A597C925590A7 /* Models.swift in Sources */,
+				17204BDC8B1161BB3A701871 /* IDEScanSettings.swift in Sources */,
+				20C040BBBA889A666FEC8D1D /* WarmupSettings.swift in Sources */,
+				C2C446DF81A3B3A17C1CEA14 /* ProxyVersionModels.swift in Sources */,
+				629F48AF9A347737863DC1A7 /* CustomProviderModels.swift in Sources */,
+				05524F48B5FA706472040145 /* RequestLog.swift in Sources */,
+				AAC14668905EB2674FE41853 /* AgentModels.swift in Sources */,
+				77E84C528F596E0CDF0CEE28 /* SettingsScreen.swift in Sources */,
+				B6EF4DEB9BF0487C14107C4C /* QuotaScreen.swift in Sources */,
+				16544072BFBFFEA1601186AA /* FallbackScreen.swift in Sources */,
+				CC5C4160927D02C928D9B808 /* DashboardScreen.swift in Sources */,
+				079445EBB5215CA4C3F86EF3 /* AgentSetupScreen.swift in Sources */,
+				9716489D82EF2D766CD4409F /* LogsScreen.swift in Sources */,
+				F11D4E5DA09F4AA39A3A04FA /* ProvidersScreen.swift in Sources */,
+				90C74A088270E762AB965F17 /* APIKeysScreen.swift in Sources */,
+				FB114470A1A95902B2F0C06A /* QuotioButtonStyles.swift in Sources */,
+				E74043EB9A826E97F47A9E18 /* CustomProviderSheet.swift in Sources */,
+				6AA14664B8149F4593C49218 /* AddProviderPopover.swift in Sources */,
+				632C4A89956E76EE04A9BE1F /* QuotaProgressBar.swift in Sources */,
+				08FE4C1A849EBDD2044A53D9 /* ExperimentalBadge.swift in Sources */,
+				3C0F4D0A8407920C300E5EC1 /* ProxyRequiredView.swift in Sources */,
+				AA084C2BA8335D40365B16C2 /* FallbackSheets.swift in Sources */,
+				F79749AA85997692940F04E1 /* CurrentModeBadge.swift in Sources */,
+				32A64F40A054E176B97425B7 /* SmallProgressView.swift in Sources */,
+				D59A44408666D67D311A67FF /* ProviderIcon.swift in Sources */,
+				D63945B3B8AD7853EEEF7041 /* AccountRow.swift in Sources */,
+				71AF496287654E1CDA2A1DB8 /* WarpConnectionSheet.swift in Sources */,
+				07A64E32BBFE268A8F78C00A /* WarmupSheet.swift in Sources */,
+				A6FA4DFAA92CFA6CC06F8505 /* SidebarView.swift in Sources */,
+				94314F6D8B4772A6CCE06BB1 /* AgentConfigSheet.swift in Sources */,
+				6F474BB49A0A8057A73CCE7F /* RingProgressView.swift in Sources */,
+				D386401D9943C582EBDAF282 /* IDEScanSheet.swift in Sources */,
+				36E346E381454995CC607EEF /* SwitchAccountSheet.swift in Sources */,
+				08AE448487A5A63BCCB2DC88 /* TunnelStatusBadge.swift in Sources */,
+				37C7496D937140F1BC9CE388 /* GLMAPIKeySheet.swift in Sources */,
+				35394F00910B2AB847C95E06 /* QuotaCard.swift in Sources */,
+				F26B44DCB99C4CC64DCFF15E /* AccountsEmptyState.swift in Sources */,
+				4B4B4A35934047FBA1F170EB /* TunnelSheet.swift in Sources */,
+				75D24319876B7EB6C048F541 /* ProviderAccountsGroup.swift in Sources */,
+				F8C84147B7CC18FF96C7B168 /* RemoteConnectionSheet.swift in Sources */,
+				92B044428FD5E34ABF0595FA /* ProviderDisclosureGroup.swift in Sources */,
+				326D4747B23346B910D29826 /* AgentCard.swift in Sources */,
+				F28F4E4EBB395E9EA9D7FD82 /* WelcomeStep.swift in Sources */,
+				C1464EE086B60E7AB84CD830 /* ModeSelectionStep.swift in Sources */,
+				5A5549F3BA792205E7B83F9E /* CompletionStep.swift in Sources */,
+				36C14239867E5851D9EEAAF9 /* RemoteSetupStep.swift in Sources */,
+				2FEB4EFA8AF5D02C01116CE4 /* OnboardingFlow.swift in Sources */,
+				20144496920CFB662AF81713 /* ProviderStep.swift in Sources */,
+				9AD24F048B1FDE03A31370BE /* WarpService.swift in Sources */,
+				CBE142C2A4CDEF16496A0A27 /* WarmupService.swift in Sources */,
+				644D4AE694CA6C5FBB78A576 /* CLIExecutor.swift in Sources */,
+				76FE4FE18A88C87D5A7DCA9A /* LanguageManager.swift in Sources */,
+				E4D04D4695FE66C4DEFB7D2C /* KeychainHelper.swift in Sources */,
+				E1554A6BBA79551FE6580380 /* ImageCacheService.swift in Sources */,
+				65924AD8BA5B6239308B28E2 /* CustomProviderService.swift in Sources */,
+				C915410D94DA156C3FA95868 /* NotificationManager.swift in Sources */,
+				657F485993B9B33B00C16B6B /* GLMQuotaFetcher.swift in Sources */,
+				50574189801D9F296D00E8C1 /* StatusBarManager.swift in Sources */,
+				6927455B8480E2EF0F11E03C /* LaunchAtLoginManager.swift in Sources */,
+				04E6449095A92E3D97870056 /* AgentDetectionService.swift in Sources */,
+				27094CE589CC3413630E343C /* RequestTracker.swift in Sources */,
+				1AE14C0BB6096954ECB15650 /* ChecksumVerifier.swift in Sources */,
+				CBFC453796B8C753B53AF6F6 /* AgentConfigurationService.swift in Sources */,
+				BC2443FBB41D529839BBD12B /* ManagementAPIClient.swift in Sources */,
+				FD68461AAB02D20AC8F19C29 /* UpdaterService.swift in Sources */,
+				47C64C4397867562DF4BC2C8 /* FallbackSettingsManager.swift in Sources */,
+				D47941D4A0C4EF44B7308587 /* DirectAuthFileService.swift in Sources */,
+				3C6E4285AFCAD85D6B853C30 /* ProxyConfigurationService.swift in Sources */,
+				21604A848AB4432349AA9B31 /* CompatibilityChecker.swift in Sources */,
+				89C4446A8FA7D2635349BF4D /* StatusBarMenuBuilder.swift in Sources */,
+				85E7496D9E86C72EB0B05F7A /* ShellProfileManager.swift in Sources */,
+				3AAE4E2EAD70D1DB1FB1267B /* CLIProxyManager.swift in Sources */,
+				795148A0AAEBC4FF2B0B42D6 /* ProxyBridge.swift in Sources */,
+				9F9940DABF07C19B17514F05 /* ProxyStorageManager.swift in Sources */,
+				3B1E4601AD35E5D89BEA8AD3 /* FallbackFormatConverter.swift in Sources */,
+				932F4C7DB6A2ABCA1486ED3B /* WarpQuotaFetcher.swift in Sources */,
+				7FB3495E89F51F23CD4216DA /* GeminiCLIQuotaFetcher.swift in Sources */,
+				98E8462F9131BCAF8C70355F /* ClaudeCodeQuotaFetcher.swift in Sources */,
+				04224828AC15B0AA2F72DCB7 /* CopilotQuotaFetcher.swift in Sources */,
+				4CFD45A0B8E41D941508DCD7 /* OpenAIQuotaFetcher.swift in Sources */,
+				1EAB4E83B13C7AEA84D9F356 /* CodexCLIQuotaFetcher.swift in Sources */,
+				AF2A4E7D8A55C0FF61455F00 /* CursorQuotaFetcher.swift in Sources */,
+				4A304887988565580ABD88B9 /* TraeQuotaFetcher.swift in Sources */,
+				677B4473821643A3255BE9AD /* KiroQuotaFetcher.swift in Sources */,
+				15F9403681682468AAE856D5 /* CloudflaredService.swift in Sources */,
+				BCAB41D092EB7B9E9655DC6C /* TunnelManager.swift in Sources */,
+				A163439797B62AC1CCD8ABAA /* AntigravityQuotaFetcher.swift in Sources */,
+				636F49FEA0E8D11E6F3BA971 /* AntigravityDatabaseService.swift in Sources */,
+				BC8B499295AD5B4FAE6FAAD0 /* AntigravityProcessManager.swift in Sources */,
+				03D74368B3B0ECCE3343B9C6 /* AntigravityAccountSwitcher.swift in Sources */,
+				705F497EB5EC4C13FBD0FDD3 /* AntigravityProtobufHandler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

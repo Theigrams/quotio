@@ -10,7 +10,7 @@ import Foundation
 // MARK: - GitHub Release Models
 
 /// GitHub release information.
-nonisolated struct GitHubRelease: Codable, Sendable {
+struct GitHubRelease: Codable, Sendable {
     let tagName: String
     let name: String?
     let body: String?
@@ -34,7 +34,7 @@ nonisolated struct GitHubRelease: Codable, Sendable {
 }
 
 /// GitHub release asset information.
-nonisolated struct GitHubAsset: Codable, Sendable {
+struct GitHubAsset: Codable, Sendable {
     let name: String
     let browserDownloadUrl: String
     let digest: String?
@@ -59,7 +59,7 @@ nonisolated struct GitHubAsset: Codable, Sendable {
 // MARK: - Proxy Version Info
 
 /// Information about a specific proxy version (simplified).
-nonisolated struct ProxyVersionInfo: Sendable, Identifiable, Equatable {
+struct ProxyVersionInfo: Sendable, Identifiable, Equatable {
     /// Semantic version string (e.g., "6.6.68-0")
     let version: String
     
@@ -104,7 +104,7 @@ nonisolated struct ProxyVersionInfo: Sendable, Identifiable, Equatable {
 // MARK: - Compatibility Check Result
 
 /// Result of a compatibility check.
-nonisolated enum CompatibilityCheckResult: Sendable {
+enum CompatibilityCheckResult: Sendable {
     case compatible
     case proxyNotResponding
     case proxyNotRunning
@@ -132,7 +132,7 @@ nonisolated enum CompatibilityCheckResult: Sendable {
 // MARK: - Proxy Manager State
 
 /// State machine for proxy upgrade flow.
-nonisolated enum ProxyManagerState: String, Sendable {
+enum ProxyManagerState: String, Sendable {
     /// No proxy is running.
     case idle
     
@@ -150,7 +150,7 @@ nonisolated enum ProxyManagerState: String, Sendable {
 }
 
 /// Information about an installed proxy version.
-nonisolated struct InstalledProxyVersion: Sendable, Identifiable, Equatable {
+struct InstalledProxyVersion: Sendable, Identifiable, Equatable {
     let version: String
     let path: String
     let installedAt: Date
@@ -162,7 +162,7 @@ nonisolated struct InstalledProxyVersion: Sendable, Identifiable, Equatable {
 // MARK: - Upgrade Errors
 
 /// Errors that can occur during proxy upgrade.
-nonisolated enum ProxyUpgradeError: LocalizedError, Sendable {
+enum ProxyUpgradeError: LocalizedError, Sendable {
     case downloadFailed(String)
     case checksumMismatch(expected: String, actual: String)
     case extractionFailed(String)

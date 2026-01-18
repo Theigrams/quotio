@@ -5,6 +5,7 @@
 
 import SwiftUI
 
+@MainActor
 struct LogsScreen: View {
     @Environment(QuotaViewModel.self) private var viewModel
     @Environment(LogsViewModel.self) private var logsViewModel
@@ -20,8 +21,8 @@ struct LogsScreen: View {
         
         var title: String {
             switch self {
-            case .requests: return "logs.tab.requests".localizedStatic()
-            case .proxyLogs: return "logs.tab.proxyLogs".localizedStatic()
+            case .requests: return "logs.tab.requests".localized()
+            case .proxyLogs: return "logs.tab.proxyLogs".localized()
             }
         }
         
@@ -287,6 +288,7 @@ struct LogsScreen: View {
 
 // MARK: - Request Row
 
+@MainActor
 struct RequestRow: View {
     let request: RequestLog
 
@@ -402,6 +404,7 @@ struct RequestRow: View {
 
 // MARK: - Stat Item
 
+@MainActor
 struct StatItem: View {
     let title: String
     let value: String
@@ -419,6 +422,7 @@ struct StatItem: View {
 
 // MARK: - Log Row
 
+@MainActor
 struct LogRow: View {
     let entry: LogEntry
     

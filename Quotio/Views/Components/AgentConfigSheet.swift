@@ -5,6 +5,7 @@
 
 import SwiftUI
 
+@MainActor
 struct AgentConfigSheet: View {
     @Bindable var viewModel: AgentSetupViewModel
     let agent: CLIAgent
@@ -981,9 +982,3 @@ private struct RawConfigView: View {
     }
 }
 
-#Preview {
-    AgentConfigSheet(
-        viewModel: AgentSetupViewModel(),
-        agent: .claudeCode
-    )
-}

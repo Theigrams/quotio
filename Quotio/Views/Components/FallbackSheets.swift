@@ -7,6 +7,7 @@ import SwiftUI
 
 // MARK: - Virtual Model Sheet
 
+@MainActor
 struct VirtualModelSheet: View {
     let virtualModel: VirtualModel?
     let onSave: (String) -> Void
@@ -95,6 +96,7 @@ struct VirtualModelSheet: View {
 
 // MARK: - Add Fallback Entry Sheet
 
+@MainActor
 struct AddFallbackEntrySheet: View {
     let virtualModelId: UUID
     let virtualModelName: String
@@ -272,7 +274,4 @@ struct AddFallbackEntrySheet: View {
 }
 
 // MARK: - UUID Extension for Sheet Binding
-
-extension UUID: @retroactive Identifiable {
-    public var id: UUID { self }
-}
+// Note: UUID already conforms to Identifiable, no extension needed in Swift 5.10

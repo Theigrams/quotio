@@ -6,6 +6,7 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
+@MainActor
 struct DashboardScreen: View {
     @Environment(QuotaViewModel.self) private var viewModel
     @AppStorage("hideGettingStarted") private var hideGettingStarted: Bool = false
@@ -805,6 +806,7 @@ struct DashboardScreen: View {
 
 // MARK: - Getting Started Step
 
+@MainActor
 struct GettingStartedStep: Identifiable {
     let id: String
     let icon: String
@@ -814,6 +816,7 @@ struct GettingStartedStep: Identifiable {
     let actionLabel: String?
 }
 
+@MainActor
 struct GettingStartedStepRow: View {
     let step: GettingStartedStep
     let onAction: () -> Void
@@ -869,6 +872,7 @@ struct GettingStartedStepRow: View {
 
 // MARK: - KPI Card
 
+@MainActor
 struct KPICard: View {
     let title: String
     let value: String
@@ -897,6 +901,7 @@ struct KPICard: View {
 
 // MARK: - Provider Chip
 
+@MainActor
 struct ProviderChip: View {
     let provider: AIProvider
     let count: Int
@@ -921,6 +926,7 @@ struct ProviderChip: View {
 
 // MARK: - Flow Layout
 
+@MainActor
 struct FlowLayout: Layout {
     var spacing: CGFloat = 8
     
@@ -963,6 +969,7 @@ struct FlowLayout: Layout {
 
 // MARK: - Quota Provider Row (for Quota-Only Mode Dashboard)
 
+@MainActor
 struct QuotaProviderRow: View {
     let provider: AIProvider
     let accounts: [String: ProviderQuotaData]

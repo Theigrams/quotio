@@ -5,6 +5,7 @@
 
 import SwiftUI
 
+@MainActor
 struct ProviderStep: View {
     @Bindable var viewModel: OnboardingViewModel
     
@@ -90,6 +91,7 @@ struct ProviderStep: View {
     }
 }
 
+@MainActor
 struct ProviderPreviewCard: View {
     let provider: AIProvider
     
@@ -109,6 +111,3 @@ struct ProviderPreviewCard: View {
     }
 }
 
-#Preview {
-    ProviderStep(viewModel: OnboardingViewModel())
-}

@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+@MainActor
 struct IDEScanSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(QuotaViewModel.self) private var viewModel
@@ -314,7 +315,3 @@ struct IDEScanSheet: View {
     }
 }
 
-#Preview {
-    IDEScanSheet(onScanComplete: {})
-        .environment(QuotaViewModel())
-}

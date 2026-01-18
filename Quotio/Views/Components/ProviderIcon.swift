@@ -56,14 +56,3 @@ extension View {
     }
 }
 
-#Preview {
-    VStack(spacing: 16) {
-        ForEach(AIProvider.allCases) { provider in
-            HStack {
-                ProviderIcon(provider: provider, size: 32)
-                Text(provider.displayName)
-            }
-        }
-    }
-    .padding()
-}

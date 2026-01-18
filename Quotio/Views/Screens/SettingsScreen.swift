@@ -6,6 +6,7 @@
 import SwiftUI
 import AppKit
 
+@MainActor
 struct SettingsScreen: View {
     @Environment(QuotaViewModel.self) private var viewModel
     private let modeManager = OperatingModeManager.shared
@@ -90,6 +91,7 @@ struct SettingsScreen: View {
 
 // MARK: - Operating Mode Section
 
+@MainActor
 struct OperatingModeSection: View {
     @Environment(QuotaViewModel.self) private var viewModel
     private let modeManager = OperatingModeManager.shared
@@ -189,6 +191,7 @@ struct OperatingModeSection: View {
 
 // MARK: - Remote Server Section
 
+@MainActor
 struct RemoteServerSection: View {
     @Environment(QuotaViewModel.self) private var viewModel
     @State private var showRemoteConfigSheet = false
@@ -333,6 +336,7 @@ struct RemoteServerSection: View {
 // Works for both Local Proxy and Remote Proxy modes
 // Uses ManagementAPIClient for hot-reload settings
 
+@MainActor
 struct UnifiedProxySettingsSection: View {
     @Environment(QuotaViewModel.self) private var viewModel
     @State private var modeManager = OperatingModeManager.shared
@@ -683,6 +687,7 @@ struct UnifiedProxySettingsSection: View {
 
 // MARK: - Local Proxy Server Section
 
+@MainActor
 struct LocalProxyServerSection: View {
     @Environment(QuotaViewModel.self) private var viewModel
     @AppStorage("autoStartProxy") private var autoStartProxy = false
@@ -731,7 +736,6 @@ struct LocalProxyServerSection: View {
                 .onChange(of: allowNetworkAccess) { _, newValue in
                     viewModel.proxyManager.allowNetworkAccess = newValue
                 }
-                
 
         } header: {
             Label("settings.proxyServer".localized(), systemImage: "server.rack")
@@ -745,6 +749,7 @@ struct LocalProxyServerSection: View {
     }
 }
 
+@MainActor
 struct NetworkAccessSection: View {
     @Binding var allowNetworkAccess: Bool
     
@@ -779,6 +784,7 @@ struct NetworkAccessSection: View {
 
 // MARK: - Local Paths Section
 
+@MainActor
 struct LocalPathsSection: View {
     @Environment(QuotaViewModel.self) private var viewModel
     
@@ -803,6 +809,7 @@ struct LocalPathsSection: View {
 
 // MARK: - Path Label
 
+@MainActor
 struct PathLabel: View {
     let path: String
     
@@ -827,6 +834,7 @@ struct PathLabel: View {
     }
 }
 
+@MainActor
 struct NotificationSettingsSection: View {
     private let notificationManager = NotificationManager.shared
     
@@ -897,6 +905,7 @@ struct NotificationSettingsSection: View {
 
 // MARK: - Quota Display Settings Section
 
+@MainActor
 struct QuotaDisplaySettingsSection: View {
     @State private var settings = MenuBarSettingsManager.shared
     
@@ -939,6 +948,7 @@ struct QuotaDisplaySettingsSection: View {
 
 // MARK: - Refresh Cadence Settings Section
 
+@MainActor
 struct RefreshCadenceSettingsSection: View {
     @Environment(QuotaViewModel.self) private var viewModel
     @State private var refreshSettings = RefreshSettingsManager.shared
@@ -978,6 +988,7 @@ struct RefreshCadenceSettingsSection: View {
 
 // MARK: - Update Settings Section
 
+@MainActor
 struct UpdateSettingsSection: View {
     @AppStorage("autoCheckUpdates") private var autoCheckUpdates = true
     
@@ -1020,6 +1031,7 @@ struct UpdateSettingsSection: View {
 
 // MARK: - Proxy Update Settings Section
 
+@MainActor
 struct ProxyUpdateSettingsSection: View {
     @Environment(QuotaViewModel.self) private var viewModel
     @State private var isCheckingForUpdate = false
@@ -1179,6 +1191,7 @@ struct ProxyUpdateSettingsSection: View {
 
 // MARK: - Proxy Version Manager Sheet
 
+@MainActor
 struct ProxyVersionManagerSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(QuotaViewModel.self) private var viewModel
@@ -1607,6 +1620,7 @@ private struct AvailableVersionRow: View {
 
 // MARK: - Menu Bar Settings Section
 
+@MainActor
 struct MenuBarSettingsSection: View {
     private let settings = MenuBarSettingsManager.shared
     @AppStorage("showInDock") private var showInDock = true
@@ -1689,6 +1703,7 @@ struct MenuBarSettingsSection: View {
 
 // MARK: - Appearance Settings Section
 
+@MainActor
 struct AppearanceSettingsSection: View {
     @State private var appearanceManager = AppearanceManager.shared
     
@@ -1718,6 +1733,7 @@ struct AppearanceSettingsSection: View {
 
 // MARK: - Privacy Settings Section
 
+@MainActor
 struct PrivacySettingsSection: View {
     @State private var settings = MenuBarSettingsManager.shared
     
@@ -1740,6 +1756,7 @@ struct PrivacySettingsSection: View {
     }
 }
 
+@MainActor
 struct GeneralSettingsTab: View {
     @AppStorage("autoStartProxy") private var autoStartProxy = false
     
@@ -1779,6 +1796,7 @@ struct GeneralSettingsTab: View {
     }
 }
 
+@MainActor
 struct AboutTab: View {
     var body: some View {
         VStack(spacing: 16) {
@@ -1806,6 +1824,7 @@ struct AboutTab: View {
 
 // MARK: - About Screen (New Full-Page Version)
 
+@MainActor
 struct AboutScreen: View {
     @State private var showCopiedToast = false
     @State private var isHoveringVersion = false
@@ -2021,6 +2040,7 @@ struct AboutScreen: View {
 
 // MARK: - About Update Section
 
+@MainActor
 struct AboutUpdateSection: View {
     @AppStorage("autoCheckUpdates") private var autoCheckUpdates = true
     
@@ -2077,6 +2097,7 @@ struct AboutUpdateSection: View {
 
 // MARK: - About Proxy Update Section
 
+@MainActor
 struct AboutProxyUpdateSection: View {
     @Environment(QuotaViewModel.self) private var viewModel
     @State private var isCheckingForUpdate = false
@@ -2242,6 +2263,7 @@ struct AboutProxyUpdateSection: View {
 
 // MARK: - Version Badge
 
+@MainActor
 struct VersionBadge: View {
     let label: String
     let value: String
@@ -2294,6 +2316,7 @@ struct VersionBadge: View {
 
 // MARK: - About Update Card
 
+@MainActor
 struct AboutUpdateCard: View {
     @AppStorage("autoCheckUpdates") private var autoCheckUpdates = true
     @State private var isHovered = false
@@ -2385,6 +2408,7 @@ struct AboutUpdateCard: View {
 
 // MARK: - About Proxy Update Card
 
+@MainActor
 struct AboutProxyUpdateCard: View {
     @Environment(QuotaViewModel.self) private var viewModel
     @State private var isHovered = false
@@ -2571,6 +2595,7 @@ struct AboutProxyUpdateCard: View {
 
 // MARK: - Link Card
 
+@MainActor
 struct LinkCard: View {
     let title: String
     let icon: String
@@ -2658,6 +2683,7 @@ struct LinkCard: View {
 
 // MARK: - Management Key Row
 
+@MainActor
 struct ManagementKeyRow: View {
     @Environment(QuotaViewModel.self) private var viewModel
     @State private var settings = MenuBarSettingsManager.shared
@@ -2752,6 +2778,7 @@ struct ManagementKeyRow: View {
 
 /// Reusable toggle component for Launch at Login functionality
 /// Uses LaunchAtLoginManager for proper SMAppService handling
+@MainActor
 struct LaunchAtLoginToggle: View {
     private let launchManager = LaunchAtLoginManager.shared
     @State private var showError = false
@@ -2810,6 +2837,7 @@ struct LaunchAtLoginToggle: View {
 
 // MARK: - Usage Display Settings Section
 
+@MainActor
 struct UsageDisplaySettingsSection: View {
     @State private var settings = MenuBarSettingsManager.shared
     

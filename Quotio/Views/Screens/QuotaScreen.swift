@@ -5,6 +5,7 @@
 
 import SwiftUI
 
+@MainActor
 struct QuotaScreen: View {
     @Environment(QuotaViewModel.self) private var viewModel
     private let modeManager = OperatingModeManager.shared
@@ -237,6 +238,7 @@ fileprivate struct QuotaDisplayHelper {
 
 // MARK: - Provider Segment Button
 
+@MainActor
 private struct ProviderSegmentButton: View {
     let provider: AIProvider
     let quotaPercent: Double?
@@ -315,6 +317,7 @@ private struct ProviderSegmentButton: View {
 
 // MARK: - Quota Status Dot
 
+@MainActor
 private struct QuotaStatusDot: View {
     let usedPercent: Double
     let size: CGFloat
@@ -334,6 +337,7 @@ private struct QuotaStatusDot: View {
 
 // MARK: - Provider Quota View
 
+@MainActor
 private struct ProviderQuotaView: View {
     let provider: AIProvider
     let authFiles: [AuthFile]
@@ -428,6 +432,7 @@ private struct AccountInfo {
 
 // MARK: - Account Quota Card V2
 
+@MainActor
 private struct AccountQuotaCardV2: View {
     @Environment(QuotaViewModel.self) private var viewModel
     
@@ -840,6 +845,7 @@ private struct AccountQuotaCardV2: View {
 
 // MARK: - Plan Badge V2 Compact (for header inline display)
 
+@MainActor
 private struct PlanBadgeV2Compact: View {
     let planName: String
     
@@ -894,6 +900,7 @@ private struct PlanBadgeV2Compact: View {
 
 // MARK: - Plan Badge V2
 
+@MainActor
 private struct PlanBadgeV2: View {
     let planName: String
     
@@ -949,6 +956,7 @@ private struct PlanBadgeV2: View {
 
 // MARK: - Subscription Badge V2
 
+@MainActor
 private struct SubscriptionBadgeV2: View {
     let info: SubscriptionInfo
     
@@ -1000,6 +1008,7 @@ private struct AntigravityDisplayGroup: Identifiable {
 
 // MARK: - Antigravity Group Row
 
+@MainActor
 private struct AntigravityGroupRow: View {
     let group: AntigravityDisplayGroup
     
@@ -1077,6 +1086,7 @@ private struct AntigravityGroupRow: View {
 
 // MARK: - Antigravity Lowest Bar Layout
 
+@MainActor
 private struct AntigravityLowestBarLayout: View {
     let groups: [AntigravityDisplayGroup]
     
@@ -1158,6 +1168,7 @@ private struct AntigravityLowestBarLayout: View {
 
 // MARK: - Antigravity Ring Layout
 
+@MainActor
 private struct AntigravityRingLayout: View {
     let groups: [AntigravityDisplayGroup]
     
@@ -1199,6 +1210,7 @@ private struct AntigravityRingLayout: View {
 
 // MARK: - Standard Lowest Bar Layout
 
+@MainActor
 private struct StandardLowestBarLayout: View {
     let models: [ModelQuota]
     
@@ -1291,6 +1303,7 @@ private struct StandardLowestBarLayout: View {
 
 // MARK: - Standard Ring Layout
 
+@MainActor
 private struct StandardRingLayout: View {
     let models: [ModelQuota]
     
@@ -1338,6 +1351,7 @@ private struct StandardRingLayout: View {
 
 // MARK: - Antigravity Models Detail Sheet
 
+@MainActor
 private struct AntigravityModelsDetailSheet: View {
     let email: String
     let models: [ModelQuota]
@@ -1407,6 +1421,7 @@ private struct AntigravityModelsDetailSheet: View {
 
 // MARK: - Model Detail Card (for sheet)
 
+@MainActor
 private struct ModelDetailCard: View {
     let model: ModelQuota
     
@@ -1474,6 +1489,7 @@ private struct ModelDetailCard: View {
 
 // MARK: - Usage Row V2
 
+@MainActor
 private struct UsageRowV2: View {
     let name: String
     let icon: String?
@@ -1562,6 +1578,7 @@ private struct UsageRowV2: View {
 
 // MARK: - Loading View
 
+@MainActor
 private struct QuotaLoadingView: View {
     @State private var isAnimating = false
     
@@ -1590,10 +1607,3 @@ private struct QuotaLoadingView: View {
     }
 }
 
-// MARK: - Preview
-
-#Preview {
-    QuotaScreen()
-        .environment(QuotaViewModel())
-        .frame(width: 600, height: 500)
-}

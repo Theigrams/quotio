@@ -9,14 +9,14 @@
 import Foundation
 
 /// API fetch result type
-nonisolated enum ClaudeAPIResult: Sendable {
+enum ClaudeAPIResult: Sendable {
     case success(ClaudeCodeQuotaInfo)
     case authenticationError  // Token expired or invalid - needs re-authentication
     case otherError
 }
 
 /// Quota data from Claude Code OAuth API
-nonisolated struct ClaudeCodeQuotaInfo: Sendable {
+struct ClaudeCodeQuotaInfo: Sendable {
     let accessToken: String?
     let email: String?
 

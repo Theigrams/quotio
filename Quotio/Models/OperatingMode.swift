@@ -24,17 +24,17 @@ enum OperatingMode: String, Codable, CaseIterable, Identifiable, Sendable {
     
     var displayName: String {
         switch self {
-        case .monitor: return "onboarding.mode.monitor.title".localizedStatic()
-        case .localProxy: return "onboarding.mode.localProxy.title".localizedStatic()
-        case .remoteProxy: return "onboarding.mode.remoteProxy.title".localizedStatic()
+        case .monitor: return "onboarding.mode.monitor.title".localized()
+        case .localProxy: return "onboarding.mode.localProxy.title".localized()
+        case .remoteProxy: return "onboarding.mode.remoteProxy.title".localized()
         }
     }
     
     var description: String {
         switch self {
-        case .monitor: return "onboarding.mode.monitor.description".localizedStatic()
-        case .localProxy: return "onboarding.mode.localProxy.description".localizedStatic()
-        case .remoteProxy: return "onboarding.mode.remoteProxy.description".localizedStatic()
+        case .monitor: return "onboarding.mode.monitor.description".localized()
+        case .localProxy: return "onboarding.mode.localProxy.description".localized()
+        case .remoteProxy: return "onboarding.mode.remoteProxy.description".localized()
         }
     }
     
@@ -56,9 +56,9 @@ enum OperatingMode: String, Codable, CaseIterable, Identifiable, Sendable {
     
     var badge: String? {
         switch self {
-        case .monitor: return "onboarding.mode.badge.default".localizedStatic()
+        case .monitor: return "onboarding.mode.badge.default".localized()
         case .localProxy: return nil
-        case .remoteProxy: return "badge.experimental".localizedStatic()
+        case .remoteProxy: return "badge.experimental".localized()
         }
     }
     
@@ -68,21 +68,21 @@ enum OperatingMode: String, Codable, CaseIterable, Identifiable, Sendable {
         switch self {
         case .monitor:
             return [
-                "onboarding.mode.monitor.feature1".localizedStatic(),
-                "onboarding.mode.monitor.feature2".localizedStatic(),
-                "onboarding.mode.monitor.feature3".localizedStatic()
+                "onboarding.mode.monitor.feature1".localized(),
+                "onboarding.mode.monitor.feature2".localized(),
+                "onboarding.mode.monitor.feature3".localized()
             ]
         case .localProxy:
             return [
-                "onboarding.mode.localProxy.feature1".localizedStatic(),
-                "onboarding.mode.localProxy.feature2".localizedStatic(),
-                "onboarding.mode.localProxy.feature3".localizedStatic()
+                "onboarding.mode.localProxy.feature1".localized(),
+                "onboarding.mode.localProxy.feature2".localized(),
+                "onboarding.mode.localProxy.feature3".localized()
             ]
         case .remoteProxy:
             return [
-                "onboarding.mode.remoteProxy.feature1".localizedStatic(),
-                "onboarding.mode.remoteProxy.feature2".localizedStatic(),
-                "onboarding.mode.remoteProxy.feature3".localizedStatic()
+                "onboarding.mode.remoteProxy.feature1".localized(),
+                "onboarding.mode.remoteProxy.feature2".localized(),
+                "onboarding.mode.remoteProxy.feature3".localized()
             ]
         }
     }

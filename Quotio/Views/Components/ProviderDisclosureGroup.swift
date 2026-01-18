@@ -11,6 +11,7 @@ import SwiftUI
 // MARK: - Provider Disclosure Group
 
 /// A collapsible disclosure group that displays all accounts for a specific provider
+@MainActor
 struct ProviderDisclosureGroup: View {
     let provider: AIProvider
     let accounts: [AccountRowData]
@@ -80,50 +81,3 @@ struct ProviderDisclosureGroup: View {
     }
 }
 
-// MARK: - Preview
-
-#Preview {
-    List {
-        ProviderDisclosureGroup(
-            provider: .gemini,
-            accounts: [
-                AccountRowData(
-                    id: "1",
-                    provider: .gemini,
-                    displayName: "user@gmail.com",
-                    source: .proxy,
-                    status: "ready",
-                    statusMessage: nil,
-                    isDisabled: false,
-                    canDelete: true
-                ),
-                AccountRowData(
-                    id: "2",
-                    provider: .gemini,
-                    displayName: "work@company.com",
-                    source: .proxy,
-                    status: "cooling",
-                    statusMessage: "Rate limited",
-                    isDisabled: false,
-                    canDelete: true
-                )
-            ]
-        )
-        
-        ProviderDisclosureGroup(
-            provider: .cursor,
-            accounts: [
-                AccountRowData(
-                    id: "3",
-                    provider: .cursor,
-                    displayName: "dev@example.com",
-                    source: .autoDetected,
-                    status: nil,
-                    statusMessage: nil,
-                    isDisabled: false,
-                    canDelete: false
-                )
-            ]
-        )
-    }
-}

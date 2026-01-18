@@ -16,14 +16,15 @@ enum AccountSource: Equatable {
     
     var displayName: String {
         switch self {
-        case .proxy: return "providers.source.proxy".localizedStatic()
-        case .direct: return "providers.source.disk".localizedStatic()
-        case .autoDetected: return "providers.autoDetected".localizedStatic()
+        case .proxy: return "providers.source.proxy".localized()
+        case .direct: return "providers.source.disk".localized()
+        case .autoDetected: return "providers.autoDetected".localized()
         }
     }
 }
 
 /// Unified data model for account display
+@MainActor
 struct AccountRowData: Identifiable, Hashable {
     let id: String
     let provider: AIProvider
@@ -123,6 +124,7 @@ struct AccountRowData: Identifiable, Hashable {
 
 // MARK: - AccountRow View
 
+@MainActor
 struct AccountRow: View {
     let account: AccountRowData
     var onDelete: (() -> Void)?
@@ -329,48 +331,3 @@ struct AccountRow: View {
     }
 }
 
-// MARK: - Preview
-
-#Preview {
-    List {
-        AccountRow(
-            account: AccountRowData(
-                id: "1",
-                provider: .gemini,
-                displayName: "user@gmail.com",
-                source: .proxy,
-                status: "ready",
-                statusMessage: nil,
-                isDisabled: false,
-                canDelete: true
-            ),
-            onDelete: {}
-        )
-        
-        AccountRow(
-            account: AccountRowData(
-                id: "2",
-                provider: .claude,
-                displayName: "work@company.com",
-                source: .direct,
-                status: nil,
-                statusMessage: nil,
-                isDisabled: false,
-                canDelete: false
-            )
-        )
-        
-        AccountRow(
-            account: AccountRowData(
-                id: "3",
-                provider: .cursor,
-                displayName: "dev@example.com",
-                source: .autoDetected,
-                status: nil,
-                statusMessage: nil,
-                isDisabled: false,
-                canDelete: false
-            )
-        )
-    }
-}

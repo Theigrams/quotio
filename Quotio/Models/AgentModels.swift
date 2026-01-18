@@ -8,7 +8,7 @@ import SwiftUI
 
 // MARK: - CLI Agent Types
 
-nonisolated enum CLIAgent: String, CaseIterable, Identifiable, Codable, Sendable {
+enum CLIAgent: String, CaseIterable, Identifiable, Codable, Sendable {
     case claudeCode = "claude-code"
     case codexCLI = "codex"
     case geminiCLI = "gemini-cli"
@@ -109,7 +109,7 @@ nonisolated enum CLIAgent: String, CaseIterable, Identifiable, Codable, Sendable
 
 // MARK: - Configuration Types
 
-nonisolated enum AgentConfigType: String, Codable, Sendable {
+enum AgentConfigType: String, Codable, Sendable {
     case environment = "env"
     case file = "file"
     case both = "both"
@@ -118,7 +118,7 @@ nonisolated enum AgentConfigType: String, Codable, Sendable {
 // MARK: - Configuration Setup Mode
 
 /// Determines whether to use proxy or default provider endpoints
-nonisolated enum ConfigurationSetup: String, CaseIterable, Identifiable, Codable, Sendable {
+enum ConfigurationSetup: String, CaseIterable, Identifiable, Codable, Sendable {
     case proxy = "proxy"
     case defaultSetup = "default"
     
@@ -126,15 +126,15 @@ nonisolated enum ConfigurationSetup: String, CaseIterable, Identifiable, Codable
     
     var displayName: String {
         switch self {
-        case .proxy: return "agents.setup.proxy".localizedStatic()
-        case .defaultSetup: return "agents.setup.default".localizedStatic()
+        case .proxy: return "agents.setup.proxy".localized()
+        case .defaultSetup: return "agents.setup.default".localized()
         }
     }
     
     var description: String {
         switch self {
-        case .proxy: return "agents.setup.proxy.desc".localizedStatic()
-        case .defaultSetup: return "agents.setup.default.desc".localizedStatic()
+        case .proxy: return "agents.setup.proxy.desc".localized()
+        case .defaultSetup: return "agents.setup.default.desc".localized()
         }
     }
     
@@ -148,7 +148,7 @@ nonisolated enum ConfigurationSetup: String, CaseIterable, Identifiable, Codable
 
 // MARK: - Configuration Mode
 
-nonisolated enum ConfigurationMode: String, CaseIterable, Identifiable, Codable, Sendable {
+enum ConfigurationMode: String, CaseIterable, Identifiable, Codable, Sendable {
     case automatic = "automatic"
     case manual = "manual"
 
@@ -176,7 +176,7 @@ nonisolated enum ConfigurationMode: String, CaseIterable, Identifiable, Codable,
     }
 }
 
-nonisolated enum ConfigStorageOption: String, CaseIterable, Identifiable, Codable, Sendable {
+enum ConfigStorageOption: String, CaseIterable, Identifiable, Codable, Sendable {
     case jsonOnly = "json"
     case shellOnly = "shell"
     case both = "both"
@@ -194,7 +194,7 @@ nonisolated enum ConfigStorageOption: String, CaseIterable, Identifiable, Codabl
 
 // MARK: - Model Slots
 
-nonisolated enum ModelSlot: String, CaseIterable, Identifiable, Codable, Sendable {
+enum ModelSlot: String, CaseIterable, Identifiable, Codable, Sendable {
     case opus = "opus"
     case sonnet = "sonnet"
     case haiku = "haiku"
@@ -216,7 +216,7 @@ nonisolated enum ModelSlot: String, CaseIterable, Identifiable, Codable, Sendabl
 
 // MARK: - Available Models for Routing
 
-nonisolated struct AvailableModel: Identifiable, Codable, Hashable, Sendable {
+struct AvailableModel: Identifiable, Codable, Hashable, Sendable {
     let id: String
     let name: String
     let provider: String
@@ -262,7 +262,7 @@ nonisolated struct AvailableModel: Identifiable, Codable, Hashable, Sendable {
 
 // MARK: - Agent Status
 
-nonisolated struct AgentStatus: Identifiable, Sendable {
+struct AgentStatus: Identifiable, Sendable {
     let agent: CLIAgent
     var installed: Bool
     var configured: Bool
@@ -295,7 +295,7 @@ nonisolated struct AgentStatus: Identifiable, Sendable {
 
 // MARK: - Agent Configuration
 
-nonisolated struct AgentConfiguration: Codable, Sendable {
+struct AgentConfiguration: Codable, Sendable {
     let agent: CLIAgent
     var modelSlots: [ModelSlot: String]
     var proxyURL: String
@@ -335,7 +335,7 @@ nonisolated struct AgentConfiguration: Codable, Sendable {
 
 // MARK: - Raw Configuration Output (for Manual Mode)
 
-nonisolated struct RawConfigOutput: Sendable {
+struct RawConfigOutput: Sendable {
     let format: ConfigFormat
     let content: String
     let filename: String?
@@ -352,7 +352,7 @@ nonisolated struct RawConfigOutput: Sendable {
 
 // MARK: - Configuration Result
 
-nonisolated struct AgentConfigResult: Sendable {
+struct AgentConfigResult: Sendable {
     let success: Bool
     let configType: AgentConfigType
     let mode: ConfigurationMode
@@ -410,7 +410,7 @@ nonisolated struct AgentConfigResult: Sendable {
 
 // MARK: - Shell Profile
 
-nonisolated enum ShellType: String, CaseIterable, Sendable {
+enum ShellType: String, CaseIterable, Sendable {
     case zsh = "zsh"
     case bash = "bash"
     case fish = "fish"
@@ -434,7 +434,7 @@ nonisolated enum ShellType: String, CaseIterable, Sendable {
 
 // MARK: - Connection Test Result
 
-nonisolated struct ConnectionTestResult: Sendable {
+struct ConnectionTestResult: Sendable {
     let success: Bool
     let message: String
     let latencyMs: Int?
@@ -446,7 +446,7 @@ nonisolated struct ConnectionTestResult: Sendable {
 /// Cache wrapper for available models with TTL support
 /// - TTL: 24 hours (models list changes infrequently)
 /// - Stale threshold: 1 hour (triggers background refresh)
-nonisolated struct ModelCache: Codable, Sendable {
+struct ModelCache: Codable, Sendable {
     let models: [AvailableModel]
     let timestamp: Date
     let agentId: String

@@ -5,6 +5,7 @@
 
 import SwiftUI
 
+@MainActor
 struct RemoteConnectionSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(QuotaViewModel.self) private var viewModel
@@ -325,6 +326,7 @@ struct RemoteConnectionSheet: View {
     }
 }
 
+@MainActor
 struct RemoteTestResult {
     let success: Bool
     let message: String?

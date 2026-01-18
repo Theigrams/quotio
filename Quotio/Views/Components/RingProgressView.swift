@@ -45,11 +45,3 @@ struct RingProgressView: View {
     }
 }
 
-#Preview {
-    HStack(spacing: 20) {
-        RingProgressView(percent: 75, tint: .green, showLabel: true)
-        RingProgressView(percent: 30, tint: .yellow, showLabel: true)
-        RingProgressView(percent: 5, tint: .red, showLabel: true)
-    }
-    .padding()
-}

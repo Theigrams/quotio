@@ -11,6 +11,7 @@ import Sparkle
 #endif
 
 @main
+@MainActor
 struct QuotioApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     @State private var viewModel = QuotaViewModel()
@@ -105,73 +106,12 @@ struct QuotioApp: App {
     
     var body: some Scene {
         Window("Quotio", id: "main") {
-            ContentView()
-                .id(languageManager.currentLanguage) // Force re-render on language change
-                .environment(viewModel)
-                .environment(logsViewModel)
-                .environment(\.locale, languageManager.locale)
-                .task {
-                    // Only initialize once, not every time the window appears
-                    guard !hasInitialized else { return }
-                    hasInitialized = true
-                    await initializeApp()
-                }
-                .onChange(of: viewModel.proxyManager.proxyStatus.running) {
-                    updateStatusBar()
-                }
-                .onChange(of: viewModel.isLoadingQuotas) {
-                    updateStatusBar()
-                    // Rebuild menu when loading state changes so loader updates
-                    statusBarManager.rebuildMenuInPlace()
-                }
-                .onChange(of: languageManager.currentLanguage) { _, _ in
-                    // Rebuild menu bar when language changes
-                    statusBarManager.rebuildMenuInPlace()
-                }
-                .onChange(of: menuBarSettings.showQuotaInMenuBar) {
-                    updateStatusBar()
-                }
-                .onChange(of: menuBarSettings.showMenuBarIcon) {
-                    updateStatusBar()
-                }
-                .onChange(of: menuBarSettings.selectedItems) {
-                    updateStatusBar()
-                }
-                .onChange(of: menuBarSettings.colorMode) {
-                    updateStatusBar()
-                }
-                .onChange(of: menuBarSettings.totalUsageMode) {
-                    updateStatusBar()
-                    statusBarManager.rebuildMenuInPlace()
-                }
-                .onChange(of: menuBarSettings.modelAggregationMode) {
-                    updateStatusBar()
-                    statusBarManager.rebuildMenuInPlace()
-                }
-                .onChange(of: modeManager.currentMode) {
-                    updateStatusBar()
-                }
-                .onChange(of: viewModel.providerQuotas.count) {
-                    updateStatusBar()
-                    statusBarManager.rebuildMenuInPlace()
-                }
-                .onChange(of: viewModel.directAuthFiles.count) {
-                    updateStatusBar()
-                    statusBarManager.rebuildMenuInPlace()
-                }
-                .sheet(isPresented: $showOnboarding) {
-                    OnboardingFlow {
-                        Task {
-                            hasInitialized = true
-                            await initializeApp()
-                        }
-                    }
-                }
+            mainContentView
         }
         .defaultSize(width: 1000, height: 700)
         .commands {
             CommandGroup(replacing: .newItem) { }
-            
+
             #if canImport(Sparkle)
             CommandGroup(after: .appInfo) {
                 Button("Check for Updates...") {
@@ -181,6 +121,62 @@ struct QuotioApp: App {
             }
             #endif
         }
+    }
+
+    private var mainContentView: some View {
+        configuredContentView
+            .sheet(isPresented: $showOnboarding) {
+                OnboardingFlow {
+                    Task {
+                        hasInitialized = true
+                        await initializeApp()
+                    }
+                }
+            }
+    }
+
+    private var configuredContentView: some View {
+        let baseView = ContentView()
+            .id(languageManager.currentLanguage)
+            .environment(viewModel)
+            .environment(logsViewModel)
+            .environment(\.locale, languageManager.locale)
+            .task {
+                guard !hasInitialized else { return }
+                hasInitialized = true
+                await initializeApp()
+            }
+
+        return baseView
+            .onChange(of: viewModel.proxyManager.proxyStatus.running) { updateStatusBar() }
+            .onChange(of: viewModel.isLoadingQuotas) {
+                updateStatusBar()
+                statusBarManager.rebuildMenuInPlace()
+            }
+            .onChange(of: languageManager.currentLanguage) { _, _ in
+                statusBarManager.rebuildMenuInPlace()
+            }
+            .onChange(of: menuBarSettings.showQuotaInMenuBar) { updateStatusBar() }
+            .onChange(of: menuBarSettings.showMenuBarIcon) { updateStatusBar() }
+            .onChange(of: menuBarSettings.selectedItems) { updateStatusBar() }
+            .onChange(of: menuBarSettings.colorMode) { updateStatusBar() }
+            .onChange(of: menuBarSettings.totalUsageMode) {
+                updateStatusBar()
+                statusBarManager.rebuildMenuInPlace()
+            }
+            .onChange(of: menuBarSettings.modelAggregationMode) {
+                updateStatusBar()
+                statusBarManager.rebuildMenuInPlace()
+            }
+            .onChange(of: modeManager.currentMode) { updateStatusBar() }
+            .onChange(of: viewModel.providerQuotas.count) {
+                updateStatusBar()
+                statusBarManager.rebuildMenuInPlace()
+            }
+            .onChange(of: viewModel.directAuthFiles.count) {
+                updateStatusBar()
+                statusBarManager.rebuildMenuInPlace()
+            }
     }
 }
 
@@ -289,6 +285,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 }
 
+@MainActor
 struct ContentView: View {
     @Environment(QuotaViewModel.self) private var viewModel
     @AppStorage("loggingToFile") private var loggingToFile = true
@@ -422,6 +419,7 @@ struct ContentView: View {
 // MARK: - Sidebar Status Rows
 
 /// Remote connection status row for Remote Proxy Mode
+@MainActor
 struct RemoteStatusRow: View {
     @State private var modeManager = OperatingModeManager.shared
     

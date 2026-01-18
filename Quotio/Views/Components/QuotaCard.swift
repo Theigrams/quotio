@@ -5,6 +5,7 @@
 
 import SwiftUI
 
+@MainActor
 struct QuotaCard: View {
     let provider: AIProvider
     let accounts: [AuthFile]
@@ -283,6 +284,7 @@ private struct StatusBadge: View {
     }
 }
 
+@MainActor
 private struct QuotaAccountRow: View {
     let account: AuthFile
     var quotaData: ProviderQuotaData?
@@ -342,41 +344,3 @@ private struct QuotaAccountRow: View {
     }
 }
 
-#Preview {
-    let mockAccounts = [
-        AuthFile(
-            id: "1",
-            name: "[email protected]",
-            provider: "antigravity",
-            label: nil,
-            status: "ready",
-            statusMessage: nil,
-            disabled: false,
-            unavailable: false,
-            runtimeOnly: false,
-            source: "file",
-            path: nil,
-            email: "[email protected]",
-            accountType: nil,
-            account: nil,
-            authIndex: nil,
-            createdAt: nil,
-            updatedAt: nil,
-            lastRefresh: nil
-        )
-    ]
-    
-    let mockQuota: [String: ProviderQuotaData] = [
-        "[email protected]": ProviderQuotaData(
-            models: [
-                ModelQuota(name: "gemini-3-pro-high", percentage: 65.0, resetTime: "2025-12-25T00:00:00Z"),
-                ModelQuota(name: "gemini-3-flash", percentage: 80.0, resetTime: "2025-12-25T00:00:00Z"),
-                ModelQuota(name: "claude-sonnet-4-5-thinking", percentage: 45.0, resetTime: "2025-12-25T00:00:00Z")
-            ]
-        )
-    ]
-    
-    QuotaCard(provider: .antigravity, accounts: mockAccounts, quotaData: mockQuota)
-        .frame(width: 400)
-        .padding()
-}

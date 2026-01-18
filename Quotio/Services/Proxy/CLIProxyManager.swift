@@ -1140,9 +1140,10 @@ extension CLIProxyManager {
             
             newAuthProcess.terminationHandler = { [weak self] terminatedProcess in
                 outputPipe.fileHandleForReading.readabilityHandler = nil
-                
+
+                guard let self = self else { return }
                 Task { @MainActor in
-                    self?.authProcess = nil
+                    self.authProcess = nil
                 }
                 
                 let status = terminatedProcess.terminationStatus

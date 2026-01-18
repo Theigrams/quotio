@@ -10,6 +10,7 @@ import SwiftUI
 
 // MARK: - Add Provider Popover
 
+@MainActor
 struct AddProviderPopover: View {
     let providers: [AIProvider]
     let existingCounts: [AIProvider: Int]  // Number of existing accounts per provider
@@ -138,21 +139,3 @@ private struct ProviderButton: View {
     }
 }
 
-// MARK: - Preview
-
-#Preview {
-    AddProviderPopover(
-        providers: AIProvider.allCases.filter { $0.supportsManualAuth },
-        existingCounts: [.claude: 2, .antigravity: 1],  // Preview with some existing accounts
-        onSelectProvider: { provider in
-            print("Selected: \(provider.displayName)")
-        },
-        onScanIDEs: {
-            print("Scan IDEs")
-        },
-        onAddCustomProvider: {
-            print("Add Custom Provider")
-        },
-        onDismiss: {}
-    )
-}

@@ -33,13 +33,3 @@ struct QuotaProgressBar: View {
     }
 }
 
-#Preview {
-    VStack(spacing: 16) {
-        QuotaProgressBar(percent: 75, tint: .green)
-        QuotaProgressBar(percent: 50, tint: .orange)
-        QuotaProgressBar(percent: 25, tint: .red)
-        QuotaProgressBar(percent: 100, tint: .blue)
-    }
-    .padding()
-    .frame(width: 300)
-}

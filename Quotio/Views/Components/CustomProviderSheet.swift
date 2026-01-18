@@ -5,6 +5,7 @@
 
 import SwiftUI
 
+@MainActor
 struct CustomProviderSheet: View {
     @Environment(\.dismiss) private var dismiss
     
@@ -473,10 +474,3 @@ private extension Array {
     }
 }
 
-// MARK: - Preview
-
-#Preview {
-    CustomProviderSheet(provider: nil) { provider in
-        print("Saved: \(provider.name)")
-    }
-}

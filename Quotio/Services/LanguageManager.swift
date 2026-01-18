@@ -95,21 +95,14 @@ final class LanguageManager {
 // MARK: - String Extension
 
 extension String {
-    @MainActor
+    /// Localized string using String Catalogs
     func localized() -> String {
-        LanguageManager.shared.localized(self)
-    }
-    
-    /// Nonisolated localization for use in computed properties on enums/structs.
-    /// Reads stored preference directly without MainActor isolation.
-    nonisolated func localizedStatic() -> String {
-        let saved = UserDefaults.standard.string(forKey: "appLanguage") ?? "en"
-        let migrated = (saved == "zh") ? "zh-Hans" : saved
-        
-        if let path = Bundle.main.path(forResource: migrated, ofType: "lproj"),
-           let bundle = Bundle(path: path) {
-            return NSLocalizedString(self, bundle: bundle, comment: "")
+        let localizedString = Bundle.main.localizedString(forKey: self, value: nil, table: nil)
+        // If localization worked and returned a different string, use it
+        if !localizedString.isEmpty && localizedString != self {
+            return localizedString
         }
-        return NSLocalizedString(self, bundle: .main, comment: "")
+        // Otherwise return the key itself (fallback)
+        return self
     }
 }

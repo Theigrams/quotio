@@ -5,6 +5,7 @@
 
 import SwiftUI
 
+@MainActor
 struct RemoteSetupStep: View {
     @Bindable var viewModel: OnboardingViewModel
     @State private var showPassword = false
@@ -115,6 +116,3 @@ struct RemoteSetupStep: View {
     }
 }
 
-#Preview {
-    RemoteSetupStep(viewModel: OnboardingViewModel())
-}

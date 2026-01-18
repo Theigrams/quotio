@@ -61,8 +61,8 @@ final class TunnelManager {
         
         do {
             try await service.start(port: port) { [weak self] url in
+                guard let self = self else { return }
                 Task { @MainActor in
-                    guard let self = self else { return }
                     guard self.tunnelRequestId == currentRequestId else {
                         NSLog("[TunnelManager] Ignoring stale callback for request %llu (current: %llu)", currentRequestId, self.tunnelRequestId)
                         return

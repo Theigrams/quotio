@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:spm2026.github.io)",
+      "mcp__grok-search__web_search",
+      "mcp__grok-search__web_fetch"
+    ]
+  }
+}

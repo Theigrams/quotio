@@ -9,6 +9,7 @@
 import SwiftUI
 
 /// Represents a group of accounts for a single provider
+@MainActor
 struct ProviderAccountsGroupData: Identifiable {
     let provider: AIProvider
     var accounts: [AccountRowData]
@@ -34,6 +35,7 @@ struct ProviderAccountsGroupData: Identifiable {
 
 // MARK: - Provider Accounts Group View
 
+@MainActor
 struct ProviderAccountsGroup: View {
     let group: ProviderAccountsGroupData
     var onDeleteAccount: ((AccountRowData) -> Void)?
@@ -87,6 +89,7 @@ struct ProviderAccountsGroup: View {
 // MARK: - All Accounts Group View
 
 /// A section that displays all accounts grouped by provider
+@MainActor
 struct AllAccountsSection: View {
     let accounts: [AccountRowData]
     var onDeleteAccount: ((AccountRowData) -> Void)?
@@ -173,55 +176,3 @@ struct AllAccountsSection: View {
     }
 }
 
-// MARK: - Preview
-
-#Preview {
-    List {
-        AllAccountsSection(
-            accounts: [
-                AccountRowData(
-                    id: "1",
-                    provider: .gemini,
-                    displayName: "user@gmail.com",
-                    source: .proxy,
-                    status: "ready",
-                    statusMessage: nil,
-                    isDisabled: false,
-                    canDelete: true
-                ),
-                AccountRowData(
-                    id: "2",
-                    provider: .gemini,
-                    displayName: "work@company.com",
-                    source: .proxy,
-                    status: "ready",
-                    statusMessage: nil,
-                    isDisabled: false,
-                    canDelete: true
-                ),
-                AccountRowData(
-                    id: "3",
-                    provider: .claude,
-                    displayName: "dev@example.com",
-                    source: .direct,
-                    status: nil,
-                    statusMessage: nil,
-                    isDisabled: false,
-                    canDelete: false
-                ),
-                AccountRowData(
-                    id: "4",
-                    provider: .cursor,
-                    displayName: "cursor@email.com",
-                    source: .autoDetected,
-                    status: nil,
-                    statusMessage: nil,
-                    isDisabled: false,
-                    canDelete: false
-                )
-            ],
-            onDeleteAccount: { _ in },
-            onRefresh: {}
-        )
-    }
-}
